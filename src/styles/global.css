@@ -1,0 +1,50 @@
+@import "tailwindcss";
+@plugin "@tailwindcss/typography";
+
+:root {
+	--ink: #071a2d;
+	--blue: #0b5cab;
+	--cyan: #69d5ff;
+	--line: rgba(255, 255, 255, 0.12);
+}
+
+::selection {
+	background: #69d5ff;
+	color: #071a2d;
+}
+
+body {
+	background: #0a3158;
+	min-height: 100vh;
+	overflow-x: hidden;
+}
+
+.project-hero {
+	background-image: linear-gradient(90deg, rgba(3, 18, 34, .95) 0%, rgba(3, 18, 34, .74) 48%, rgba(3, 18, 34, .38) 100%), var(--project-hero-image, url('https://images.unsplash.com/photo-1558494949-ef010cbdcc31?auto=format&fit=crop&w=2400&q=90'));
+	background-position: center;
+	background-size: cover;
+}
+
+@keyframes float {
+	0%, 100% { transform: translate3d(0, 0, 0); }
+	50% { transform: translate3d(0, -14px, 0); }
+}
+
+@keyframes spin {
+	to { transform: translate(-50%, -50%) rotate(360deg); }
+}
+
+@media (max-width: 639px) {
+	.tech-orbit > span {
+		opacity: .38 !important;
+	}
+
+	.project-hero {
+		background-position: 62% center;
+	}
+
+	.project-hero h1 {
+		font-size: 2.25rem;
+		line-height: 1.1;
+	}
+}

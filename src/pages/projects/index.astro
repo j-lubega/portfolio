@@ -1,0 +1,72 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+
+type ProjectSummary = {
+  href: string;
+  title: string;
+  description: string;
+  status: string;
+  stack: string[];
+};
+
+const projects: ProjectSummary[] = [
+  {
+    href: '/projects/posit-ssl',
+    title: 'Self-Signed SSL/TLS for Posit Team on Rocky Linux',
+    description:
+      'Designed and implemented HTTPS across a co-located Posit Connect, Workbench, and Package Manager deployment using a self-signed certificate with proper SAN support.',
+    status: 'Completed & Verified',
+    stack: ['Rocky Linux', 'OpenSSL', 'Posit Team', 'SELinux'],
+  },
+  {
+    href: '/projects/linux-hardening-selinux',
+    title: 'Linux Server Hardening & SELinux Operations',
+    description:
+      'Hardened enterprise Linux servers, managed patching and services, and supported Posit Team workloads across enforcing, permissive, and disabled SELinux modes.',
+    status: 'Completed & Operational',
+    stack: ['RHEL', 'Rocky Linux', 'SELinux', 'Patching', 'Systemd'],
+  },
+  {
+    href: '/projects/enterprise-infrastructure-builds',
+    title: 'Enterprise Infrastructure Builds at Scale',
+    description:
+      'Completed builds across 400+ physical servers and 2,000+ virtual machines spanning VMware, AWS, and Azure environments.',
+    status: 'Completed at Scale',
+    stack: ['VMware', 'AWS', 'Azure', 'Terraform', 'Linux'],
+  },
+];
+---
+
+<BaseLayout
+  title="Projects"
+  description="Selected cloud infrastructure, security, and platform engineering projects by Jimmy."
+>
+  <section class="mx-auto max-w-4xl px-6 py-16">
+    <h1 class="text-3xl font-extrabold tracking-tight text-slate-50 sm:text-4xl">Projects</h1>
+    <p class="mt-4 text-lg text-slate-300">
+      Selected infrastructure and platform engineering work.
+    </p>
+
+    <div class="mt-10 space-y-6">
+      {projects.map((project) => (
+        <a
+          href={project.href}
+          class="block rounded-xl border border-slate-800 bg-slate-900/40 p-6 transition hover:border-cyan-400/60 hover:bg-slate-900/70"
+        >
+          <span class="inline-block rounded-full bg-emerald-500/10 px-3 py-1 text-xs font-semibold text-emerald-400">
+            {project.status}
+          </span>
+          <h2 class="mt-4 text-xl font-semibold text-slate-50">{project.title}</h2>
+          <p class="mt-2 text-slate-300">{project.description}</p>
+          <ul class="mt-4 flex flex-wrap gap-2">
+            {project.stack.map((item) => (
+              <li class="rounded-full bg-slate-800 px-3 py-1 text-xs font-mono text-slate-200">
+                {item}
+              </li>
+            ))}
+          </ul>
+        </a>
+      ))}
+    </div>
+  </section>
+</BaseLayout>

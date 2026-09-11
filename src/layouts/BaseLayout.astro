@@ -1,0 +1,110 @@
+---
+import '../styles/global.css';
+import Nav from '../components/Nav.astro';
+import Footer from '../components/Footer.astro';
+
+interface Props {
+  title: string;
+  description: string;
+  ogImage?: string;
+  keywords?: string;
+}
+
+const { title, description, ogImage = '/og-image.png', keywords = 'technical consultant, platform engineer, cloud infrastructure, Linux, AWS, Azure, Terraform, Kubernetes, DevOps, Posit' } = Astro.props;
+const siteName = 'Jimmy — Technical Consultant';
+const canonicalURL = new URL(Astro.url.pathname, Astro.site);
+const ogImageURL = new URL(ogImage, Astro.site);
+const structuredData = {
+  '@context': 'https://schema.org',
+  '@type': 'ProfessionalService',
+  name: 'Jimmy — Technical Consultant',
+  url: canonicalURL.toString(),
+  description,
+  areaServed: 'Worldwide',
+  serviceType: [
+    'Posit Team cloud deployment and support',
+    'Enterprise application troubleshooting',
+    'Cloud and on-premises platform engineering',
+  ],
+  knowsAbout: ['Posit Team', 'AWS', 'Microsoft Azure', 'Google Cloud Platform', 'Linux', 'Kubernetes', 'Terraform', 'Ansible', 'TLS', 'Enterprise application support'],
+  provider: {
+    '@type': 'Organization',
+    name: 'purenest360 llc',
+  },
+};
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="canonical" href={canonicalURL} />
+    <meta name="generator" content={Astro.generator} />
+
+    <!-- Primary Meta Tags -->
+    <title>{title} | {siteName}</title>
+    <meta name="title" content={`${title} | ${siteName}`} />
+    <meta name="description" content={description} />
+    <meta name="author" content="Jimmy" />
+    <meta name="robots" content="index, follow" />
+    <meta name="keywords" content={keywords} />
+    <meta name="theme-color" content="#0b5cab" />
+    <meta name="category" content="Technical consulting and platform engineering" />
+    <meta name="service" content="Posit Team deployment, cloud infrastructure, on-premises operations, and enterprise application support" />
+    <script is:inline type="application/ld+json" set:html={JSON.stringify(structuredData)} />
+
+    <!-- Open Graph / Facebook / LinkedIn -->
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content={canonicalURL} />
+    <meta property="og:title" content={`${title} | ${siteName}`} />
+    <meta property="og:description" content={description} />
+    <meta property="og:image" content={ogImageURL} />
+    <meta property="og:site_name" content={siteName} />
+
+    <meta property="profile:first_name" content="Jimmy" />
+    <meta property="profile:last_name" content="Lubega" />
+
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:url" content={canonicalURL} />
+    <meta name="twitter:title" content={`${title} | ${siteName}`} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={ogImageURL} />
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body class="bg-[#071a2d] text-slate-200 antialiased">
+    <a
+      href="#main-content"
+      class="sr-only focus:not-sr-only focus:absolute focus:top-2 focus:left-2 focus:z-50 focus:bg-cyan-500 focus:text-slate-950 focus:px-4 focus:py-2 focus:rounded-md focus:font-semibold"
+    >
+      Skip to main content
+    </a>
+    <Nav />
+    <main id="main-content">
+      <slot />
+    </main>
+    <Footer />
+  </body>
+</html>
+
+<style is:global>
+  html {
+    font-family: 'DM Sans', system-ui, sans-serif;
+    scroll-behavior: smooth;
+  }
+  h1, h2, h3, .font-display {
+    font-family: 'Space Grotesk', 'DM Sans', sans-serif;
+  }
+  code, pre, .font-mono {
+    font-family: 'IBM Plex Mono', ui-monospace, monospace;
+  }
+</style>
