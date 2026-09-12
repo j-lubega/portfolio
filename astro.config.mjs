@@ -7,7 +7,7 @@ import react from '@astrojs/react';
 // https://astro.build/config
 export default defineConfig({
   // TODO: replace with your real domain before deploying
-  site: 'https://jimmylubega.com',
+  site: 'https://purenest360llc.com',
   integrations: [sitemap(), react()],
   vite: {
     plugins: [tailwindcss()]
