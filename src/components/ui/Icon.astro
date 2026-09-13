@@ -1,0 +1,27 @@
+---
+import { Icon as AstroIcon } from 'astro-icon/components';
+
+/**
+ * Wrapper around astro-icon. Decorative by default (aria-hidden); pass `label`
+ * to make it meaningful (role="img" with an accessible name).
+ * Names are "set:name", e.g. "lucide:sun" or "simple-icons:kubernetes".
+ */
+interface Props {
+  name: string;
+  size?: number;
+  label?: string;
+  class?: string;
+}
+const { name, size = 20, label, class: className } = Astro.props;
+---
+
+<AstroIcon
+  name={name}
+  width={size}
+  height={size}
+  class:list={['inline-block shrink-0', className]}
+  aria-hidden={label ? undefined : 'true'}
+  role={label ? 'img' : undefined}
+  aria-label={label}
+  title={label}
+/>

@@ -1,14 +1,24 @@
 ---
-import { profile } from '../data/profile';
+import { profile } from '../data/site';
 ---
 
-<footer class="border-t border-slate-800/80 py-10">
-  <div class="mx-auto flex max-w-5xl flex-col items-center gap-3 px-6 text-center text-sm text-slate-400">
+<footer class="border-t border-line py-10">
+  <div class="mx-auto flex max-w-5xl flex-col items-center gap-3 px-6 text-center text-sm text-fg-faint">
     <div class="flex gap-6">
-      <a href={profile.social.linkedin} target="_blank" rel="noopener noreferrer" class="hover:text-cyan-400">
+      <a
+        href={profile.social.linkedin}
+        target="_blank"
+        rel="noopener noreferrer"
+        class="hover:text-accent"
+      >
         LinkedIn
       </a>
-      <a href={profile.social.github} target="_blank" rel="noopener noreferrer" class="hover:text-cyan-400">
+      <a
+        href={profile.social.github}
+        target="_blank"
+        rel="noopener noreferrer"
+        class="hover:text-accent"
+      >
         GitHub
       </a>
     </div>

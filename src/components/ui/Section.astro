@@ -1,0 +1,22 @@
+---
+/** Vertical rhythm for a page section. tone="surface" gives a raised band with hairlines. */
+interface Props {
+  id?: string;
+  tone?: 'canvas' | 'surface';
+  class?: string;
+  labelledby?: string;
+}
+const { id, tone = 'canvas', class: className, labelledby } = Astro.props;
+---
+
+<section
+  id={id}
+  aria-labelledby={labelledby}
+  class:list={[
+    'py-16 md:py-24 lg:py-28',
+    tone === 'surface' && 'border-line bg-surface border-y',
+    className,
+  ]}
+>
+  <slot />
+</section>

@@ -10,14 +10,14 @@ This guide documents how to configure HTTPS for a co-located Posit Connect, Posi
 
 ## Placeholders used in this guide
 
-| Placeholder | Description | Example |
-|---|---|---|
-| `<VM_HOSTNAME>` | The hostname clients will use to reach the server | `posit-server` |
-| `<VM_IP>` | The server's IP address | `192.168.1.50` |
-| `<CONNECT_PORT>` | Port for Posit Connect | `3939` |
-| `<WORKBENCH_PORT>` | Port for Posit Workbench | `8787` |
-| `<PACKAGE_MANAGER_PORT>` | HTTPS port for Package Manager | `4242` |
-| `<PACKAGE_MANAGER_HTTP_PORT>` | Fallback HTTP port for Package Manager | `4243` |
+| Placeholder                   | Description                                       | Example        |
+| ----------------------------- | ------------------------------------------------- | -------------- |
+| `<VM_HOSTNAME>`               | The hostname clients will use to reach the server | `posit-server` |
+| `<VM_IP>`                     | The server's IP address                           | `192.168.1.50` |
+| `<CONNECT_PORT>`              | Port for Posit Connect                            | `3939`         |
+| `<WORKBENCH_PORT>`            | Port for Posit Workbench                          | `8787`         |
+| `<PACKAGE_MANAGER_PORT>`      | HTTPS port for Package Manager                    | `4242`         |
+| `<PACKAGE_MANAGER_HTTP_PORT>` | Fallback HTTP port for Package Manager            | `4243`         |
 
 Replace these throughout with your actual values.
 
@@ -94,6 +94,7 @@ sudo usermod -aG posit-ssl rstudio-server
 ```
 
 > Confirm the actual service user/group for each product before assuming the names above — check with:
+>
 > ```bash
 > systemctl show <service-name> -p User -p Group
 > ```
@@ -208,16 +209,19 @@ scp <user>@<VM_HOSTNAME>:/etc/ssl/certs/<VM_HOSTNAME>.crt ~/Desktop/
 ```
 
 **On macOS:**
+
 1. Open **Keychain Access**
 2. Select the **System** keychain
 3. Drag in `<VM_HOSTNAME>.crt`
 4. Double-click the imported cert → **Trust** → set to **Always Trust**
 
 **On Windows:**
+
 1. Double-click the `.crt` file → **Install Certificate**
 2. Choose **Local Machine** → **Place all certificates in the following store** → **Trusted Root Certification Authorities**
 
 **On Linux clients:**
+
 ```bash
 sudo cp <VM_HOSTNAME>.crt /etc/pki/ca-trust/source/anchors/
 sudo update-ca-trust extract
@@ -241,14 +245,14 @@ Then browse to each URL using the **hostname** (not the IP address — the certi
 
 ## Troubleshooting Reference
 
-| Symptom | Likely Cause | Fix |
-|---|---|---|
-| `Can't open ".../key" for writing, No such file or directory` | Target directory doesn't exist | `sudo mkdir -p /etc/ssl/private /etc/ssl/certs` |
-| `HTTP.Listen and HTTPS.Listen using same value` | Both sections configured on the same port | Assign HTTP a separate port in the config |
-| `open ".../key": permission denied` | Service user lacks read access to the key, or its parent directory isn't traversable by the group | Verify group membership (`id <service-user>`), confirm file is `640 root:posit-ssl`, and confirm the containing directory is `750 root:posit-ssl` |
-| `Self-signed certificate is not in the system CA store` (warning only) | OS-level trust store doesn't include the cert | `sudo cp <cert> /etc/pki/ca-trust/source/anchors/ && sudo update-ca-trust extract` |
-| Browser still shows "Not Secure" | Cert not yet trusted on the **client**, browsing by IP instead of hostname, or stale browser session | Re-check Keychain/cert store trust settings, use the hostname, restart the browser |
-| SELinux denials in `ausearch -m avc` | SELinux policy blocking access to non-standard cert paths | Relabel with `semanage fcontext` + `restorecon`, or confirm SELinux mode with `getenforce` |
+| Symptom                                                                | Likely Cause                                                                                         | Fix                                                                                                                                               |
+| ---------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `Can't open ".../key" for writing, No such file or directory`          | Target directory doesn't exist                                                                       | `sudo mkdir -p /etc/ssl/private /etc/ssl/certs`                                                                                                   |
+| `HTTP.Listen and HTTPS.Listen using same value`                        | Both sections configured on the same port                                                            | Assign HTTP a separate port in the config                                                                                                         |
+| `open ".../key": permission denied`                                    | Service user lacks read access to the key, or its parent directory isn't traversable by the group    | Verify group membership (`id <service-user>`), confirm file is `640 root:posit-ssl`, and confirm the containing directory is `750 root:posit-ssl` |
+| `Self-signed certificate is not in the system CA store` (warning only) | OS-level trust store doesn't include the cert                                                        | `sudo cp <cert> /etc/pki/ca-trust/source/anchors/ && sudo update-ca-trust extract`                                                                |
+| Browser still shows "Not Secure"                                       | Cert not yet trusted on the **client**, browsing by IP instead of hostname, or stale browser session | Re-check Keychain/cert store trust settings, use the hostname, restart the browser                                                                |
+| SELinux denials in `ausearch -m avc`                                   | SELinux policy blocking access to non-standard cert paths                                            | Relabel with `semanage fcontext` + `restorecon`, or confirm SELinux mode with `getenforce`                                                        |
 
 ---
 

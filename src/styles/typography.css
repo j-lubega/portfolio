@@ -1,0 +1,85 @@
+/*
+  Type defaults and prose theming.
+  Font sizes are registered in global.css under Tailwind's --text-* namespace
+  (text-display, text-h1, text-mono-label, ...). This file holds what is not a
+  utility: element defaults and the prose theme for Markdown case studies.
+*/
+@layer base {
+  html {
+    font-family: var(--font-sans);
+    font-size: 100%;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+
+  @media (min-width: 80rem) {
+    html {
+      font-size: 106.25%; /* 17px body at wide viewports */
+    }
+  }
+
+  code,
+  kbd,
+  samp,
+  pre {
+    font-family: var(--font-mono);
+    font-feature-settings: 'liga' 0;
+  }
+
+  /* Tabular numerals for stats, dates and prices */
+  .tabular {
+    font-variant-numeric: tabular-nums;
+  }
+}
+
+/*
+  Prose: token-driven overrides for @tailwindcss/typography.
+  Unlayered on purpose so they win over the plugin's own layer.
+  Code blocks stay dark in both themes (color-scheme: dark flips the tokens).
+*/
+.prose {
+  --tw-prose-body: var(--color-fg-muted);
+  --tw-prose-headings: var(--color-fg);
+  --tw-prose-lead: var(--color-fg-muted);
+  --tw-prose-links: var(--color-accent);
+  --tw-prose-bold: var(--color-fg);
+  --tw-prose-counters: var(--color-fg-faint);
+  --tw-prose-bullets: var(--color-line-strong);
+  --tw-prose-hr: var(--color-line);
+  --tw-prose-quotes: var(--color-fg);
+  --tw-prose-quote-borders: var(--color-accent);
+  --tw-prose-captions: var(--color-fg-faint);
+  --tw-prose-kbd: var(--color-fg);
+  --tw-prose-code: var(--color-accent);
+  --tw-prose-pre-code: var(--color-code-fg);
+  --tw-prose-pre-bg: var(--color-code-bg);
+  --tw-prose-th-borders: var(--color-line-strong);
+  --tw-prose-td-borders: var(--color-line);
+  max-width: 65ch;
+}
+
+.prose :where(h1, h2, h3, h4) {
+  letter-spacing: -0.01em;
+}
+
+.prose :where(pre) {
+  color-scheme: dark;
+  overflow-x: auto;
+  border: 1px solid var(--color-line);
+  border-radius: var(--radius-md);
+}
+
+.prose :where(code):not(:where(pre code)) {
+  font-weight: 500;
+}
+
+.prose :where(code):not(:where(pre code))::before,
+.prose :where(code):not(:where(pre code))::after {
+  content: none;
+}
+
+.prose :where(table) {
+  display: block;
+  overflow-x: auto;
+  font-size: 0.875em;
+}

@@ -1,0 +1,28 @@
+---
+/** Surface with a hairline. `interactive` adds the hover treatment for cards that are links. */
+interface Props {
+  element?: 'div' | 'article' | 'li' | 'a';
+  href?: string;
+  id?: string;
+  interactive?: boolean;
+  padding?: 'none' | 'sm' | 'md';
+  class?: string;
+}
+const { href, id, interactive = false, padding = 'md', class: className } = Astro.props;
+const Tag = Astro.props.element ?? 'div';
+const paddings = { none: '', sm: 'p-4 sm:p-5', md: 'p-6 md:p-8' };
+---
+
+<Tag
+  href={href}
+  id={id}
+  class:list={[
+    'border-line bg-surface shadow-1 block rounded-md border',
+    interactive &&
+      'hover:border-line-strong hover:shadow-2 focus-visible:border-accent transition-[border-color,box-shadow] duration-(--dur-fast) ease-(--ease-out)',
+    paddings[padding],
+    className,
+  ]}
+>
+  <slot />
+</Tag>

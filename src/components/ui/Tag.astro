@@ -1,0 +1,22 @@
+---
+import Icon from './Icon.astro';
+
+/** Stack chip. Mono, sharp corners, optional brand glyph. Looks like a kubectl label. */
+interface Props {
+  icon?: string;
+  element?: 'li' | 'span';
+  class?: string;
+}
+const { icon, class: className } = Astro.props;
+const Tag = Astro.props.element ?? 'span';
+---
+
+<Tag
+  class:list={[
+    'text-mono-meta border-line bg-accent-soft text-fg inline-flex items-center gap-1.5 rounded-xs border px-2 py-0.5 font-mono',
+    className,
+  ]}
+>
+  {icon && <Icon name={icon} size={14} class="text-fg-muted" />}
+  <slot />
+</Tag>

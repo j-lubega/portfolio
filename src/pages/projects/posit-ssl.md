@@ -1,9 +1,10 @@
 ---
 layout: ../../layouts/ProjectLayout.astro
-title: "Self-Signed SSL/TLS for Posit Team on Rocky Linux"
-description: "Designed and implemented HTTPS across a co-located Posit Connect, Workbench, and Package Manager deployment using a self-signed certificate with proper SAN support — completed and verified working."
-stack: ["Rocky Linux", "OpenSSL", "Posit Connect", "Posit Workbench", "Posit Package Manager", "SELinux"]
-heroImage: "https://images.unsplash.com/photo-1563013544-824ae1b704d3?auto=format&fit=crop&w=2400&q=90"
+title: 'Self-Signed SSL/TLS for Posit Team on Rocky Linux'
+description: 'Designed and implemented HTTPS across a co-located Posit Connect, Workbench, and Package Manager deployment using a self-signed certificate with proper SAN support — completed and verified working.'
+stack:
+  ['Rocky Linux', 'OpenSSL', 'Posit Connect', 'Posit Workbench', 'Posit Package Manager', 'SELinux']
+heroImage: 'https://images.unsplash.com/photo-1563013544-824ae1b704d3?auto=format&fit=crop&w=2400&q=90'
 ---
 
 ## Overview
@@ -186,14 +187,14 @@ Browsing to each URL by **hostname** (not IP — the SAN only covers the hostnam
 
 ## Troubleshooting Reference
 
-| Symptom | Likely Cause | Fix |
-|---|---|---|
-| `Can't open ".../key" for writing, No such file or directory` | Target directory doesn't exist | `sudo mkdir -p /etc/ssl/private /etc/ssl/certs` |
-| `HTTP.Listen and HTTPS.Listen using same value` | Both sections configured on the same port | Assign HTTP a separate port |
-| `open ".../key": permission denied` | Service user lacks read access, or parent directory isn't traversable | Verify group membership (`id <service-user>`); confirm `640 root:posit-ssl` on the key and `750 root:posit-ssl` on the directory |
-| `Self-signed certificate is not in the system CA store` | OS-level trust store missing the cert | `sudo cp <cert> /etc/pki/ca-trust/source/anchors/ && sudo update-ca-trust extract` |
-| Browser still shows "Not Secure" | Cert not trusted on the client, browsing by IP, or stale session | Re-check trust settings, use hostname, restart browser |
-| SELinux denials (`ausearch -m avc`) | Policy blocking non-standard cert paths | Relabel with `semanage fcontext` + `restorecon`, confirm mode with `getenforce` |
+| Symptom                                                       | Likely Cause                                                          | Fix                                                                                                                              |
+| ------------------------------------------------------------- | --------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------- |
+| `Can't open ".../key" for writing, No such file or directory` | Target directory doesn't exist                                        | `sudo mkdir -p /etc/ssl/private /etc/ssl/certs`                                                                                  |
+| `HTTP.Listen and HTTPS.Listen using same value`               | Both sections configured on the same port                             | Assign HTTP a separate port                                                                                                      |
+| `open ".../key": permission denied`                           | Service user lacks read access, or parent directory isn't traversable | Verify group membership (`id <service-user>`); confirm `640 root:posit-ssl` on the key and `750 root:posit-ssl` on the directory |
+| `Self-signed certificate is not in the system CA store`       | OS-level trust store missing the cert                                 | `sudo cp <cert> /etc/pki/ca-trust/source/anchors/ && sudo update-ca-trust extract`                                               |
+| Browser still shows "Not Secure"                              | Cert not trusted on the client, browsing by IP, or stale session      | Re-check trust settings, use hostname, restart browser                                                                           |
+| SELinux denials (`ausearch -m avc`)                           | Policy blocking non-standard cert paths                               | Relabel with `semanage fcontext` + `restorecon`, confirm mode with `getenforce`                                                  |
 
 ## Scaling Notes
 

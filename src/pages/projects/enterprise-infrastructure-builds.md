@@ -1,10 +1,10 @@
 ---
 layout: ../../layouts/ProjectLayout.astro
-title: "Enterprise Infrastructure Builds at Scale"
-description: "Completed builds across more than 400 physical servers and 2,000 virtual machines spanning VMware, AWS, and Azure environments."
-status: "Completed at Scale"
-stack: ["VMware", "AWS", "Microsoft Azure", "Terraform", "Ansible", "Linux"]
-heroImage: "https://images.unsplash.com/photo-1558494949-ef010cbdcc31?auto=format&fit=crop&w=3840&q=95"
+title: 'Enterprise Infrastructure Builds at Scale'
+description: 'Completed builds across more than 400 physical servers and 2,000 virtual machines spanning VMware, AWS, and Azure environments.'
+status: 'Completed at Scale'
+stack: ['VMware', 'AWS', 'Microsoft Azure', 'Terraform', 'Ansible', 'Linux']
+heroImage: 'https://images.unsplash.com/photo-1558494949-ef010cbdcc31?auto=format&fit=crop&w=3840&q=95'
 ---
 
 ## Overview

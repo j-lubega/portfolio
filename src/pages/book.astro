@@ -12,45 +12,77 @@ const calendlyEmbedUrl = `${calendlyUrl}?embed_type=Inline&hide_gdpr_banner=1`;
 >
   <section class="mx-auto max-w-5xl px-6 py-16 sm:py-24">
     <div class="max-w-3xl">
-      <p class="font-mono text-xs uppercase tracking-[0.2em] text-cyan-300">Consultation desk</p>
-      <h1 class="mt-5 text-4xl font-semibold tracking-tight text-white sm:text-6xl">Bring a hard problem.</h1>
-      <p class="mt-6 text-xl leading-relaxed text-sky-100/80">
-        Book a technical consulting service for focused guidance on platform architecture, cloud infrastructure, Linux operations, automation, security, or a production issue that needs a second set of eyes.
+      <p class="font-mono text-xs uppercase tracking-[0.2em] text-accent">Consultation desk</p>
+      <h1 class="mt-5 text-4xl font-semibold tracking-tight text-fg sm:text-6xl">
+        Bring a hard problem.
+      </h1>
+      <p class="mt-6 text-xl leading-relaxed text-fg-muted">
+        Book a technical consulting service for focused guidance on platform architecture, cloud
+        infrastructure, Linux operations, automation, security, or a production issue that needs a
+        second set of eyes.
       </p>
     </div>
 
     <div class="mt-14 grid gap-10 lg:grid-cols-[0.7fr_1.3fr]">
-      <div class="border-t border-white/15 pt-6">
-        <h2 class="text-2xl font-semibold text-white">What we can cover</h2>
-        <ul class="mt-6 space-y-4 text-slate-300">
-          <li class="border-b border-white/10 pb-4">Platform and cloud architecture</li>
-          <li class="border-b border-white/10 pb-4">Linux, Kubernetes, and reliability</li>
-          <li class="border-b border-white/10 pb-4">Terraform, Ansible, and automation</li>
-          <li class="border-b border-white/10 pb-4">Security, TLS, and operational readiness</li>
+      <div class="border-t border-line-strong pt-6">
+        <h2 class="text-2xl font-semibold text-fg">What we can cover</h2>
+        <ul class="mt-6 space-y-4 text-fg-muted">
+          <li class="border-b border-line pb-4">Platform and cloud architecture</li>
+          <li class="border-b border-line pb-4">Linux, Kubernetes, and reliability</li>
+          <li class="border-b border-line pb-4">Terraform, Ansible, and automation</li>
+          <li class="border-b border-line pb-4">Security, TLS, and operational readiness</li>
         </ul>
-        <div class="mt-10 border-t border-white/10 pt-6">
-          <p class="font-mono text-xs uppercase tracking-[0.2em] text-cyan-300">Consultation options</p>
-          <p class="mt-4 text-sm leading-relaxed text-slate-300"><strong class="text-white">30 minutes · Free</strong><br />A focused introduction, technical direction, or quick second opinion.</p>
-          <p class="mt-4 text-sm leading-relaxed text-slate-300"><strong class="text-white">60 minutes · $80</strong><br />A deeper working session for architecture, troubleshooting, or an implementation plan.</p>
+        <div class="mt-10 border-t border-line pt-6">
+          <p class="font-mono text-xs uppercase tracking-[0.2em] text-accent">
+            Consultation options
+          </p>
+          <p class="mt-4 text-sm leading-relaxed text-fg-muted">
+            <strong class="text-fg">30 minutes · Free</strong>
+            <br />A focused introduction, technical direction, or quick second opinion.
+          </p>
+          <p class="mt-4 text-sm leading-relaxed text-fg-muted">
+            <strong class="text-fg">60 minutes · $80</strong>
+            <br />A deeper working session for architecture, troubleshooting, or an implementation
+            plan.
+          </p>
         </div>
       </div>
 
-      <div class="overflow-hidden border border-white/15 bg-white p-2 sm:p-3">
+      <div
+        class="overflow-hidden border border-line-strong bg-surface p-2 sm:p-3"
+        style="color-scheme: light"
+      >
         <iframe
           src={calendlyEmbedUrl}
           title="Calendly booking schedule for a technical consultation"
           class="h-[54rem] min-h-[42rem] w-full border-0"
           loading="lazy"
         ></iframe>
-        <div class="border-t border-slate-200 px-3 py-3 text-center text-sm text-slate-600">
-          Having trouble viewing the schedule? <a href={calendlyUrl} target="_blank" rel="noopener noreferrer" class="font-semibold text-sky-700 hover:text-sky-900">Open Calendly in a new tab</a>.
+        <div class="border-t border-line px-3 py-3 text-center text-sm text-fg-muted">
+          Having trouble viewing the schedule?{' '}
+          <a
+            href={calendlyUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            class="font-semibold text-accent hover:text-accent-hover"
+          >
+            Open Calendly in a new tab
+          </a>
+          .
         </div>
       </div>
     </div>
 
-    <aside class="mt-10 border-t border-white/10 pt-4 text-[10px] leading-relaxed text-slate-500">
-      <h2 class="font-mono text-[10px] uppercase tracking-[0.18em] text-slate-400">Privacy &amp; usage</h2>
-      <p class="mt-2 max-w-4xl">Calendly processes the details needed to schedule and confirm your appointment. By booking, you agree to Calendly's terms and privacy practices. Do not include passwords, private keys, credentials, or confidential customer data in booking notes. For the best session, choose the right duration, use a work email, share a short problem summary, and join with relevant non-sensitive logs or context ready. No copyright claimed on this page's original text; attribution to purenest360 llc is appreciated.</p>
+    <aside class="mt-10 border-t border-line pt-4 text-small leading-relaxed text-fg-faint">
+      <h2 class="text-mono-label font-mono uppercase text-fg-faint">Privacy &amp; usage</h2>
+      <p class="mt-2 max-w-4xl">
+        Calendly processes the details needed to schedule and confirm your appointment. By booking,
+        you agree to Calendly's terms and privacy practices. Do not include passwords, private keys,
+        credentials, or confidential customer data in booking notes. For the best session, choose
+        the right duration, use a work email, share a short problem summary, and join with relevant
+        non-sensitive logs or context ready. No copyright claimed on this page's original text;
+        attribution to purenest360 llc is appreciated.
+      </p>
     </aside>
   </section>
 </BaseLayout>

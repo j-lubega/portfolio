@@ -1,0 +1,19 @@
+---
+/** Status dot + label, status-page style. The dot is decorative; the label carries the meaning. */
+interface Props {
+  status?: 'ok' | 'warn' | 'neutral';
+  class?: string;
+}
+const { status = 'ok', class: className } = Astro.props;
+const dot = { ok: 'bg-ok', warn: 'bg-warn', neutral: 'bg-fg-faint' };
+---
+
+<span
+  class:list={[
+    'text-mono-meta border-line text-fg-muted inline-flex items-center gap-2 rounded-xs border px-2 py-0.5 font-mono',
+    className,
+  ]}
+>
+  <span class:list={['size-1.5 rounded-full', dot[status]]} aria-hidden="true"></span>
+  <slot />
+</span>

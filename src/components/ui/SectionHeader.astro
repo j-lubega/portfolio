@@ -1,0 +1,26 @@
+---
+import Eyebrow from './Eyebrow.astro';
+
+/** Eyebrow + h2 + optional lead. `id` lands on the heading so a Section can be labelled by it. */
+interface Props {
+  eyebrow?: string;
+  index?: string;
+  title: string;
+  id?: string;
+  align?: 'left' | 'center';
+  class?: string;
+}
+const { eyebrow, index, title, id, align = 'left', class: className } = Astro.props;
+---
+
+<div class:list={['max-w-2xl', align === 'center' && 'mx-auto text-center', className]}>
+  {eyebrow && <Eyebrow index={index}>{eyebrow}</Eyebrow>}
+  <h2 id={id} class="text-h2 text-fg mt-3">
+    {title}
+  </h2>
+  {Astro.slots.has('default') && (
+    <p class="text-lead text-fg-muted mt-4">
+      <slot />
+    </p>
+  )}
+</div>
