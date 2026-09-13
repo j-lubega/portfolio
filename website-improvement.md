@@ -5,7 +5,7 @@
 | Repository          | `jlpro-io/tech-portfolio`, branch `main`, commit `0335166` (2026-09-12)                 |
 | Audited on          | 2026-09-13, Windows 11, Node 22.22.2, npm 10.9.7                                        |
 | Client              | Jimmy Lubega, Technical Consultant and Platform Engineer (trading as purenest360 llc)   |
-| Document status     | v1.0, analysis and planning only, no implementation code written                        |
+| Document status     | v1.1. Phases 0 to 2 implemented (see each phase's Status block); Phases 3 to 13 pending |
 | Source of truth for | Every implementation phase that follows. Work through phases in order, one per session. |
 
 ---
@@ -389,18 +389,18 @@ Conventions for every phase: work on a feature branch named `phase-NN-short-name
 
 **Scope.**
 
-- [ ] Record the dependency verdicts in this document's changelog and in `README.md`:
+- [x] Record the dependency verdicts in this document's changelog and in `README.md`:
   - **HeroUI: do not adopt.** HeroUI v3.2.5 (2026-09-10) is genuinely built on Tailwind 4 (`peerDependencies.tailwindcss >=4.0.0`, React 19, React Aria Components), so compatibility is not the problem. The problems are: its `@heroui/styles` entry CSS does its own `@import "tailwindcss"` and declares the cascade layer order, so it takes over the project's CSS entry; it ships 178 custom properties with an opinionated look (`rounded-3xl` pill buttons, zinc neutrals, a blue accent, `--radius: 0.5rem`) that has to be fought to get the sharper systems look in Section 3; it keys its own light/dark theming on `.light`, `.dark` and `[data-theme]` selectors that would collide with our theme system; and it requires `react-aria-components` (6.5 MB unpacked) plus five `@react-aria/*` peers, a runtime this site's three or four small interactive pieces do not justify. **Use hand-rolled components with Tailwind, and add Radix primitives only where a React island genuinely needs one** (`@radix-ui/react-dialog` at 99 KB unpacked for a mobile nav sheet or image lightbox; nothing else is expected). Prefer native `<dialog>` and `<details>` inside `.astro` files where no React state exists.
   - **Animation: Motion only, no GSAP.** GSAP 3.15 is free for commercial use including all plugins since Webflow's acquisition, so licensing is not the deciding factor. The deciding factors are surface and shape: this site's animation surface is reveals, hover feedback, one hero SVG, a theme transition and page transitions. Nothing needs pinning, scrubbed timelines, SplitText or morphing. `motion` 13.2 covers all of it, in React islands (`motion/react`: `whileInView`, `useInView`, `useScroll`, `MotionConfig reducedMotion`) and, critically, in plain `.astro` `<script>` tags (`motion`: `animate`, `inView`, `scroll`; `motion/mini` is about 2.5 KB) since most of this site is not React. Running GSAP and ScrollTrigger (roughly 36 KB gzip, imperative) alongside Motion would be two runtimes for one job. Note that Framer Motion is now published as `motion`; the `framer-motion` package name is an alias at the same version. Escalation rule: if a future phase needs scroll-pinned storytelling, add `gsap` and `ScrollTrigger` for that island alone and document why.
-- [ ] Add Prettier with `prettier-plugin-astro` and `prettier-plugin-tailwindcss` (class sorting), an `.editorconfig`, and `npm run format` / `format:check` scripts.
-- [ ] Add ESLint (flat config) with `eslint-plugin-astro`, `@typescript-eslint`, `eslint-plugin-jsx-a11y` for `.tsx`, and `npm run lint`.
-- [ ] Add a GitHub Actions workflow `.github/workflows/ci.yml` that runs `npm ci`, `format:check`, `lint`, `check`, `build` on pull requests.
-- [ ] Decide and record the branch strategy: `main` is deployable; one branch per phase; squash-merge.
-- [ ] Capture the baseline: full-page screenshots of all 8 routes at 390 px and 1440 px, and a Lighthouse run (mobile and desktop) per route against `npm run preview`, saved under `docs/baseline/2026-09-13/`. Record the four scores per route in `docs/baseline/README.md`.
-- [ ] Fix the two broken references so they stop polluting every later measurement: add a temporary 1200x630 `public/og-image.png` (dark canvas, name, title; replaced properly in Phase 11), and replace the 404 Unsplash URL in `linux-hardening-selinux.md` with the same interim image as the other two (replaced properly in Phase 10).
-- [ ] Set `site` to the domain that will actually go live (`https://jlpro-po.com`, pending Open question 1) and align `robots.txt` with it. Note in the PR that the domain is not yet live.
-- [ ] Add `redirects` in `astro.config.mjs` for routes that will be removed or renamed later, so nothing in the current sitemap 404s after Phase 3: `/contact` to `/connect`, `/blog` to `/` (or keep Blog; Open question 8).
-- [ ] Install runtime dependencies for later phases now so the lockfile churn happens once: `motion`, `astro-icon` with `@iconify-json/lucide` and `@iconify-json/simple-icons`. Do not install HeroUI, GSAP, or Radix yet.
+- [x] Add Prettier with `prettier-plugin-astro` and `prettier-plugin-tailwindcss` (class sorting), an `.editorconfig`, and `npm run format` / `format:check` scripts.
+- [x] Add ESLint (flat config) with `eslint-plugin-astro`, `@typescript-eslint`, `eslint-plugin-jsx-a11y` for `.tsx`, and `npm run lint`.
+- [x] Add a GitHub Actions workflow `.github/workflows/ci.yml` that runs `npm ci`, `format:check`, `lint`, `check`, `build` on pull requests.
+- [x] Decide and record the branch strategy: `main` is deployable; one branch per phase; squash-merge.
+- [x] Capture the baseline: full-page screenshots of all 8 routes at 390 px and 1440 px, and a Lighthouse run (mobile and desktop) per route against `npm run preview`, saved under `docs/baseline/2026-09-13/`. Record the four scores per route in `docs/baseline/README.md`.
+- [x] Fix the two broken references so they stop polluting every later measurement: add a temporary 1200x630 `public/og-image.png` (dark canvas, name, title; replaced properly in Phase 11), and replace the 404 Unsplash URL in `linux-hardening-selinux.md` with the same interim image as the other two (replaced properly in Phase 10).
+- [x] Set `site` to the domain that will actually go live (`https://jlpro-po.com`, pending Open question 1) and align `robots.txt` with it. Note in the PR that the domain is not yet live.
+- [ ] Add `redirects` in `astro.config.mjs` for routes that will be removed or renamed later, so nothing in the current sitemap 404s after Phase 3: `/contact` to `/connect`, `/blog` to `/` (or keep Blog; Open question 8). **Deferred to Phase 3**: a redirect to `/connect` before that route exists would send visitors to a 404, and `/blog` is still an open question.
+- [x] Install runtime dependencies for later phases now so the lockfile churn happens once: `motion`, `astro-icon` with `@iconify-json/lucide` and `@iconify-json/simple-icons`. Do not install HeroUI, GSAP, or Radix yet.
 
 **Files created or modified.** `package.json`, `package-lock.json`, `.prettierrc`, `.prettierignore`, `eslint.config.js`, `.editorconfig`, `.github/workflows/ci.yml`, `docs/baseline/**`, `public/og-image.png` (interim), `public/robots.txt`, `astro.config.mjs`, `README.md`, `src/pages/projects/linux-hardening-selinux.md` (one URL).
 
@@ -420,6 +420,16 @@ Conventions for every phase: work on a feature branch named `phase-NN-short-name
 
 **Rough effort.** 3 to 4 hours.
 
+**Status (2026-09-14): done, commit `0a1bc3e` on branch `phase-0-2-foundation`.**
+
+- Delivered as specified except the redirects (deferred to Phase 3, see the scope item).
+- Tooling versions: Prettier 3.9.6 with `prettier-plugin-astro` 1.0.0 and `prettier-plugin-tailwindcss` 0.8.1; ESLint 9.39.5 (flat config via `defineConfig`) with `typescript-eslint` 8.70.0, `eslint-plugin-astro` 1.7.0, `eslint-plugin-jsx-a11y` 6.10.2. ESLint is pinned to 9.x because `eslint-plugin-jsx-a11y` has not declared ESLint 10 support while `eslint-plugin-astro` 2.x and 3.x require ESLint 10; revisit when jsx-a11y updates.
+- Baseline captured against `astro preview` at commit `0335166`: 16 full-page screenshots and 16 Lighthouse reports under `docs/baseline/2026-09-13/`, scores tabulated in `docs/baseline/README.md`. Headline numbers: Home 78 (mobile) / 86 (desktop) Performance; the enterprise builds case study 58 on mobile with an 11.0 s LCP from the 1.9 MB hero image; `/book` 77 Best Practices (Calendly third-party cookies); everything else 95 to 100 on Accessibility, Best Practices and SEO.
+- `scripts/baseline.mjs` (`npm run baseline`) reproduces the screenshots with `playwright-core` driving the installed Chrome; the Lighthouse commands are recorded in `docs/baseline/README.md`.
+- Interim `public/og-image.png` (1200x630, 35 KB) generated with the project's own `sharp`; the dead Unsplash URL on the SELinux case study now reuses the working TLS case-study image.
+- `.gitattributes` pins LF line endings (added in the Phase 1 commit) because the machine's `core.autocrlf` was converting Prettier's LF output on every touch.
+- Acceptance: `format:check`, `lint`, `check`, `build` all exit 0 locally; CI runs on the first push. `og-image.png` is served (200) by the preview build.
+
 ### Phase 1: Design system foundation
 
 **Goal.** Encode Section 3 as tokens and primitives so every later phase composes rather than invents.
@@ -428,13 +438,13 @@ Conventions for every phase: work on a feature branch named `phase-NN-short-name
 
 **Scope.**
 
-- [ ] Create `src/styles/tokens.css`: raw palette variables on `:root` (light) and `:root[data-theme="dark"]` (dark), radius, shadow, duration and easing variables, and `color-scheme: light` / `dark` per theme so native controls and scrollbars follow.
-- [ ] Rewrite `src/styles/global.css`: `@import "tailwindcss"`, `@import "./tokens.css"`, `@plugin "@tailwindcss/typography"`, an `@theme inline { ... }` block mapping every semantic token to a Tailwind namespace (`--color-*`, `--radius-*`, `--shadow-*`, `--font-sans`, `--font-mono`, `--ease-*`), `@custom-variant dark (&:where([data-theme=dark], [data-theme=dark] *))`, a global `:focus-visible` rule, the reduced-motion rule, `body { background: var(--color-canvas); color: var(--color-fg) }`, and selection color. Delete the four dead variables, the duplicate body background, the `.project-hero` rule and the `!important` mobile overrides.
-- [ ] Configure the Fonts API in `astro.config.mjs` for IBM Plex Sans (400, 500, 600) and IBM Plex Mono (400, 500) with `cssVariable` values `--font-sans` and `--font-mono`, and size-adjusted fallbacks. Remove the Google Fonts `<link>` tags and the `<style is:global>` font block from `BaseLayout.astro`.
-- [ ] Add a typography layer in `src/styles/typography.css`: the fluid scale from 3.3 as utility classes (`.text-display`, `.text-h1`, `.text-h2`, `.text-h3`, `.text-lead`, `.text-mono-label`, `.text-mono-meta`) and a `prose` theme override so Markdown case studies inherit tokens (`--tw-prose-body: var(--color-fg)` and so on, including dark code blocks in both themes).
-- [ ] Build the primitive components in `src/components/ui/`, all `.astro`, all token-driven, all with focus styles: `Button.astro` (variants primary, secondary, ghost; sizes sm, md, lg; renders `<a>` or `<button>`), `Eyebrow.astro` (mono label with optional index like `01 /`), `SectionHeader.astro` (eyebrow, h2, optional lead), `Card.astro` (surface, line border, optional hover lift), `Tag.astro` (stack chip, mono, radius-xs), `StatusPill.astro` (dot plus label, ok/warn/neutral), `Container.astro` (max-width and gutters), `Section.astro` (vertical rhythm, optional `tone="surface"`), `Icon.astro` (thin wrapper around `astro-icon` with size and `aria-hidden` defaults), `Stat.astro` (mono numeral, label).
-- [ ] Add a `/design` page (excluded from the sitemap and `noindex`) that renders every token swatch, the type scale, and every primitive in both themes side by side. This is the review surface for the phase and the regression page for every later one.
-- [ ] Rename `src/data/profile.ts` to `src/data/site.ts`; add `calendly: { discovery: { url, minutes: 30, price: 0 }, working: { url, minutes: 60, price: 100 } }`, `nav`, `domain`, and `brand` (name, tagline) fields; keep the existing exports. Remove the em-dashes from company strings.
+- [x] Create `src/styles/tokens.css`: raw palette variables on `:root` (light) and `:root[data-theme="dark"]` (dark), radius, shadow, duration and easing variables, and `color-scheme: light` / `dark` per theme so native controls and scrollbars follow.
+- [x] Rewrite `src/styles/global.css`: `@import "tailwindcss"`, `@import "./tokens.css"`, `@plugin "@tailwindcss/typography"`, an `@theme inline { ... }` block mapping every semantic token to a Tailwind namespace (`--color-*`, `--radius-*`, `--shadow-*`, `--font-sans`, `--font-mono`, `--ease-*`), `@custom-variant dark (&:where([data-theme=dark], [data-theme=dark] *))`, a global `:focus-visible` rule, the reduced-motion rule, `body { background: var(--color-canvas); color: var(--color-fg) }`, and selection color. Delete the four dead variables, the duplicate body background, the `.project-hero` rule and the `!important` mobile overrides.
+- [x] Configure the Fonts API in `astro.config.mjs` for IBM Plex Sans (400, 500, 600) and IBM Plex Mono (400, 500) with `cssVariable` values `--font-sans` and `--font-mono`, and size-adjusted fallbacks. Remove the Google Fonts `<link>` tags and the `<style is:global>` font block from `BaseLayout.astro`.
+- [x] Add a typography layer in `src/styles/typography.css`: the fluid scale from 3.3 as utility classes (`.text-display`, `.text-h1`, `.text-h2`, `.text-h3`, `.text-lead`, `.text-mono-label`, `.text-mono-meta`) and a `prose` theme override so Markdown case studies inherit tokens (`--tw-prose-body: var(--color-fg)` and so on, including dark code blocks in both themes).
+- [x] Build the primitive components in `src/components/ui/`, all `.astro`, all token-driven, all with focus styles: `Button.astro` (variants primary, secondary, ghost; sizes sm, md, lg; renders `<a>` or `<button>`), `Eyebrow.astro` (mono label with optional index like `01 /`), `SectionHeader.astro` (eyebrow, h2, optional lead), `Card.astro` (surface, line border, optional hover lift), `Tag.astro` (stack chip, mono, radius-xs), `StatusPill.astro` (dot plus label, ok/warn/neutral), `Container.astro` (max-width and gutters), `Section.astro` (vertical rhythm, optional `tone="surface"`), `Icon.astro` (thin wrapper around `astro-icon` with size and `aria-hidden` defaults), `Stat.astro` (mono numeral, label).
+- [x] Add a `/design` page (excluded from the sitemap and `noindex`) that renders every token swatch, the type scale, and every primitive in both themes side by side. This is the review surface for the phase and the regression page for every later one.
+- [x] Rename `src/data/profile.ts` to `src/data/site.ts`; add `calendly: { discovery: { url, minutes: 30, price: 0 }, working: { url, minutes: 60, price: 100 } }`, `nav`, `domain`, and `brand` (name, tagline) fields; keep the existing exports. Remove the em-dashes from company strings.
 
 **Files created or modified.** `src/styles/tokens.css` (new), `src/styles/global.css`, `src/styles/typography.css` (new), `astro.config.mjs` (fonts), `src/layouts/BaseLayout.astro` (fonts only), `src/components/ui/*.astro` (new, ~10 files), `src/pages/design.astro` (new), `src/data/site.ts` (renamed from `profile.ts`, all imports updated).
 
@@ -456,6 +466,20 @@ Conventions for every phase: work on a feature branch named `phase-NN-short-name
 
 **Rough effort.** 6 to 8 hours (one full day).
 
+**Status (2026-09-14): done, commit `bfb62b7`.**
+
+- Tokens use CSS `light-dark()` instead of two selector blocks: each color token carries both values and the element's `color-scheme` picks one. `data-theme` on `<html>` pins `color-scheme`; with no attribute (JavaScript disabled) the OS preference decides automatically. A theme-invariant surface (code blocks, the image-backed case-study hero) sets `color-scheme: dark` on itself and every token inside flips. The `/design` page uses the same mechanism to render both themes side by side.
+- Fonts API `cssVariable` values are `--font-plex-sans` and `--font-plex-mono` (not `--font-sans` / `--font-mono` as the scope item said), because Tailwind's own `--font-sans` and `--font-mono` theme keys would otherwise be circular; `@theme inline` maps one to the other. The build fetched a variable Plex Sans (40 KB) plus two Plex Mono weights (10 KB each): 60 KB total against 89 KB from Google Fonts before, with size-adjusted fallbacks and a preload for the sans face.
+- Type scale is registered under Tailwind's `--text-*` namespace (`text-display`, `text-h1`, `text-mono-label`, ...) so each size carries its line-height, tracking and weight, rather than as hand-written utility classes.
+- Radius and shadow tokens live in `@theme` in `global.css` (static values) rather than in `tokens.css`, to avoid a naming collision with Tailwind's `--radius-*` and `--shadow-*` keys. Shadows dissolve in dark mode through `light-dark(rgb(...), transparent)` on the shadow color.
+- Polymorphic primitives take `element="li"` rather than `as="li"`: a `Props` interface with a property named `as` breaks the Astro compiler's Props detection (the frontmatter is parsed as TypeScript, where `as` is a keyword), surfacing as "Props is declared but never used" and `any` errors in `astro check`.
+- Ten primitives in `src/components/ui/`; `Button` marks external links with `target`, `rel` and a visually hidden "(opens in a new tab)".
+- `/design` measures contrast in the browser from computed colors: all 17 pairs pass AA in both themes (lowest: `fg-faint` on `surface` in dark at 4.71:1; `ok` on `canvas` in light at 4.72:1). Dark `fg-faint` was lifted from the proposed `#6B7A93` (4.3:1) to `#7686A0` (5.07:1) as a result.
+- Addition beyond the plan: an interim, mechanical token migration of the legacy pages, layouts, `Nav`, `Footer` and `TechOrbit` (46 palette utilities and 2 hex values mapped to semantic tokens; `prose-invert` and `prose-*:` modifiers dropped; `.project-hero` moved into `ProjectLayout` as a scoped rule using the scrim token). Without it, the Phase 2 toggle would have produced white text on an off-white canvas on every existing page. These pages are still rebuilt in Phases 3 to 8; the migration only makes them theme-correct in the meantime. The `/book` legal text was bumped from 10 px to the `small` size while passing through (the 2.77:1 failure from the audit).
+- `astro-icon` is integrated now (the plan had it in Phase 3) because `Icon.astro` is a Phase 1 primitive; the glyph allowlist lives in `astro.config.mjs`.
+- `site.ts` holds `site.name`, `role`, `company`, `domain`, `url`, `wordmark`, `nav`, `social`, `calendly.discovery` / `calendly.working` (URL, minutes, price, summary) and `themeStorageKey`; the old `profile`, `certifications`, `skillGroups`, `experience` and `education` exports remain for the legacy pages, with the two em-dash company strings split into `company` plus `note`.
+- Acceptance: no `bg-[#`, `slate`, `sky`, `cyan`, `lime` or `emerald` utilities remain anywhere under `src/components` or `src/pages` (stricter than the criterion, which only covered `ui/` and `styles/`); no request to `fonts.googleapis.com` or `fonts.gstatic.com` in the build; CSS is 10.3 KB gzip (budget 15 KB); `astro check` reports 0 errors, 0 warnings, 0 hints.
+
 ### Phase 2: Theme system
 
 **Goal.** Ship the light-bulb toggle with correct precedence, no flash of the wrong theme, persistence, and stability across view transitions.
@@ -472,15 +496,15 @@ Interpretation note for the client: browsers cannot distinguish "the OS says lig
 
 **Scope.**
 
-- [ ] Write `src/scripts/theme.ts` exporting `resolveTheme()` (the precedence rule), `applyTheme(theme)` (sets `data-theme` on `<html>`, updates `<meta name="theme-color">`, and toggles `color-scheme`), `setManualTheme(theme)` and `clearManualTheme()`.
-- [ ] Inline the resolver into `<head>` in `BaseLayout.astro` as a `<script is:inline>` (a minified copy of `resolveTheme` + `applyTheme`, under 600 bytes) placed before any stylesheet, so the first paint is already correct. Wrap `localStorage` access in `try/catch` for private mode.
-- [ ] Re-apply on `astro:after-swap`: Astro's `swapRootAttributes` replaces every attribute on `<html>` during a view transition, which would drop `data-theme`. Listening to `astro:after-swap` (fires before the new page paints) keeps the theme stable. Also re-apply on `astro:page-load` for safety.
-- [ ] Listen to the `prefers-color-scheme` media query `change` event and to `storage` events so two tabs stay in sync and OS switches are reflected when there is no manual override.
-- [ ] Build `src/components/shell/ThemeToggle.astro`: a `<button type="button">` with `aria-label="Switch to light mode"` / `"Switch to dark mode"` (updated on toggle), `aria-pressed` reflecting dark, an inline SVG light bulb whose filament and glow are driven by `[data-theme="dark"]` selectors (bulb off in dark, on in light), and a small vanilla `<script>` that calls `setManualTheme`. No React: the toggle must work before any island hydrates and it has no state beyond the attribute.
-- [ ] Theme transition: on toggle, add `.theme-transition` to `<html>` (which enables the 250 ms color transitions from Section 3.5), remove it after `transitionend` or 300 ms. Do not leave global transitions on permanently.
-- [ ] Add a "Reset to automatic" text button in the footer (calls `clearManualTheme`), visible only when a manual choice is stored, so the visitor can return to system/time-of-day behavior.
-- [ ] Two `<meta name="theme-color">` tags with `media="(prefers-color-scheme: ...)"` for the no-JS case, plus the script-driven update for the manual case.
-- [ ] Document the rule and the storage key in `README.md`.
+- [x] Write `src/scripts/theme.ts` exporting `resolveTheme()` (the precedence rule), `applyTheme(theme)` (sets `data-theme` on `<html>`, updates `<meta name="theme-color">`, and toggles `color-scheme`), `setManualTheme(theme)` and `clearManualTheme()`.
+- [x] Inline the resolver into `<head>` in `BaseLayout.astro` as a `<script is:inline>` (a minified copy of `resolveTheme` + `applyTheme`, under 600 bytes) placed before any stylesheet, so the first paint is already correct. Wrap `localStorage` access in `try/catch` for private mode.
+- [x] Re-apply on `astro:after-swap`: Astro's `swapRootAttributes` replaces every attribute on `<html>` during a view transition, which would drop `data-theme`. Listening to `astro:after-swap` (fires before the new page paints) keeps the theme stable. Also re-apply on `astro:page-load` for safety.
+- [x] Listen to the `prefers-color-scheme` media query `change` event and to `storage` events so two tabs stay in sync and OS switches are reflected when there is no manual override.
+- [x] Build `src/components/shell/ThemeToggle.astro`: a `<button type="button">` with `aria-label="Switch to light mode"` / `"Switch to dark mode"` (updated on toggle), `aria-pressed` reflecting dark, an inline SVG light bulb whose filament and glow are driven by `[data-theme="dark"]` selectors (bulb off in dark, on in light), and a small vanilla `<script>` that calls `setManualTheme`. No React: the toggle must work before any island hydrates and it has no state beyond the attribute.
+- [x] Theme transition: on toggle, add `.theme-transition` to `<html>` (which enables the 250 ms color transitions from Section 3.5), remove it after `transitionend` or 300 ms. Do not leave global transitions on permanently.
+- [x] Add a "Reset to automatic" text button in the footer (calls `clearManualTheme`), visible only when a manual choice is stored, so the visitor can return to system/time-of-day behavior.
+- [x] Two `<meta name="theme-color">` tags with `media="(prefers-color-scheme: ...)"` for the no-JS case, plus the script-driven update for the manual case.
+- [x] Document the rule and the storage key in `README.md`.
 
 **Files created or modified.** `src/scripts/theme.ts` (new), `src/layouts/BaseLayout.astro`, `src/components/shell/ThemeToggle.astro` (new), `src/components/shell/Footer.astro` (reset control; the footer itself is rebuilt in Phase 3), `README.md`.
 
@@ -503,6 +527,16 @@ Interpretation note for the client: browsers cannot distinguish "the OS says lig
 
 **Rough effort.** 4 to 6 hours.
 
+**Status (2026-09-14): done, commit `62e8be6`.**
+
+- `src/scripts/theme.ts` exports `resolveTheme`, `currentTheme`, `applyTheme`, `setManualTheme`, `clearManualTheme`, `toggleTheme`, `timeOfDayTheme` and `initThemeSync`. Sync covers the OS `prefers-color-scheme` change event, cross-tab `storage` events, `astro:after-swap`, and a once-a-minute clock check so a page left open crosses 07:00 or 19:00 correctly when neither a manual choice nor an OS dark preference is in force.
+- The inline bootstrap is a separate plain-JavaScript file, `src/scripts/theme-init.js`, imported with `?raw` and minified with esbuild in the layout frontmatter at build time: 536 bytes inlined, placed in `<head>` after the `theme-color` metas and before every stylesheet. It re-runs on `astro:after-swap`.
+- The theme transition is a `theme-transition` class on `<html>` held for 320 ms; the module skips it under `prefers-reduced-motion`.
+- Toggle semantics differ slightly from the scope text: the accessible name is a stable "Dark mode" and `aria-pressed` carries the state, which is the WAI-ARIA toggle-button pattern (a changing label plus `aria-pressed` reads as "Switch to light mode, pressed" and is confusing). The `title` still says "Switch between light and dark mode". Bulb lit (amber filament and soft glow) in light mode, off in dark. The toggle sits at the right of the current header and moves into the rebuilt header in Phase 3.
+- "Reset theme to automatic" is a mono text button in the footer, `hidden` unless a manual choice is stored, updated through a `jl:themechange` event that `applyTheme` dispatches.
+- Verification is automated: `scripts/theme-check.mjs` (`npm run theme:check`) drives the preview build in headless Chrome and asserts 29 checks, all passing: the seven precedence cases (OS dark at 10:00; OS light at 10:00, 20:00, 06:00 and 07:00; manual light over OS dark; manual dark over OS light at noon), the attribute present at `DOMContentLoaded` with the correct computed body background (no flash), toggle within 300 ms (measured 144 to 221 ms), persistence across reload and routes, reset behavior, keyboard operation with the 2 px focus ring, no-JS rendering in both OS schemes with the toggle hidden, no transition class under reduced motion, and a clean console on every route in both themes. The DevTools 6x-throttle recording in the acceptance criteria was replaced by this check because it is repeatable.
+- The "across a view-transition navigation" criterion cannot be exercised until Phase 3 adds `ClientRouter`; the `astro:after-swap` listener is in place in both the inline bootstrap and the module, and Phase 3 should run `npm run theme:check` again after wiring the router.
+
 ### Phase 3: Global shell
 
 **Goal.** Rebuild the header, footer and page frame on the token system, and make navigation feel like one continuous app across routes.
@@ -511,8 +545,8 @@ Interpretation note for the client: browsers cannot distinguish "the OS says lig
 
 **Scope.**
 
-- [ ] New IA and routes, matching the brief's five sections: `/` Home, `/about`, `/education`, `/projects` (+ `/projects/[slug]`), `/connect`. Keep `/book` as a deep-linkable page for the Book a Call block (Phase 4). Redirects (from Phase 0): `/contact` to `/connect`; `/blog` per Open question 8.
-- [ ] `src/components/shell/Header.astro`: sticky, `backdrop-blur`, canvas at 85% opacity, hairline bottom border; left: wordmark in mono (`jimmy.lubega` with a subtle accent `~` or `>` prefix; no infinite blinking cursor); center/right: the five links with `aria-current`; far right: the ThemeToggle. Below `md`, links collapse into a menu button that opens a native `<dialog>` sheet (full-height, focus-trapped by the dialog element, `Esc` closes, links close on click). No React.
+- [ ] New IA and routes, matching the brief's five sections: `/` Home, `/about`, `/education`, `/projects` (+ `/projects/[slug]`), `/connect`. Keep `/book` as a deep-linkable page for the Book a Call block (Phase 4). Add the redirects deferred from Phase 0 in `astro.config.mjs`: `/contact` to `/connect`; `/blog` per Open question 8.
+- [ ] `src/components/shell/Header.astro`: sticky, `backdrop-blur`, canvas at 85% opacity, hairline bottom border; left: wordmark in mono (`jimmy.lubega` with a subtle accent `~` or `>` prefix; no infinite blinking cursor); center/right: the five links with `aria-current`; far right: the ThemeToggle from Phase 2 (`src/components/shell/ThemeToggle.astro`, currently mounted in the legacy `Nav.astro`). Below `md`, links collapse into a menu button that opens a native `<dialog>` sheet (full-height, focus-trapped by the dialog element, `Esc` closes, links close on click). No React.
 - [ ] `src/components/shell/Footer.astro`: three columns at `md` (identity and one-line positioning; section links; LinkedIn and GitHub with `simple-icons` glyphs), a bottom row with copyright (`purenest360 llc`), "Reset to automatic" theme control, and a `status: operational` mono line with a green dot as a quiet brand touch.
 - [ ] `BaseLayout.astro`: `<ClientRouter />` from `astro:transitions`; `transition:persist` on the header and the theme toggle; `transition:name="main"` on `<main>` with the built-in `fade` at 200 ms; `<SkipLink />`; slot for per-page `<head>` extras; the Phase 2 theme script; cleaned meta (drop `keywords`, `service`, `category`, `profile:*`); `Seo.astro` and `JsonLd.astro` extracted into `src/components/seo/` with props for title, description, type (`website` or `article`), image and published date.
 - [ ] Custom `src/pages/404.astro`: mono `404: route not found`, a short line, links to Home and Projects.
@@ -971,6 +1005,7 @@ These block specific phases and can only come from Jimmy.
 
 ## Changelog
 
-| Version | Date       | Author                         | Change                                                                   |
-| ------- | ---------- | ------------------------------ | ------------------------------------------------------------------------ |
-| 1.0     | 2026-09-13 | Jonathan Mukhobe (with Claude) | Initial audit, design direction and phased plan against commit `0335166` |
+| Version | Date       | Author                         | Change                                                                                                                                                                                    |
+| ------- | ---------- | ------------------------------ | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 1.0     | 2026-09-13 | Jonathan Mukhobe (with Claude) | Initial audit, design direction and phased plan against commit `0335166`                                                                                                                  |
+| 1.1     | 2026-09-14 | Jonathan Mukhobe (with Claude) | Phases 0, 1 and 2 implemented on branch `phase-0-2-foundation` (commits `0a1bc3e`, `bfb62b7`, `62e8be6`); status blocks added to each with deviations; Phase 0 redirects moved to Phase 3 |
