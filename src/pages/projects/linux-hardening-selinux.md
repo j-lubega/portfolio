@@ -1,10 +1,10 @@
 ---
 layout: ../../layouts/ProjectLayout.astro
-title: "Linux Server Hardening & SELinux Operations"
-description: "Hardened enterprise Linux servers, managed patching and services, and supported Posit Team workloads across enforcing, permissive, and disabled SELinux modes."
-status: "Completed & Operational"
-stack: ["RHEL", "Rocky Linux", "SELinux", "Systemd", "Patching", "Posit Team"]
-heroImage: "https://images.unsplash.com/photo-1563770660941-10a9e5b1a1ef?auto=format&fit=crop&w=2400&q=90"
+title: 'Linux Server Hardening & SELinux Operations'
+description: 'Hardened enterprise Linux servers, managed patching and services, and supported Posit Team workloads across enforcing, permissive, and disabled SELinux modes.'
+status: 'Completed & Operational'
+stack: ['RHEL', 'Rocky Linux', 'SELinux', 'Systemd', 'Patching', 'Posit Team']
+heroImage: 'https://images.unsplash.com/photo-1563013544-824ae1b704d3?auto=format&fit=crop&w=2400&q=90'
 ---
 
 ## Overview

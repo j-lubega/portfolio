@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://jimmylubega.com/sitemap-index.xml
+Sitemap: https://jlpro-po.com/sitemap-index.xml
