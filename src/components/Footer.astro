@@ -23,5 +23,32 @@ import { profile } from '../data/site';
       </a>
     </div>
     <p>© 2026 purenest360 llc - All rights reserved.</p>
+    <button
+      type="button"
+      data-theme-reset
+      hidden
+      class="text-mono-meta hover:text-accent rounded-xs font-mono underline-offset-4 hover:underline"
+    >
+      Reset theme to automatic
+    </button>
   </div>
 </footer>
+
+<script>
+  import { clearManualTheme, getManualTheme } from '../scripts/theme';
+
+  const buttons = () => document.querySelectorAll<HTMLButtonElement>('[data-theme-reset]');
+  const sync = () => buttons().forEach((button) => (button.hidden = getManualTheme() === null));
+  const init = () => {
+    buttons().forEach((button) => {
+      if (button.dataset.bound) return;
+      button.dataset.bound = 'true';
+      button.addEventListener('click', clearManualTheme);
+    });
+    sync();
+  };
+
+  init();
+  document.addEventListener('astro:page-load', init);
+  window.addEventListener('jl:themechange', sync);
+</script>

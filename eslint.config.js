@@ -30,9 +30,10 @@ export default defineConfig(
     },
   },
   {
+    // Node scripts; the Playwright ones also run code inside the page (page.evaluate).
     files: ['scripts/**/*.mjs', '*.config.{js,mjs}'],
     languageOptions: {
-      globals: { ...globals.node },
+      globals: { ...globals.node, ...globals.browser },
     },
   },
   {

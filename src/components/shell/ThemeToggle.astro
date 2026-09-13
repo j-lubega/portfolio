@@ -1,0 +1,90 @@
+---
+/**
+ * Light-bulb theme toggle. Bulb lit = light mode, bulb off = dark mode.
+ * A toggle button: the accessible name stays "Dark mode" and aria-pressed carries the state.
+ * No React: it must work before any island hydrates and has no state beyond the attribute.
+ */
+interface Props {
+  class?: string;
+}
+const { class: className } = Astro.props;
+---
+
+<button
+  type="button"
+  class:list={[
+    'theme-toggle text-fg-muted hover:text-accent hover:bg-accent-soft inline-flex size-10 items-center justify-center rounded-sm transition-[color,background-color] duration-(--dur-fast) ease-(--ease-out)',
+    className,
+  ]}
+  data-theme-toggle
+  aria-pressed="false"
+  aria-label="Dark mode"
+  title="Switch between light and dark mode"
+>
+  <svg
+    class="bulb size-5"
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    stroke-width="1.75"
+    stroke-linecap="round"
+    stroke-linejoin="round"
+    aria-hidden="true"
+  >
+    <circle class="bulb-glow" cx="12" cy="9" r="7.5" fill="currentColor" stroke="none"></circle>
+    <path d="M15 14c.2-1 .7-1.7 1.5-2.5 1-.9 1.5-2.2 1.5-3.5A6 6 0 0 0 6 8c0 1.3.5 2.6 1.5 3.5.7.7 1.3 1.5 1.5 2.5"></path>
+    <path class="bulb-filament" d="M10 9.5c.4-1 .8-1.5 2-1.5s1.6.5 2 1.5"></path>
+    <path d="M9 18h6"></path>
+    <path d="M10 22h4"></path>
+  </svg>
+</button>
+
+<style>
+  .bulb-glow {
+    opacity: 0;
+    color: var(--warn);
+    transition: opacity var(--dur-base) var(--ease-out);
+  }
+  .bulb-filament {
+    opacity: 0;
+    color: var(--warn);
+    transition: opacity var(--dur-base) var(--ease-out);
+  }
+  :root[data-theme='light'] .bulb-glow {
+    opacity: 0.22;
+  }
+  :root[data-theme='light'] .bulb-filament {
+    opacity: 1;
+  }
+  .bulb {
+    transition: transform var(--dur-base) var(--ease-out);
+  }
+  .theme-toggle:active .bulb {
+    transform: rotate(-8deg);
+  }
+</style>
+
+<script>
+  import { toggleTheme, currentTheme, initThemeSync } from '../../scripts/theme';
+
+  const buttons = () => document.querySelectorAll<HTMLButtonElement>('[data-theme-toggle]');
+
+  const sync = () => {
+    const dark = currentTheme() === 'dark';
+    buttons().forEach((button) => button.setAttribute('aria-pressed', String(dark)));
+  };
+
+  const init = () => {
+    initThemeSync();
+    buttons().forEach((button) => {
+      if (button.dataset.bound) return;
+      button.dataset.bound = 'true';
+      button.addEventListener('click', toggleTheme);
+    });
+    sync();
+  };
+
+  init();
+  document.addEventListener('astro:page-load', init);
+  window.addEventListener('jl:themechange', sync);
+</script>

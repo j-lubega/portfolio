@@ -4,6 +4,11 @@ import { Font } from 'astro:assets';
 import Nav from '../components/Nav.astro';
 import Footer from '../components/Footer.astro';
 import { site } from '../data/site';
+import { transformSync } from 'esbuild';
+import themeInitSource from '../scripts/theme-init.js?raw';
+
+// Minified at build time so the inline bootstrap stays tiny; runs before first paint.
+const themeInit = transformSync(themeInitSource, { minify: true }).code;
 
 interface Props {
   title: string;
@@ -60,6 +65,16 @@ const structuredData = {
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" media="(prefers-color-scheme: light)" content="#f7f8fa" />
+    <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#0b1220" />
+    <script is:inline set:html={themeInit}></script>
+    <noscript>
+      <style>
+        .theme-toggle {
+          display: none;
+        }
+      </style>
+    </noscript>
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <link rel="canonical" href={canonicalURL} />
     <meta name="generator" content={Astro.generator} />
@@ -71,7 +86,6 @@ const structuredData = {
     <meta name="author" content="Jimmy" />
     <meta name="robots" content={noindex ? 'noindex, nofollow' : 'index, follow'} />
     <meta name="keywords" content={keywords} />
-    <meta name="theme-color" content="#0b5cab" />
     <meta name="category" content="Technical consulting and platform engineering" />
     <meta
       name="service"
