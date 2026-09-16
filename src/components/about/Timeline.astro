@@ -1,0 +1,69 @@
+---
+/**
+ * Experience as a vertical rail. Each role is a <details>; the first is open.
+ * Native disclosure, so the page ships no JavaScript for this.
+ */
+import { experience } from '../../data/site';
+import Container from '../ui/Container.astro';
+import Section from '../ui/Section.astro';
+import SectionHeader from '../ui/SectionHeader.astro';
+import Icon from '../ui/Icon.astro';
+---
+
+<Section labelledby="experience-title">
+  <Container>
+    <SectionHeader
+      eyebrow="experience"
+      index="02"
+      title="Where I have worked"
+      id="experience-title"
+    >
+      Eleven years across enterprise Linux, cloud platforms and production support. Open a role for
+      the detail.
+    </SectionHeader>
+
+    <ol data-reveal-group class="border-line mt-12 border-l">
+      {experience.map((entry, index) => (
+        <li class="relative pb-10 pl-8 last:pb-0 md:pl-12">
+          <span
+            class:list={[
+              'absolute top-2.5 -left-[5px] size-2.5 rounded-full border-2',
+              index === 0 ? 'border-accent bg-accent' : 'border-line-strong bg-canvas',
+            ]}
+            aria-hidden="true"
+          />
+          <details class="group" open={index === 0}>
+            <summary class="hover:text-accent flex cursor-pointer list-none flex-col gap-1 rounded-xs [&::-webkit-details-marker]:hidden">
+              <span class="text-mono-meta text-fg-faint tabular font-mono">
+                {entry.dates} · {entry.location}
+              </span>
+              <span class="flex items-center gap-3">
+                <span class="text-h3 text-fg">{entry.role}</span>
+                <Icon
+                  name="lucide:arrow-right"
+                  size={16}
+                  class="text-fg-faint shrink-0 transition-transform duration-(--dur-fast) group-open:rotate-90"
+                />
+              </span>
+              <span class="text-fg-muted">
+                {entry.company}
+                {entry.note && <span class="text-fg-faint"> ({entry.note})</span>}
+              </span>
+            </summary>
+            <ul class="text-small text-fg-muted mt-4 flex max-w-2xl flex-col gap-2">
+              {entry.bullets.map((bullet) => (
+                <li class="flex gap-3">
+                  <span
+                    class="bg-line-strong mt-2.5 size-1 shrink-0 rounded-full"
+                    aria-hidden="true"
+                  />
+                  <span>{bullet}</span>
+                </li>
+              ))}
+            </ul>
+          </details>
+        </li>
+      ))}
+    </ol>
+  </Container>
+</Section>

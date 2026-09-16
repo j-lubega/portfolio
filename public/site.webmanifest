@@ -1,0 +1,13 @@
+{
+  "name": "Jimmy Lubega, Technical Consultant and Platform Engineer",
+  "short_name": "Jimmy Lubega",
+  "description": "Cloud infrastructure, Linux, automation and Kubernetes consulting.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#0b1220",
+  "theme_color": "#0b1220",
+  "icons": [
+    { "src": "/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" }
+  ]
+}

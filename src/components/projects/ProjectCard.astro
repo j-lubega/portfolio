@@ -1,0 +1,136 @@
+---
+/**
+ * Project card: cover image under the scrim, status, title, summary, stack, period, one metric.
+ * The whole card is the link and the title is its accessible name. Image-backed surfaces are
+ * theme-invariant (color-scheme: dark), so text over the photo is always light.
+ * Without a cover, a dotted-grid fallback keeps the same treatment.
+ */
+import { Picture } from 'astro:assets';
+import type { CollectionEntry } from 'astro:content';
+import Tag from '../ui/Tag.astro';
+import StatusPill from '../ui/StatusPill.astro';
+import { resolveCover } from '../../lib/media';
+
+interface Props {
+  project: CollectionEntry<'projects'>;
+  /** Image sizes hint for the grid this card sits in. */
+  sizes?: string;
+  eager?: boolean;
+  /** h2 on index pages (directly under the h1), h3 inside a section with its own h2. */
+  level?: 'h2' | 'h3';
+}
+const {
+  project,
+  sizes = '(min-width: 1280px) 33vw, (min-width: 768px) 50vw, 100vw',
+  eager = false,
+  level = 'h3',
+} = Astro.props;
+const Heading = level;
+const { data } = project;
+const href = `/projects/${project.id}`;
+const titleId = `project-${project.id}-title`;
+const period = data.period
+  ? `${data.period.start} to ${data.period.end}`
+  : data.status === 'ongoing'
+    ? 'ongoing'
+    : undefined;
+const metric = data.metrics[0];
+const cover = resolveCover(project.id, data.cover);
+---
+
+<a
+  href={href}
+  class="project-card group border-line hover:border-line-strong focus-visible:border-accent relative flex min-h-[22rem] flex-col justify-end overflow-hidden rounded-md border transition-[border-color,box-shadow] duration-(--dur-fast) ease-(--ease-out) hover:shadow-2"
+  style="color-scheme: dark"
+>
+  <div class="absolute inset-0" aria-hidden="true">
+    {cover ? (
+      <Picture
+        src={cover}
+        alt=""
+        formats={['avif', 'webp']}
+        widths={[640, 1024, 1600]}
+        sizes={sizes}
+        loading={eager ? 'eager' : 'lazy'}
+        decoding="async"
+        pictureAttributes={{ class: 'block h-full w-full' }}
+        transition:name={`project-cover-${project.id}`}
+        class="project-card__cover h-full w-full object-cover transition-transform duration-(--dur-slow) ease-(--ease-out) group-hover:scale-[1.03]"
+      />
+    ) : (
+      <div
+        transition:name={`project-cover-${project.id}`}
+        class="project-card__fallback h-full w-full"
+      />
+    )}
+    <div class="project-card__scrim absolute inset-0 transition-opacity duration-(--dur-fast) ease-(--ease-out) group-hover:opacity-[0.94] group-focus-visible:opacity-[0.94]"></div>
+    <div class="grain"></div>
+  </div>
+
+  <div class="relative flex flex-col gap-3 p-6">
+    {/* Title first in DOM order so the link's accessible name starts with it; shown second. */}
+    <Heading id={titleId} class="text-h3 text-fg order-2">
+      {data.title}
+    </Heading>
+    <div class="order-1 flex items-center justify-between gap-3">
+      <StatusPill status={data.status === 'completed' ? 'ok' : 'neutral'}>{data.status}</StatusPill>
+      {period && <span class="text-mono-meta text-fg-muted tabular font-mono">{period}</span>}
+    </div>
+    <p class="text-small text-fg-muted order-3 line-clamp-3">{data.summary}</p>
+    <div class="order-4 mt-1 flex items-end justify-between gap-4">
+      <ul class="flex flex-wrap gap-1.5" aria-label="Stack">
+        {data.stack.slice(0, 4).map((item) => (
+          <Tag element="li">{item}</Tag>
+        ))}
+      </ul>
+      {metric && (
+        <p class="shrink-0 text-right">
+          <span class="text-fg tabular block font-mono text-lg font-medium leading-none">
+            {metric.value}
+          </span>
+          <span class="text-fg-faint mt-1 block font-mono text-[11px] leading-tight">
+            {metric.label}
+          </span>
+        </p>
+      )}
+    </div>
+  </div>
+</a>
+
+<style>
+  .project-card {
+    /*
+     * The two numbers to change on this card.
+     *
+     * --cover-opacity: how visible the raw photo is, 0 (invisible, just the dark canvas
+     *   underneath) to 1 (full brightness, no fading). Lower this if a photo is too loud or
+     *   saturated even with the shadow on top. Default 1: the photo shows at full strength.
+     *
+     * --scrim-strength: how strong the black shadow on top of the photo is, 0 (no shadow at
+     *   all, raw photo) to 1 (the darkest the design allows) up to about 1.4 (noticeably
+     *   darker than default, for a very busy or bright photo where text keeps getting lost).
+     *   Default 1.
+     */
+    --cover-opacity: 1;
+    --scrim-strength: 1;
+  }
+  .project-card__cover {
+    opacity: var(--cover-opacity);
+  }
+  .project-card__scrim {
+    /* Three stops, top to bottom: lighter near the photo's top, solid black behind the text
+       at the bottom. Each stop's darkness scales with --scrim-strength above, so changing
+       that one number moves all three together instead of hand-editing each percentage. */
+    background: linear-gradient(
+      180deg,
+      color-mix(in srgb, var(--scrim) calc(35% * var(--scrim-strength)), transparent) 0%,
+      color-mix(in srgb, var(--scrim) calc(80% * var(--scrim-strength)), transparent) 45%,
+      color-mix(in srgb, var(--scrim) calc(100% * var(--scrim-strength)), transparent) 100%
+    );
+  }
+  .project-card__fallback {
+    background-color: var(--canvas);
+    background-image: radial-gradient(var(--line-strong) 1px, transparent 1px);
+    background-size: 20px 20px;
+  }
+</style>

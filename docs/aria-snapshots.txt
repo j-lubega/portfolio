@@ -1,0 +1,636 @@
+
+### Home (`/`)
+
+```yaml
+- link "Skip to main content":
+  - /url: "#main-content"
+- banner:
+  - link "jimmy.lubega":
+    - /url: /
+  - navigation "Primary":
+    - list:
+      - listitem:
+        - link "Home":
+          - /url: /
+      - listitem:
+        - link "About":
+          - /url: /about
+      - listitem:
+        - link "Education":
+          - /url: /education
+      - listitem:
+        - link "Projects":
+          - /url: /projects
+      - listitem:
+        - link "Connect":
+          - /url: /connect
+  - button "Dark mode"
+- main:
+  - region "Hi, I'm Jimmy. I build and support cloud platforms that stay up.":
+    - paragraph: whoami
+    - heading "Hi, I'm Jimmy. I build and support cloud platforms that stay up." [level=1]
+    - paragraph: Technical Consultant · Platform Engineer Cloud · Linux · Automation · Kubernetes
+    - paragraph: I design, deploy, and support secure, scalable platforms across AWS and Azure, using Infrastructure as Code, automation, and modern DevOps practices.
+    - link "Book a free 30-minute call":
+      - /url: "#book"
+    - link "See projects":
+      - /url: /projects
+    - list "Profiles":
+      - listitem:
+        - link "Jimmy Lubega on LinkedIn (opens in a new tab)":
+          - /url: https://www.linkedin.com/in/jimmy-lubega-393652184/
+      - listitem:
+        - link "Jimmy Lubega on GitHub (opens in a new tab)":
+          - /url: https://github.com/j-lubega
+      - listitem: Virginia, USA · remote worldwide
+    - text: platform.topology
+    - 'img "Diagram: a Kubernetes platform connected to AWS, Azure, Linux, infrastructure as code and observability."': kubernetes aws azure observability terraform / ansible linux
+  - region "At a glance":
+    - list:
+      - listitem: 10+ years in infrastructure
+      - listitem: 5 certifications
+      - listitem: 400+ physical servers built
+      - listitem: 2,000+ virtual machines
+  - region "Platforms, end to end":
+    - paragraph: 01 / what I do
+    - heading "Platforms, end to end" [level=2]
+    - paragraph: Design, build, secure and support. The same person from the architecture document to the on-call handover.
+    - list:
+      - listitem:
+        - text: 01 / 5 tools
+        - list:
+          - listitem: AWS
+          - listitem: Azure
+          - listitem: Terraform
+          - listitem: GCP
+          - listitem: GitHub Actions
+        - paragraph: "01"
+        - heading "Cloud infrastructure" [level=3]
+        - paragraph: Design, provision and support platforms on AWS and Azure with Infrastructure as Code, so environments are repeatable and auditable.
+        - list:
+          - listitem: VPCs and VNets, DNS, IAM, storage and compute laid out from a written design
+          - listitem: Terraform for provisioning, GitHub Actions for validation and deployment
+          - listitem: Security models and documentation that survive the handover
+        - list "Cloud infrastructure stack":
+          - listitem: AWS
+          - listitem: Azure
+          - listitem: Terraform
+          - listitem: GCP
+          - listitem: GitHub Actions
+      - listitem:
+        - text: 02 / 6 tools
+        - list:
+          - listitem: RHEL
+          - listitem: Rocky Linux
+          - listitem: Ubuntu
+          - listitem: Ansible
+          - listitem: Bash
+          - listitem: Python
+        - paragraph: "02"
+        - heading "Linux and automation" [level=3]
+        - paragraph: "Enterprise Linux run as a managed fleet: standard builds, patch windows, hardening and configuration kept in code."
+        - list:
+          - listitem: RHEL, Rocky and Ubuntu builds from standard images and hardened baselines
+          - listitem: Ansible roles and shell automation for configuration, patching and drift remediation
+          - listitem: SELinux kept enforcing, with denials diagnosed rather than switched off
+        - list "Linux and automation stack":
+          - listitem: RHEL
+          - listitem: Rocky Linux
+          - listitem: Ubuntu
+          - listitem: Ansible
+          - listitem: Bash
+          - listitem: Python
+      - listitem:
+        - text: 03 / 5 tools
+        - list:
+          - listitem: Kubernetes
+          - listitem: Docker
+          - listitem: Posit Team
+          - listitem: Prometheus
+          - listitem: Grafana
+        - paragraph: "03"
+        - heading "Kubernetes and platforms" [level=3]
+        - paragraph: Container platforms and data-science tooling deployed, secured and kept observable, on managed Kubernetes or on VMs.
+        - list:
+          - listitem: EKS, AKS and GKE clusters with Docker-based workloads and clear ownership
+          - listitem: Posit Team (Workbench, Connect, Package Manager) on cloud and on premises
+          - listitem: Prometheus, Grafana and CloudWatch so problems are seen before users report them
+        - list "Kubernetes and platforms stack":
+          - listitem: Kubernetes
+          - listitem: Docker
+          - listitem: Posit Team
+          - listitem: Prometheus
+          - listitem: Grafana
+  - region "Book a call":
+    - paragraph: 02 / book a call
+    - heading "Book a call" [level=2]
+    - paragraph: Two ways to start. Both run on Google Meet, times shown in your timezone.
+    - article:
+      - heading "Discovery consultation" [level=3]
+      - paragraph: 30 min · Free
+      - paragraph: Tell me about your platform and get a straight opinion on the next step.
+      - list:
+        - listitem: Where your platform is today and what is getting in the way
+        - listitem: A straight opinion on the next step, with no obligation
+        - listitem: Whether a working session or a longer engagement makes sense
+      - link "Book the free call (opens in a new tab)":
+        - /url: https://calendly.com/jimmylubegapro/30min
+    - article:
+      - heading "Working session" [level=3]
+      - paragraph: 60 min · $100
+      - paragraph: Architecture review, troubleshooting, or an implementation plan, live.
+      - list:
+        - listitem: Architecture review of an AWS, Azure, Linux or Kubernetes platform
+        - listitem: Live troubleshooting of a production issue, with the root cause explained
+        - listitem: An implementation plan you can hand to your team
+      - link "Book a working session (opens in a new tab)":
+        - /url: https://calendly.com/jimmylubegapro/1-hour
+    - paragraph: Both calls run on Google Meet. Prices in USD. Booking opens Calendly; details are handled there.
+  - region "Case studies":
+    - paragraph: 03 / selected work
+    - heading "Case studies" [level=2]
+    - paragraph: Real environments, with the problem, the approach and what changed.
+    - link "All projects":
+      - /url: /projects
+    - list:
+      - listitem:
+        - link "Self-signed TLS for Posit Team on Rocky Linux completed HTTPS across a co-located Posit Connect, Workbench and Package Manager deployment on Rocky Linux, using a self-signed certificate with a proper SAN, shared safely between three service users. Stack 3 services moved to HTTPS":
+          - /url: /projects/posit-ssl
+          - heading "Self-signed TLS for Posit Team on Rocky Linux" [level=3]
+          - text: completed
+          - paragraph: HTTPS across a co-located Posit Connect, Workbench and Package Manager deployment on Rocky Linux, using a self-signed certificate with a proper SAN, shared safely between three service users.
+          - list "Stack":
+            - listitem: Rocky Linux
+            - listitem: OpenSSL
+            - listitem: Posit Connect
+            - listitem: Posit Workbench
+          - paragraph: 3 services moved to HTTPS
+      - listitem:
+        - 'link "Linux server hardening and SELinux operations completed Hardened enterprise Linux servers running Posit Team: baselines, controlled patching, reduced exposure, and SELinux kept enforcing in production with denials diagnosed rather than switched off. Stack enforcing SELinux mode kept in production"':
+          - /url: /projects/linux-hardening-selinux
+          - heading "Linux server hardening and SELinux operations" [level=3]
+          - text: completed
+          - paragraph: "Hardened enterprise Linux servers running Posit Team: baselines, controlled patching, reduced exposure, and SELinux kept enforcing in production with denials diagnosed rather than switched off."
+          - list "Stack":
+            - listitem: RHEL
+            - listitem: Rocky Linux
+            - listitem: SELinux
+            - listitem: systemd
+          - paragraph: enforcing SELinux mode kept in production
+      - listitem:
+        - 'link "Enterprise infrastructure builds at scale completed Repeatable builds across more than 400 physical servers and 2,000 virtual machines on VMware, AWS and Azure: standard images, network prerequisites, validation, documentation and handover. Stack 400+ physical servers built"':
+          - /url: /projects/enterprise-infrastructure-builds
+          - heading "Enterprise infrastructure builds at scale" [level=3]
+          - text: completed
+          - paragraph: "Repeatable builds across more than 400 physical servers and 2,000 virtual machines on VMware, AWS and Azure: standard images, network prerequisites, validation, documentation and handover."
+          - list "Stack":
+            - listitem: VMware
+            - listitem: AWS
+            - listitem: Microsoft Azure
+            - listitem: Terraform
+          - paragraph: 400+ physical servers built
+  - region "Certified":
+    - heading "Certified" [level=2]
+    - list:
+      - listitem:
+        - link "CKA , Certified Kubernetes Administrator (CKA)":
+          - /url: /education
+      - listitem:
+        - link "Security+ , CompTIA Security+":
+          - /url: /education
+      - listitem:
+        - link "AWS SA Professional , AWS Certified Solutions Architect, Professional":
+          - /url: /education
+      - listitem:
+        - link "AWS SysOps , AWS Certified SysOps Administrator, Associate":
+          - /url: /education
+      - listitem:
+        - link "LPIC-1 , Linux Essentials Professional Certificate (LPIC-1)":
+          - /url: /education
+  - region "Have a platform problem that needs a second set of eyes?":
+    - heading "Have a platform problem that needs a second set of eyes?" [level=2]
+    - link "Book a free 30-minute call":
+      - /url: "#book"
+- contentinfo:
+  - paragraph: jimmy.lubega
+  - paragraph: Technical Consultant and Platform Engineer. Secure, scalable platforms across AWS and Azure, built with Infrastructure as Code and supported through the whole lifecycle.
+  - navigation "Footer":
+    - paragraph: Sections
+    - list:
+      - listitem:
+        - link "Home":
+          - /url: /
+      - listitem:
+        - link "About":
+          - /url: /about
+      - listitem:
+        - link "Education":
+          - /url: /education
+      - listitem:
+        - link "Projects":
+          - /url: /projects
+      - listitem:
+        - link "Connect":
+          - /url: /connect
+      - listitem:
+        - link "Book a call":
+          - /url: /book
+  - paragraph: Profiles
+  - list:
+    - listitem:
+      - link "LinkedIn (opens in a new tab)":
+        - /url: https://www.linkedin.com/in/jimmy-lubega-393652184/
+    - listitem:
+      - link "GitHub (opens in a new tab)":
+        - /url: https://github.com/j-lubega
+  - paragraph: © 2026 purenest360 llc. All rights reserved.
+  - text: "status: operational"
+```
+
+### Book a call (`/book`)
+
+```yaml
+- link "Skip to main content":
+  - /url: "#main-content"
+- banner:
+  - link "jimmy.lubega":
+    - /url: /
+  - navigation "Primary":
+    - list:
+      - listitem:
+        - link "Home":
+          - /url: /
+      - listitem:
+        - link "About":
+          - /url: /about
+      - listitem:
+        - link "Education":
+          - /url: /education
+      - listitem:
+        - link "Projects":
+          - /url: /projects
+      - listitem:
+        - link "Connect":
+          - /url: /connect
+  - button "Dark mode"
+- main:
+  - paragraph: calendly --list
+  - heading "Book a call" [level=1]
+  - paragraph: Bring a hard problem. Pick the free discovery call for a first conversation, or a working session when you already know what needs solving.
+  - region "Book a call":
+    - heading "Book a call" [level=2]
+    - article:
+      - heading "Discovery consultation" [level=3]
+      - paragraph: 30 min · Free
+      - paragraph: Tell me about your platform and get a straight opinion on the next step.
+      - list:
+        - listitem: Where your platform is today and what is getting in the way
+        - listitem: A straight opinion on the next step, with no obligation
+        - listitem: Whether a working session or a longer engagement makes sense
+      - link "Book the free call (opens in a new tab)":
+        - /url: https://calendly.com/jimmylubegapro/30min
+    - article:
+      - heading "Working session" [level=3]
+      - paragraph: 60 min · $100
+      - paragraph: Architecture review, troubleshooting, or an implementation plan, live.
+      - list:
+        - listitem: Architecture review of an AWS, Azure, Linux or Kubernetes platform
+        - listitem: Live troubleshooting of a production issue, with the root cause explained
+        - listitem: An implementation plan you can hand to your team
+      - link "Book a working session (opens in a new tab)":
+        - /url: https://calendly.com/jimmylubegapro/1-hour
+    - paragraph: Both calls run on Google Meet. Prices in USD. Booking opens Calendly; details are handled there.
+  - region "Pick a time":
+    - paragraph: 03 / schedule
+    - heading "Pick a time" [level=2]
+    - group "Choose an event type":
+      - button "30 min · free" [pressed]
+      - button "60 min · $100"
+    - iframe
+    - paragraph:
+      - text: Having trouble with the schedule?
+      - link "Open Calendly in a new tab":
+        - /url: https://calendly.com/jimmylubegapro/30min
+    - complementary "Privacy and usage":
+      - heading "Privacy and usage" [level=2]
+      - paragraph: Calendly processes the details needed to schedule and confirm your appointment under its own terms and privacy notice. Do not include passwords, private keys, credentials or confidential customer data in booking notes. For the best session, choose the right duration, use a work email, and have a short problem summary and any non-sensitive logs ready.
+- contentinfo:
+  - paragraph: jimmy.lubega
+  - paragraph: Technical Consultant and Platform Engineer. Secure, scalable platforms across AWS and Azure, built with Infrastructure as Code and supported through the whole lifecycle.
+  - navigation "Footer":
+    - paragraph: Sections
+    - list:
+      - listitem:
+        - link "Home":
+          - /url: /
+      - listitem:
+        - link "About":
+          - /url: /about
+      - listitem:
+        - link "Education":
+          - /url: /education
+      - listitem:
+        - link "Projects":
+          - /url: /projects
+      - listitem:
+        - link "Connect":
+          - /url: /connect
+      - listitem:
+        - link "Book a call":
+          - /url: /book
+  - paragraph: Profiles
+  - list:
+    - listitem:
+      - link "LinkedIn (opens in a new tab)":
+        - /url: https://www.linkedin.com/in/jimmy-lubega-393652184/
+    - listitem:
+      - link "GitHub (opens in a new tab)":
+        - /url: https://github.com/j-lubega
+  - paragraph: © 2026 purenest360 llc. All rights reserved.
+  - text: "status: operational"
+```
+
+### Case study: posit-ssl (`/projects/posit-ssl`)
+
+```yaml
+- link "Skip to main content":
+  - /url: "#main-content"
+- banner:
+  - link "jimmy.lubega":
+    - /url: /
+  - navigation "Primary":
+    - list:
+      - listitem:
+        - link "Home":
+          - /url: /
+      - listitem:
+        - link "About":
+          - /url: /about
+      - listitem:
+        - link "Education":
+          - /url: /education
+      - listitem:
+        - link "Projects":
+          - /url: /projects
+      - listitem:
+        - link "Connect":
+          - /url: /connect
+  - button "Dark mode"
+- main:
+  - article:
+    - navigation "Breadcrumb":
+      - list:
+        - listitem:
+          - link "Projects":
+            - /url: /projects
+        - listitem: Self-signed TLS for Posit Team on Rocky Linux
+    - text: completed
+    - heading "Self-signed TLS for Posit Team on Rocky Linux" [level=1]
+    - paragraph: HTTPS across a co-located Posit Connect, Workbench and Package Manager deployment on Rocky Linux, using a self-signed certificate with a proper SAN, shared safely between three service users.
+    - term: sector
+    - definition: Internal data-science platform
+    - term: role
+    - definition: Platform Engineer
+    - list "Stack":
+      - listitem: Rocky Linux
+      - listitem: OpenSSL
+      - listitem: Posit Connect
+      - listitem: Posit Workbench
+      - listitem: Posit Package Manager
+      - listitem: SELinux
+    - list "Key numbers":
+      - listitem: 3 services moved to HTTPS
+      - listitem: 0 certificate warnings after client trust
+      - listitem: 1 private key, group-scoped
+    - heading "Overview" [level=2]
+    - paragraph:
+      - text: This project delivered HTTPS for a single-server, co-located deployment of
+      - strong: Posit Connect
+      - text: ","
+      - strong: Posit Workbench
+      - text: and
+      - strong: Posit Package Manager
+      - text: "on Rocky Linux: an internal environment without a publicly trusted CA or an internet-facing port 80 or 443 for automated certificate issuance (for example Let’s Encrypt)."
+    - paragraph:
+      - text: The solution was a self-signed certificate with a proper
+      - strong: Subject Alternative Name (SAN)
+      - text: ", shared securely across all three services via a dedicated Linux group, with correct file permissions, SELinux compatibility, and client-side trust configuration across macOS, Windows and Linux."
+    - heading "Problem" [level=2]
+    - paragraph: Modern browsers reject certificates that only carry a Common Name without a matching SAN, so a naive self-signed certificate would still produce warnings. Each Posit product runs as its own service user and needs to read the same private key, and changing ownership per product breaks the others. Package Manager also requires distinct HTTP and HTTPS ports, and SELinux must keep enforcing throughout.
+    - heading "Approach" [level=2]
+    - 'heading "Phase 1: name resolution" [level=3]'
+    - paragraph:
+      - text: Clients must resolve
+      - code: <VM_HOSTNAME>
+      - text: to
+      - code: <VM_IP>
+      - text: ", through DNS or a hosts entry on each client machine:"
+    - code: <VM_IP> <VM_HOSTNAME>
+    - button "Copy code": copy
+    - paragraph: "On the server itself, confirm the hostname is set correctly:"
+    - code: sudo hostnamectl set-hostname <VM_HOSTNAME>
+    - button "Copy code": copy
+    - 'heading "Phase 2: a self-signed certificate with a SAN" [level=3]'
+    - paragraph: "An OpenSSL configuration file adds the SAN that browsers require:"
+    - code: cat <<EOF | sudo tee /etc/ssl/<VM_HOSTNAME>-openssl.cnf [req] distinguished_name = req_distinguished_name x509_extensions = v3_req prompt = no [req_distinguished_name] CN = <VM_HOSTNAME> [v3_req] subjectAltName = @alt_names [alt_names] DNS.1 = <VM_HOSTNAME> EOF
+    - button "Copy code": copy
+    - code: sudo mkdir -p /etc/ssl/private /etc/ssl/certs sudo openssl req -x509 -nodes -days 825 -newkey rsa:2048 \ -keyout /etc/ssl/private/<VM_HOSTNAME>.key \ -out /etc/ssl/certs/<VM_HOSTNAME>.crt \ -config /etc/ssl/<VM_HOSTNAME>-openssl.cnf \ -extensions v3_req
+    - button "Copy code": copy
+    - 'heading "Phase 3: one key, shared through a dedicated group" [level=3]'
+    - paragraph:
+      - text: Rather than changing ownership per product, a shared group gives every service user read access without breaking the others. Confirm the actual service user and group for each product first (
+      - code: systemctl show <service-name> -p User -p Group
+      - text: ).
+    - code: sudo groupadd -f posit-ssl sudo usermod -aG posit-ssl rstudio-connect sudo usermod -aG posit-ssl rstudio-pm sudo usermod -aG posit-ssl rstudio-server
+    - button "Copy code": copy
+    - paragraph:
+      - text: Permissions on both the key
+      - strong: and its parent directory
+      - text: "matter. A common pitfall is fixing the file but leaving the directory non-traversable for the group:"
+    - code: sudo chown root:posit-ssl /etc/ssl/private/<VM_HOSTNAME>.key sudo chmod 640 /etc/ssl/private/<VM_HOSTNAME>.key sudo chmod 750 /etc/ssl/private sudo chgrp posit-ssl /etc/ssl/private sudo chmod 644 /etc/ssl/certs/<VM_HOSTNAME>.crt
+    - button "Copy code": copy
+    - paragraph: Group membership changes take effect when the affected service restarts.
+    - 'heading "Phase 4: Posit Connect" [level=3]'
+    - paragraph:
+      - code: /etc/rstudio-connect/rstudio-connect.gcfg
+      - text: ":"
+    - code: "[Server] Address = https://<VM_HOSTNAME>:<CONNECT_PORT> [HTTPS] Listen = :<CONNECT_PORT> Certificate = /etc/ssl/certs/<VM_HOSTNAME>.crt Key = /etc/ssl/private/<VM_HOSTNAME>.key Permanent = t"
+    - button "Copy code": copy
+    - code: sudo systemctl restart rstudio-connect
+    - button "Copy code": copy
+    - 'heading "Phase 5: Posit Workbench" [level=3]'
+    - paragraph:
+      - code: /etc/rstudio/rserver.conf
+      - text: ":"
+    - code: www-port=<WORKBENCH_PORT> ssl-enabled=1 ssl-certificate=/etc/ssl/certs/<VM_HOSTNAME>.crt ssl-certificate-key=/etc/ssl/private/<VM_HOSTNAME>.key ssl-protocols=TLSv1.2 TLSv1.3
+    - button "Copy code": copy
+    - code: sudo rstudio-server restart
+    - button "Copy code": copy
+    - paragraph: "If the OS flags the certificate as untrusted at the system level:"
+    - code: sudo cp /etc/ssl/certs/<VM_HOSTNAME>.crt /etc/pki/ca-trust/source/anchors/ sudo update-ca-trust extract sudo rstudio-server restart
+    - button "Copy code": copy
+    - 'heading "Phase 6: Posit Package Manager" [level=3]'
+    - paragraph:
+      - code: /etc/rstudio-pm/rstudio-pm.gcfg
+      - text: . Package Manager requires
+      - strong: distinct
+      - text: "HTTP and HTTPS ports; reusing the same port causes a fatal startup error:"
+    - code: "[Server] Address = https://<VM_HOSTNAME>:<PACKAGE_MANAGER_PORT> [HTTP] Listen = :<PACKAGE_MANAGER_HTTP_PORT> [HTTPS] Listen = :<PACKAGE_MANAGER_PORT> Certificate = /etc/ssl/certs/<VM_HOSTNAME>.crt Key = /etc/ssl/private/<VM_HOSTNAME>.key"
+    - button "Copy code": copy
+    - code: sudo rspm check-config sudo systemctl restart rstudio-pm
+    - button "Copy code": copy
+    - 'heading "Phase 7: trust on client machines" [level=3]'
+    - code: scp <user>@<VM_HOSTNAME>:/etc/ssl/certs/<VM_HOSTNAME>.crt ~/Desktop/
+    - button "Copy code": copy
+    - list:
+      - listitem:
+        - strong: "macOS:"
+        - text: Keychain Access, System keychain, drag in the certificate, set to Always Trust.
+      - listitem:
+        - strong: "Windows:"
+        - text: double-click the
+        - code: .crt
+        - text: ", Install Certificate, Local Machine, Trusted Root Certification Authorities."
+      - listitem:
+        - strong: "Linux:"
+        - code: sudo cp <VM_HOSTNAME>.crt /etc/pki/ca-trust/source/anchors/ sudo update-ca-trust extract
+        - button "Copy code": copy
+    - paragraph: Fully quit and reopen the browser after trusting the certificate; trust decisions are often cached per session.
+    - heading "Outcome" [level=2]
+    - code: curl -vk https://<VM_HOSTNAME>:<CONNECT_PORT> curl -vk https://<VM_HOSTNAME>:<WORKBENCH_PORT> curl -vk https://<VM_HOSTNAME>:<PACKAGE_MANAGER_PORT>
+    - button "Copy code": copy
+    - paragraph:
+      - text: Browsing to each URL by
+      - strong: hostname
+      - text: (not IP, since the SAN only covers the hostname) confirmed a secure connection with no browser warnings across all three services.
+    - heading "Technical notes" [level=2]
+    - heading "Troubleshooting reference" [level=3]
+    - table:
+      - rowgroup:
+        - row "Symptom Likely cause Fix":
+          - columnheader "Symptom"
+          - columnheader "Likely cause"
+          - columnheader "Fix"
+      - rowgroup:
+        - row "Can't open \".../key\" for writing, No such file or directory Target directory does not exist sudo mkdir -p /etc/ssl/private /etc/ssl/certs":
+          - cell "Can't open \".../key\" for writing, No such file or directory":
+            - code: Can't open ".../key" for writing, No such file or directory
+          - cell "Target directory does not exist"
+          - cell "sudo mkdir -p /etc/ssl/private /etc/ssl/certs":
+            - code: sudo mkdir -p /etc/ssl/private /etc/ssl/certs
+        - row "HTTP.Listen and HTTPS.Listen using same value Both sections configured on the same port Assign HTTP a separate port":
+          - cell "HTTP.Listen and HTTPS.Listen using same value":
+            - code: HTTP.Listen and HTTPS.Listen using same value
+          - cell "Both sections configured on the same port"
+          - cell "Assign HTTP a separate port"
+        - 'row "open \".../key\": permission denied Service user lacks read access, or the parent directory is not traversable Verify group membership (id <service-user>); confirm 640 root:posit-ssl on the key and 750 root:posit-ssl on the directory"':
+          - 'cell "open \".../key\": permission denied"':
+            - code: "open \".../key\": permission denied"
+          - cell "Service user lacks read access, or the parent directory is not traversable"
+          - cell "Verify group membership (id <service-user>); confirm 640 root:posit-ssl on the key and 750 root:posit-ssl on the directory":
+            - text: Verify group membership (
+            - code: id <service-user>
+            - text: ); confirm
+            - code: 640 root:posit-ssl
+            - text: on the key and
+            - code: 750 root:posit-ssl
+            - text: on the directory
+        - row "Self-signed certificate is not in the system CA store OS-level trust store missing the certificate sudo cp <cert> /etc/pki/ca-trust/source/anchors/ && sudo update-ca-trust extract":
+          - cell "Self-signed certificate is not in the system CA store":
+            - code: Self-signed certificate is not in the system CA store
+          - cell "OS-level trust store missing the certificate"
+          - cell "sudo cp <cert> /etc/pki/ca-trust/source/anchors/ && sudo update-ca-trust extract":
+            - code: sudo cp <cert> /etc/pki/ca-trust/source/anchors/ && sudo update-ca-trust extract
+        - row "Browser still shows “Not Secure” Certificate not trusted on the client, browsing by IP, or a stale session Re-check trust settings, use the hostname, restart the browser":
+          - cell "Browser still shows “Not Secure”"
+          - cell "Certificate not trusted on the client, browsing by IP, or a stale session"
+          - cell "Re-check trust settings, use the hostname, restart the browser"
+        - row "SELinux denials (ausearch -m avc) Policy blocking non-standard certificate paths Relabel with semanage fcontext and restorecon; confirm the mode with getenforce":
+          - cell "SELinux denials (ausearch -m avc)":
+            - text: SELinux denials (
+            - code: ausearch -m avc
+            - text: )
+          - cell "Policy blocking non-standard certificate paths"
+          - cell "Relabel with semanage fcontext and restorecon; confirm the mode with getenforce":
+            - text: Relabel with
+            - code: semanage fcontext
+            - text: and
+            - code: restorecon
+            - text: ; confirm the mode with
+            - code: getenforce
+    - heading "Scaling this approach" [level=3]
+    - paragraph:
+      - text: For environments with many client machines, a lightweight
+      - strong: internal CA
+      - text: "removes the need to trust a certificate per client: only the CA’s root certificate needs distributing once. If the server later gains a public domain and open ports 80 and 443, this setup can be swapped for"
+      - strong: Let’s Encrypt
+      - text: "with minimal changes: only the certificate and key source changes, the Posit configuration blocks stay the same."
+    - complementary "At a glance":
+      - paragraph: At a glance
+      - term: problem
+      - definition: "Three Posit services on one internal server were running over plain HTTP. No public certificate authority could issue a certificate: the host had no public domain and no internet-facing port 80 or 443."
+      - term: approach
+      - definition: A self-signed certificate with a Subject Alternative Name, one private key shared through a dedicated Linux group with correct directory permissions, each product configured for HTTPS, and the certificate trusted on macOS, Windows and Linux clients.
+      - term: outcome
+      - definition: All three products serve HTTPS on the internal hostname with no certificate warnings, verified with curl and in the browser, with SELinux still enforcing.
+      - navigation "On this page":
+        - paragraph: On this page
+        - list:
+          - listitem:
+            - link "01 Overview":
+              - /url: "#overview"
+          - listitem:
+            - link "02 Problem":
+              - /url: "#problem"
+          - listitem:
+            - link "03 Approach":
+              - /url: "#approach"
+          - listitem:
+            - link "04 Outcome":
+              - /url: "#outcome"
+          - listitem:
+            - link "05 Technical notes":
+              - /url: "#technical-notes"
+    - paragraph: next step
+    - heading "Discuss a similar project" [level=2]
+    - paragraph: Thirty minutes, free, on Google Meet. Bring the current state and the constraint.
+    - link "Book a free 30-minute call":
+      - /url: /#book
+    - navigation "More case studies":
+      - link "next Linux server hardening and SELinux operations":
+        - /url: /projects/linux-hardening-selinux
+- contentinfo:
+  - paragraph: jimmy.lubega
+  - paragraph: Technical Consultant and Platform Engineer. Secure, scalable platforms across AWS and Azure, built with Infrastructure as Code and supported through the whole lifecycle.
+  - navigation "Footer":
+    - paragraph: Sections
+    - list:
+      - listitem:
+        - link "Home":
+          - /url: /
+      - listitem:
+        - link "About":
+          - /url: /about
+      - listitem:
+        - link "Education":
+          - /url: /education
+      - listitem:
+        - link "Projects":
+          - /url: /projects
+      - listitem:
+        - link "Connect":
+          - /url: /connect
+      - listitem:
+        - link "Book a call":
+          - /url: /book
+  - paragraph: Profiles
+  - list:
+    - listitem:
+      - link "LinkedIn (opens in a new tab)":
+        - /url: https://www.linkedin.com/in/jimmy-lubega-393652184/
+    - listitem:
+      - link "GitHub (opens in a new tab)":
+        - /url: https://github.com/j-lubega
+  - paragraph: © 2026 purenest360 llc. All rights reserved.
+  - text: "status: operational"
+```

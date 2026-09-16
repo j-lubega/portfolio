@@ -1,0 +1,47 @@
+---
+import type { CollectionEntry } from 'astro:content';
+import Icon from '../ui/Icon.astro';
+import Card from '../ui/Card.astro';
+
+interface Props {
+  entry: CollectionEntry<'education'>;
+}
+const { entry } = Astro.props;
+const { data } = entry;
+---
+
+<Card element="article" class="flex flex-col gap-4 md:flex-row md:items-start md:gap-6">
+  <div class="border-line bg-canvas flex size-12 shrink-0 items-center justify-center rounded-md border">
+    <Icon name="lucide:graduation-cap" size={22} class="text-accent" />
+  </div>
+  <div>
+    <h3 class="text-h3 text-fg">
+      {data.degree}
+      {data.field && <span>, {data.field}</span>}
+    </h3>
+    <p class="text-fg-muted mt-1">
+      {data.url ? (
+        <a
+          href={data.url}
+          target="_blank"
+          rel="noopener noreferrer"
+          class="hover:text-accent rounded-xs link-underline"
+        >
+          {data.institution}
+          <span class="sr-only"> (opens in a new tab)</span>
+        </a>
+      ) : (
+        data.institution
+      )}
+      {data.location && <span class="text-fg-faint"> · {data.location}</span>}
+    </p>
+    {data.years && <p class="text-mono-meta text-fg-faint tabular mt-3 font-mono">{data.years}</p>}
+    {data.notes.length > 0 && (
+      <ul class="text-small text-fg-muted mt-4 flex flex-col gap-1.5">
+        {data.notes.map((note) => (
+          <li>{note}</li>
+        ))}
+      </ul>
+    )}
+  </div>
+</Card>

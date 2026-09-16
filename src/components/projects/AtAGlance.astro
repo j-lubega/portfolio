@@ -1,0 +1,55 @@
+---
+/** Sticky aside for a case study: problem, approach, outcome, and an in-page table of contents. */
+import type { CollectionEntry } from 'astro:content';
+import type { MarkdownHeading } from 'astro';
+
+interface Props {
+  project: CollectionEntry<'projects'>;
+  headings: MarkdownHeading[];
+}
+const { project, headings } = Astro.props;
+const { data } = project;
+const toc = headings.filter((h) => h.depth === 2);
+const blocks = [
+  { label: 'problem', text: data.problem },
+  { label: 'approach', text: data.approach },
+  { label: 'outcome', text: data.outcome },
+];
+---
+
+<aside class="lg:sticky lg:top-24" aria-label="At a glance">
+  <div class="border-line bg-surface rounded-md border p-5 sm:p-6">
+    <p class="text-mono-label text-fg-faint font-mono uppercase">At a glance</p>
+    <dl class="mt-4 flex flex-col gap-4">
+      {blocks.map((block) => (
+        <div>
+          <dt class="text-mono-meta text-accent font-mono">
+            <span aria-hidden="true">// </span>
+            {block.label}
+          </dt>
+          <dd class="text-small text-fg-muted mt-1">{block.text}</dd>
+        </div>
+      ))}
+    </dl>
+  </div>
+  {toc.length > 1 && (
+    <nav class="mt-6 px-1" aria-labelledby="toc-title">
+      <p id="toc-title" class="text-mono-label text-fg-faint font-mono uppercase">
+        On this page
+      </p>
+      <ol class="mt-3 flex flex-col gap-1.5">
+        {toc.map((h, i) => (
+          <li>
+            <a
+              href={`#${h.slug}`}
+              class="text-small text-fg-muted hover:text-accent inline-flex gap-2 rounded-xs link-underline"
+            >
+              <span class="text-fg-faint tabular font-mono">0{i + 1}</span>
+              {h.text}
+            </a>
+          </li>
+        ))}
+      </ol>
+    </nav>
+  )}
+</aside>

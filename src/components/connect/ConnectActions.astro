@@ -1,0 +1,17 @@
+---
+/** The one job of the Connect page: LinkedIn first, GitHub second. No form, no email. */
+import { site } from '../../data/site';
+import Button from '../ui/Button.astro';
+import Icon from '../ui/Icon.astro';
+---
+
+<div class="flex flex-wrap gap-3">
+  <Button href={site.social.linkedin} size="lg">
+    <Icon name="simple-icons:linkedin" size={18} />
+    Connect on LinkedIn
+  </Button>
+  <Button href={site.social.github} variant="secondary" size="lg">
+    <Icon name="simple-icons:github" size={18} />
+    GitHub
+  </Button>
+</div>

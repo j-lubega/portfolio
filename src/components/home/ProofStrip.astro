@@ -1,0 +1,18 @@
+---
+/** Four numbers under the hero. Values live in site.ts (Open question 9 confirms them). */
+import { stats } from '../../data/site';
+import Container from '../ui/Container.astro';
+import Stat from '../ui/Stat.astro';
+---
+
+<section class="border-line border-b" aria-label="At a glance">
+  <Container size="wide">
+    <ul data-reveal-group class="grid grid-cols-2 gap-x-6 gap-y-8 py-10 md:grid-cols-4 md:py-12">
+      {stats.map((stat) => (
+        <li>
+          <Stat value={stat.value} label={stat.label} countUp />
+        </li>
+      ))}
+    </ul>
+  </Container>
+</section>

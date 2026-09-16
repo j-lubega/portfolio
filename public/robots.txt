@@ -1,4 +1,0 @@
-User-agent: *
-Allow: /
-
-Sitemap: https://jimmylubega.com/sitemap-index.xml

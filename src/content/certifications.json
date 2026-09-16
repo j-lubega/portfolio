@@ -1,0 +1,62 @@
+[
+  {
+    "id": "cka",
+    "name": "Certified Kubernetes Administrator (CKA)",
+    "short": "CKA",
+    "issuer": "The Linux Foundation (CNCF)",
+    "issuerIcon": "simple-icons:kubernetes",
+    "issued": "2026-06",
+    "verifyUrl": "https://www.credly.com/badges/653c1cbe-97f6-4497-bd53-07a4cdfbdb8e/linked_in_profile",
+    "level": "Administrator",
+    "tags": ["kubernetes", "containers"],
+    "order": 1
+  },
+  {
+    "id": "comptia-security-plus",
+    "name": "CompTIA Security+ ce",
+    "short": "Security+",
+    "issuer": "CompTIA",
+    "issuerIcon": "simple-icons:comptia",
+    "issued": "2026-06",
+    "verifyUrl": "https://www.credly.com/badges/dabfa822-6ca9-466b-9b1c-103c9e0cedc8/linked_in_profile",
+    "level": "Certified",
+    "tags": ["security"],
+    "order": 2
+  },
+  {
+    "id": "aws-solutions-architect-professional",
+    "name": "AWS Certified Solutions Architect, Professional",
+    "short": "AWS SA Professional",
+    "issuer": "Amazon Web Services",
+    "issuerIcon": "simple-icons:amazonwebservices",
+    "issued": "2025-11",
+    "verifyUrl": "https://www.credly.com/badges/37cbe617-8e5a-4313-a17e-f096a2d702a6/linked_in_profile",
+    "level": "Professional",
+    "tags": ["cloud", "aws"],
+    "order": 3
+  },
+  {
+    "id": "aws-sysops-administrator-associate",
+    "name": "AWS Certified SysOps Administrator, Associate",
+    "short": "AWS SysOps",
+    "issuer": "Amazon Web Services",
+    "issuerIcon": "simple-icons:amazonwebservices",
+    "issued": "2024-07",
+    "verifyUrl": "https://www.credly.com/badges/e951410e-8b8d-4c41-88a9-cf08289e4aa7/linked_in_profile",
+    "level": "Associate",
+    "tags": ["cloud", "aws", "operations"],
+    "order": 4
+  },
+  {
+    "id": "lpic-3",
+    "name": "Linux Enterprise Professional Certification",
+    "short": "LPIC-3",
+    "issuer": "Linux Professional Institute (LPI)",
+    "issuerIcon": "simple-icons:linuxprofessionalinstitute",
+    "issued": "2019-02",
+    "credentialId": "LPI000419406",
+    "level": "Enterprise Professional",
+    "tags": ["linux"],
+    "order": 5
+  }
+]

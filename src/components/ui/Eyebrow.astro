@@ -1,0 +1,20 @@
+---
+/**
+ * Mono label above a heading: "// about", "01 / discovery".
+ * The prefix is decorative and hidden from assistive tech.
+ */
+interface Props {
+  index?: string;
+  prefix?: string;
+  element?: 'p' | 'span' | 'div';
+  class?: string;
+}
+const { index, prefix = '//', class: className } = Astro.props;
+const Tag = Astro.props.element ?? 'p';
+---
+
+<Tag class:list={['text-mono-label text-accent font-mono uppercase', className]}>
+  {prefix && <span aria-hidden="true">{prefix} </span>}
+  {index && <span class="text-fg-faint">{index} / </span>}
+  <slot />
+</Tag>

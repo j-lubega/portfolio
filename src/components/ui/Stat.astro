@@ -1,0 +1,26 @@
+---
+/**
+ * A numeral with a label: "400+ / physical servers built". Tabular figures, mono.
+ *
+ * countUp: counts from 0 up to `value` once, the first time it scrolls into view (src/scripts/count-up.ts).
+ * The real final value is always the server-rendered text; the script only rewrites it while
+ * animating, so no-JS visitors and prefers-reduced-motion both just see the finished number.
+ */
+interface Props {
+  value: string;
+  label: string;
+  countUp?: boolean;
+  class?: string;
+}
+const { value, label, countUp = false, class: className } = Astro.props;
+---
+
+<div class:list={['flex flex-col gap-1', className]}>
+  <span
+    class="text-fg tabular font-mono text-3xl font-medium tracking-tight"
+    data-count-up={countUp ? value : undefined}
+  >
+    {value}
+  </span>
+  <span class="text-mono-meta text-fg-faint font-mono">{label}</span>
+</div>

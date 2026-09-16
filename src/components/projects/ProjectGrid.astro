@@ -1,0 +1,54 @@
+---
+/** Projects index body: tag chips (plain links to static tag pages) and the card grid. */
+import type { CollectionEntry } from 'astro:content';
+import { projectTags } from '../../content.config';
+import ProjectCard from './ProjectCard.astro';
+
+interface Props {
+  projects: CollectionEntry<'projects'>[];
+  /** Every published project, for the chip counts and the "all" total. */
+  all: CollectionEntry<'projects'>[];
+  /** Tag currently filtered, if any. */
+  active?: string;
+}
+const { projects, all, active } = Astro.props;
+const counts = Object.fromEntries(
+  projectTags.map((tag) => [tag, all.filter((p) => p.data.tags.includes(tag)).length])
+);
+const chips = projectTags.filter((tag) => counts[tag] > 0);
+const chipClass =
+  'text-mono-meta border-line-strong text-fg-muted hover:text-fg aria-[current=page]:bg-accent aria-[current=page]:text-accent-fg aria-[current=page]:border-accent inline-flex h-8 items-center gap-1.5 rounded-xs border px-3 font-mono transition-colors duration-(--dur-fast)';
+const cols = all.length >= 6 ? 'md:grid-cols-2 xl:grid-cols-3' : 'md:grid-cols-2';
+---
+
+<nav class="mt-8 flex flex-wrap items-center gap-2" aria-label="Filter by tag">
+  <a href="/projects" aria-current={!active ? 'page' : undefined} class={chipClass}>
+    all <span class="opacity-70">{all.length}</span>
+  </a>
+  {chips.map((tag) => (
+    <a
+      href={`/projects/tag/${tag}`}
+      aria-current={active === tag ? 'page' : undefined}
+      class={chipClass}
+    >
+      {tag} <span class="opacity-70">{counts[tag]}</span>
+    </a>
+  ))}
+</nav>
+
+<ul data-reveal-group class:list={['mt-8 grid gap-6', cols]}>
+  {projects.map((project, index) => (
+    <li class="flex">
+      <ProjectCard
+        project={project}
+        level="h2"
+        eager={index < 2}
+        sizes={
+          all.length >= 6
+            ? '(min-width: 1280px) 33vw, (min-width: 768px) 50vw, 100vw'
+            : '(min-width: 768px) 50vw, 100vw'
+        }
+      />
+    </li>
+  ))}
+</ul>

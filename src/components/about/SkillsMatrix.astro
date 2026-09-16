@@ -1,0 +1,53 @@
+---
+/** Skills from site.ts as six groups of tags, with brand glyphs where one exists. */
+import { skillGroups } from '../../data/site';
+import Container from '../ui/Container.astro';
+import Section from '../ui/Section.astro';
+import SectionHeader from '../ui/SectionHeader.astro';
+import Tag from '../ui/Tag.astro';
+
+const glyphs: Record<string, string> = {
+  RHEL: 'simple-icons:redhat',
+  'Rocky Linux': 'simple-icons:rockylinux',
+  Ubuntu: 'simple-icons:ubuntu',
+  Bash: 'simple-icons:gnubash',
+  Python: 'simple-icons:python',
+  Ansible: 'simple-icons:ansible',
+  Terraform: 'simple-icons:terraform',
+  'GitHub Actions': 'simple-icons:githubactions',
+  'Google Cloud Platform': 'simple-icons:googlecloud',
+  Prometheus: 'simple-icons:prometheus',
+  Grafana: 'simple-icons:grafana',
+  Docker: 'simple-icons:docker',
+  Kubernetes: 'simple-icons:kubernetes',
+  'Posit Workbench': 'simple-icons:posit',
+  'Posit Connect': 'simple-icons:posit',
+  'Posit Package Manager': 'simple-icons:posit',
+};
+const glyphFor = (skill: string) =>
+  glyphs[skill] ?? (skill.startsWith('AWS') ? 'simple-icons:amazonwebservices' : undefined);
+---
+
+<Section tone="surface" labelledby="skills-title">
+  <Container>
+    <SectionHeader eyebrow="skills" index="02" title="Tools I reach for" id="skills-title">
+      Grouped the way the work is grouped. Brand marks indicate familiarity, not endorsement.
+    </SectionHeader>
+    <div class="mt-10 grid gap-8 md:grid-cols-2">
+      {skillGroups.map((group, index) => (
+        <div class="border-line border-t pt-5">
+          <h3 class="text-mono-label text-fg-faint font-mono uppercase">
+            <span class="text-accent">0{index + 1}</span> / {group.category}
+          </h3>
+          <ul class="mt-4 flex flex-wrap gap-2" aria-label={group.category}>
+            {group.skills.map((skill) => (
+              <Tag element="li" icon={glyphFor(skill)}>
+                {skill}
+              </Tag>
+            ))}
+          </ul>
+        </div>
+      ))}
+    </div>
+  </Container>
+</Section>

@@ -1,0 +1,142 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Container from '../components/ui/Container.astro';
+import Section from '../components/ui/Section.astro';
+import Eyebrow from '../components/ui/Eyebrow.astro';
+import SectionHeader from '../components/ui/SectionHeader.astro';
+import Button from '../components/ui/Button.astro';
+import Icon from '../components/ui/Icon.astro';
+import DegreeCard from '../components/education/DegreeCard.astro';
+import CredentialCard from '../components/education/CredentialCard.astro';
+import { jsonLdIds } from '../data/site';
+
+const buildDate = new Date();
+const certs = (await getCollection('certifications')).sort((a, b) => a.data.order - b.data.order);
+const degrees = await getCollection('education');
+
+// In-page groups by issuer, in order of first appearance.
+const issuers = [...new Set(certs.map((c) => c.data.issuer))];
+const slug = (s: string) =>
+  s
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/(^-|-$)/g, '');
+
+const description =
+  'Degree and professional certifications held by Jimmy Lubega: Certified Kubernetes Administrator, CompTIA Security+, AWS Solutions Architect Professional, AWS SysOps Administrator, and Linux Professional Institute.';
+
+const person = {
+  '@type': 'Person',
+  '@id': jsonLdIds.person,
+  hasCredential: certs.map((c) => ({
+    '@type': 'EducationalOccupationalCredential',
+    name: c.data.name,
+    credentialCategory: 'certification',
+    recognizedBy: { '@type': 'Organization', name: c.data.issuer },
+    ...(c.data.verifyUrl ? { url: c.data.verifyUrl } : {}),
+  })),
+  alumniOf: degrees.map((d) => ({
+    '@type': 'CollegeOrUniversity',
+    name: d.data.institution,
+    ...(d.data.url ? { url: d.data.url } : {}),
+  })),
+};
+const asOf = buildDate.toISOString().slice(0, 10);
+---
+
+<BaseLayout
+  title="Education and certifications"
+  description={description}
+  ogImage="/og/education.png"
+  jsonLd={[person]}
+>
+  <Section class="pb-0 md:pb-0 lg:pb-0">
+    <Container>
+      <Eyebrow prefix="$">cat credentials.json</Eyebrow>
+      <h1 class="text-h1 text-fg mt-3">Education and certifications</h1>
+      <p class="text-lead text-fg-muted mt-4 max-w-2xl">
+        A computer science degree and five vendor and foundation certifications across Kubernetes,
+        security, AWS and Linux. Verification links are added as each issuer confirms them.
+      </p>
+      <nav class="mt-8 flex flex-wrap gap-2" aria-label="Jump to issuer">
+        {issuers.map((issuer) => (
+          <a
+            href={`#issuer-${slug(issuer)}`}
+            class="text-mono-meta border-line-strong text-fg-muted hover:text-fg hover:border-accent inline-flex h-8 items-center rounded-xs border px-3 font-mono transition-colors duration-(--dur-fast)"
+          >
+            {issuer}
+          </a>
+        ))}
+      </nav>
+    </Container>
+  </Section>
+
+  <Section labelledby="degree-title">
+    <Container>
+      <SectionHeader eyebrow="degree" index="01" title="Degree" id="degree-title" />
+      <div class="mt-8 flex flex-col gap-4">
+        {degrees.map((entry) => (
+          <DegreeCard entry={entry} />
+        ))}
+      </div>
+    </Container>
+  </Section>
+
+  <Section tone="surface" labelledby="certs-title">
+    <Container>
+      <SectionHeader eyebrow="certifications" index="02" title="Certifications" id="certs-title">
+        Grouped by issuer. Status is computed when the site is built.
+      </SectionHeader>
+      <div class="mt-10 flex flex-col gap-12">
+        {issuers.map((issuer) => {
+          const group = certs.filter((c) => c.data.issuer === issuer);
+          return (
+            <div>
+              <h3
+                id={`issuer-${slug(issuer)}`}
+                class="text-mono-label text-fg-faint scroll-mt-24 font-mono uppercase"
+              >
+                <span class="text-accent" aria-hidden="true">
+                  //{' '}
+                </span>
+                {issuer}
+              </h3>
+              <ul data-reveal-group class="mt-4 grid gap-4 md:grid-cols-2">
+                {group.map((cert) => (
+                  <CredentialCard cert={cert} />
+                ))}
+              </ul>
+            </div>
+          );
+        })}
+      </div>
+      <p class="text-mono-meta text-fg-faint mt-8 font-mono">
+        Status as of the build date, {asOf}. Issue and expiry dates marked pending are awaiting
+        confirmation from the issuer records.
+      </p>
+    </Container>
+  </Section>
+
+  <Section labelledby="edu-cta-title">
+    <Container>
+      <div class="flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
+        <div>
+          <h2 id="edu-cta-title" class="text-h2 text-fg max-w-xl">
+            Certifications are the floor. The case studies are the proof.
+          </h2>
+          <p class="text-fg-muted mt-3 max-w-xl">
+            See how the same skills were used on real platforms, then talk it through.
+          </p>
+        </div>
+        <div class="flex flex-wrap gap-3">
+          <Button href="/projects" variant="secondary">
+            See projects
+            <Icon name="lucide:arrow-right" size={16} />
+          </Button>
+          <Button href="/#book">Book a free 30-minute call</Button>
+        </div>
+      </div>
+    </Container>
+  </Section>
+</BaseLayout>

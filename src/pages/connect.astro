@@ -1,0 +1,81 @@
+---
+/**
+ * Connect and Resume. One job: send a prospect to LinkedIn (where the resume lives) or to Calendly.
+ * No PDF and no email address by design (website-improvement.md, Open questions 6 and 7).
+ */
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Container from '../components/ui/Container.astro';
+import Section from '../components/ui/Section.astro';
+import Eyebrow from '../components/ui/Eyebrow.astro';
+import Icon from '../components/ui/Icon.astro';
+import ConnectActions from '../components/connect/ConnectActions.astro';
+import BookACall from '../components/home/BookACall.astro';
+import { site, jsonLdIds } from '../data/site';
+
+const description =
+  'Connect with Jimmy Lubega on LinkedIn for a resume and a reply within a working day, or book a free 30-minute discovery call.';
+
+const person = {
+  '@type': 'Person',
+  '@id': jsonLdIds.person,
+  contactPoint: [
+    {
+      '@type': 'ContactPoint',
+      contactType: 'sales',
+      url: site.social.linkedin,
+      availableLanguage: 'English',
+    },
+  ],
+};
+
+const steps = [
+  {
+    icon: 'lucide:external-link',
+    text: 'Open the LinkedIn profile and send a connection request.',
+  },
+  { icon: 'lucide:mail', text: 'Mention the platform or problem in the note; the resume follows.' },
+  { icon: 'lucide:calendar', text: 'Or skip the inbox and book a call below.' },
+];
+---
+
+<BaseLayout title="Connect" description={description} ogImage="/og/connect.png" jsonLd={[person]}>
+  <Section class="pb-0 md:pb-0 lg:pb-0">
+    <Container size="prose">
+      <Eyebrow prefix="$">ssh jimmy@linkedin</Eyebrow>
+      <h1 class="text-h1 text-fg mt-3">Connect</h1>
+      <p class="text-lead text-fg-muted mt-4">
+        The fastest way to reach me is LinkedIn. Connect there for my resume and a reply within a
+        working day.
+      </p>
+      <div class="mt-8">
+        <ConnectActions />
+      </div>
+      <ol class="text-small text-fg-muted mt-10 flex flex-col gap-3">
+        {steps.map((step, index) => (
+          <li class="flex items-start gap-3">
+            <span class="text-mono-meta text-fg-faint tabular mt-0.5 font-mono">0{index + 1}</span>
+            <Icon name={step.icon} size={16} class="text-accent mt-0.5" />
+            <span>{step.text}</span>
+          </li>
+        ))}
+      </ol>
+      <p class="text-mono-meta text-fg-faint mt-10 font-mono">
+        <span class="text-accent" aria-hidden="true">
+          location:
+        </span>{' '}
+        Virginia, USA · remote worldwide
+      </p>
+    </Container>
+  </Section>
+
+  <div class="mt-16 md:mt-24">
+    <BookACall
+      id="book"
+      index="02"
+      eyebrow="prefer to talk?"
+      title="Prefer to talk? Book a call"
+      lead="Thirty minutes free, or an hour of working time. Both on Google Meet."
+      emphasis="secondary"
+    />
+  </div>
+</BaseLayout>

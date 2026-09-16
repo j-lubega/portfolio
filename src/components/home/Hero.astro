@@ -1,0 +1,89 @@
+---
+/**
+ * Home hero: asymmetric two-column at lg (7/5), single column below.
+ * The primary CTA sits above the fold at every breakpoint.
+ */
+import { site } from '../../data/site';
+import Container from '../ui/Container.astro';
+import Eyebrow from '../ui/Eyebrow.astro';
+import Button from '../ui/Button.astro';
+import Icon from '../ui/Icon.astro';
+import RoleLine from './RoleLine.astro';
+import Topology from './Topology.astro';
+---
+
+<section class="border-line relative border-b" aria-labelledby="hero-title">
+  <Container size="wide" class="py-10 md:py-20 lg:py-24">
+    <div class="grid items-center gap-12 lg:grid-cols-12 lg:gap-8">
+      <div class="lg:col-span-7">
+        <Eyebrow prefix="$">whoami</Eyebrow>
+        <h1 id="hero-title" class="text-display text-fg mt-4 max-w-3xl">
+          Hi, I'm Jimmy.
+          <span class="text-fg-muted mt-1 block text-[0.72em] leading-[1.15] md:mt-0 md:text-[1em] md:leading-[inherit]">
+            I build and support cloud platforms that stay up.
+          </span>
+        </h1>
+        <RoleLine
+          class="mt-5"
+          lines={[
+            'Technical Consultant · Platform Engineer',
+            'Cloud · Linux · Automation · Kubernetes',
+          ]}
+        />
+        <p class="text-fg-muted md:text-lead mt-5 max-w-xl">
+          I design, deploy, and support secure, scalable platforms across AWS and Azure, using
+          Infrastructure as Code, automation, and modern DevOps practices.
+        </p>
+        <div class="mt-6 flex flex-wrap items-center gap-3 md:mt-8">
+          <Button href="#book" size="lg">
+            Book a free 30-minute call
+            <Icon name="lucide:arrow-right" size={18} />
+          </Button>
+          <Button href="/projects" variant="secondary" size="lg">
+            See projects
+          </Button>
+        </div>
+        <ul class="mt-8 flex items-center gap-2" aria-label="Profiles">
+          <li>
+            <a
+              href={site.social.linkedin}
+              target="_blank"
+              rel="me noopener noreferrer"
+              class="text-fg-muted hover:text-accent hover:bg-accent-soft inline-flex size-10 items-center justify-center rounded-sm transition-[color,background-color] duration-(--dur-fast)"
+              aria-label="Jimmy Lubega on LinkedIn (opens in a new tab)"
+            >
+              <Icon name="simple-icons:linkedin" size={18} />
+            </a>
+          </li>
+          <li>
+            <a
+              href={site.social.github}
+              target="_blank"
+              rel="me noopener noreferrer"
+              class="text-fg-muted hover:text-accent hover:bg-accent-soft inline-flex size-10 items-center justify-center rounded-sm transition-[color,background-color] duration-(--dur-fast)"
+              aria-label="Jimmy Lubega on GitHub (opens in a new tab)"
+            >
+              <Icon name="simple-icons:github" size={18} />
+            </a>
+          </li>
+          <li class="text-mono-meta text-fg-faint ml-2 font-mono">
+            Virginia, USA · remote worldwide
+          </li>
+        </ul>
+      </div>
+      <div class="lg:col-span-5">
+        <div class="border-line bg-surface rounded-lg border p-3 sm:p-4">
+          <div class="border-line flex items-center gap-2 border-b pb-3">
+            <span class="bg-danger/70 size-2.5 rounded-full" aria-hidden="true"></span>
+            <span class="bg-warn/70 size-2.5 rounded-full" aria-hidden="true"></span>
+            <span class="bg-ok/70 size-2.5 rounded-full" aria-hidden="true"></span>
+            <span class="text-mono-meta text-fg-faint ml-2 font-mono">platform.topology</span>
+          </div>
+          <div class="pt-3">
+            <Topology />
+          </div>
+        </div>
+      </div>
+    </div>
+  </Container>
+</section>

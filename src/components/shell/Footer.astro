@@ -1,0 +1,115 @@
+---
+/** Site footer: identity, section links, profiles, and the theme reset control. */
+import { site } from '../../data/site';
+import Icon from '../ui/Icon.astro';
+import Wordmark from './Wordmark.astro';
+import StatusPill from '../ui/StatusPill.astro';
+
+const year = new Date().getFullYear();
+---
+
+<footer class="border-line bg-surface border-t">
+  <div class="mx-auto w-full max-w-6xl px-5 py-12 sm:px-8 md:py-16">
+    <div class="grid gap-10 md:grid-cols-[1.4fr_1fr_1fr]">
+      <div>
+        <p class="text-fg font-mono text-[15px] font-medium tracking-tight">
+          <Wordmark />
+        </p>
+        <p class="text-small text-fg-muted mt-3 max-w-sm">
+          {site.role}. Secure, scalable platforms across AWS and Azure, built with Infrastructure as
+          Code and supported through the whole lifecycle.
+        </p>
+      </div>
+
+      <nav aria-label="Footer">
+        <p class="text-mono-label text-fg-faint font-mono uppercase">Sections</p>
+        <ul class="mt-4 flex flex-col gap-2">
+          {site.nav.map((link) => (
+            <li>
+              <a
+                href={link.href}
+                class="text-small text-fg-muted hover:text-accent rounded-xs link-underline"
+              >
+                {link.label}
+              </a>
+            </li>
+          ))}
+          <li>
+            <a
+              href="/book"
+              class="text-small text-fg-muted hover:text-accent rounded-xs link-underline"
+            >
+              Book a call
+            </a>
+          </li>
+        </ul>
+      </nav>
+
+      <div>
+        <p class="text-mono-label text-fg-faint font-mono uppercase">Profiles</p>
+        <ul class="mt-4 flex flex-col gap-2">
+          <li>
+            <a
+              href={site.social.linkedin}
+              target="_blank"
+              rel="me noopener noreferrer"
+              class="text-small text-fg-muted hover:text-accent inline-flex items-center gap-2 rounded-xs link-underline"
+            >
+              <Icon name="simple-icons:linkedin" size={16} />
+              LinkedIn
+              <span class="sr-only">(opens in a new tab)</span>
+            </a>
+          </li>
+          <li>
+            <a
+              href={site.social.github}
+              target="_blank"
+              rel="me noopener noreferrer"
+              class="text-small text-fg-muted hover:text-accent inline-flex items-center gap-2 rounded-xs link-underline"
+            >
+              <Icon name="simple-icons:github" size={16} />
+              GitHub
+              <span class="sr-only">(opens in a new tab)</span>
+            </a>
+          </li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="border-line text-mono-meta text-fg-faint mt-10 flex flex-col gap-4 border-t pt-6 font-mono sm:flex-row sm:items-center sm:justify-between">
+      <p>
+        &copy; {year} {site.company}. All rights reserved.
+      </p>
+      <div class="flex flex-wrap items-center gap-4">
+        <button
+          type="button"
+          data-theme-reset
+          hidden
+          class="hover:text-accent rounded-xs link-underline"
+        >
+          Reset theme to automatic
+        </button>
+        <StatusPill status="ok">status: operational</StatusPill>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script>
+  import { clearManualTheme, getManualTheme } from '../../scripts/theme';
+
+  const buttons = () => document.querySelectorAll<HTMLButtonElement>('[data-theme-reset]');
+  const sync = () => buttons().forEach((button) => (button.hidden = getManualTheme() === null));
+  const init = () => {
+    buttons().forEach((button) => {
+      if (button.dataset.bound) return;
+      button.dataset.bound = 'true';
+      button.addEventListener('click', clearManualTheme);
+    });
+    sync();
+  };
+
+  init();
+  document.addEventListener('astro:page-load', init);
+  window.addEventListener('jl:themechange', sync);
+</script>

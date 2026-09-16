@@ -1,0 +1,61 @@
+/*
+  Design tokens: the only place raw color and motion values live.
+  Components never reference these directly; global.css maps them into Tailwind
+  (bg-canvas, text-fg-muted, border-line, ...).
+
+  Colors use light-dark(): each token carries its light and dark value and the
+  browser picks one from the element's color-scheme. Setting data-theme on <html>
+  pins color-scheme; without it, the OS preference decides (JavaScript disabled).
+  A theme-invariant surface (a code block, an image-backed card) just sets
+  color-scheme: dark on itself and every token inside it flips.
+*/
+@layer base {
+  :root {
+    color-scheme: light dark;
+
+    /* Surfaces */
+    --canvas: light-dark(#f7f8fa, #0b1220);
+    --surface: light-dark(#ffffff, #111a2b);
+    --surface-raised: light-dark(#ffffff, #182338);
+
+    /* Lines */
+    --line: light-dark(rgb(15 23 42 / 0.08), rgb(255 255 255 / 0.08));
+    --line-strong: light-dark(rgb(15 23 42 / 0.2), rgb(255 255 255 / 0.18));
+
+    /* Foreground */
+    --fg: light-dark(#0f172a, #e6edf7);
+    --fg-muted: light-dark(#475569, #a5b1c5);
+    --fg-faint: light-dark(#5b6b82, #7686a0);
+
+    /* Accent: same hue family, lightness flips so both pass AA on their canvas */
+    --accent: light-dark(#0369a1, #5ee1ff);
+    --accent-fg: light-dark(#ffffff, #06121f);
+    --accent-soft: light-dark(rgb(3 105 161 / 0.1), rgb(94 225 255 / 0.12));
+    --accent-hover: light-dark(#075985, #8beaff);
+
+    /* Status */
+    --ok: light-dark(#15803d, #4ade80);
+    --warn: light-dark(#b45309, #fbbf24);
+    --danger: light-dark(#b91c1c, #f87171);
+
+    /* Theme-invariant: terminals are dark in both themes */
+    --code-bg: light-dark(#0f172a, #0a1526);
+    --code-fg: #e6edf7;
+    --scrim: rgb(5 10 20 / 0.72);
+
+    /* Motion */
+    --dur-fast: 150ms;
+    --dur-base: 250ms;
+    --dur-slow: 450ms;
+    --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+    --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+  }
+
+  :root[data-theme='light'] {
+    color-scheme: light;
+  }
+
+  :root[data-theme='dark'] {
+    color-scheme: dark;
+  }
+}
