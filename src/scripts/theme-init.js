@@ -1,7 +1,10 @@
 /* Inline theme bootstrap. Runs in <head> before first paint; keep it tiny and dependency-free.
-   Mirrors resolveTheme() in theme.ts: manual choice > OS dark > time of day (dark 19:00 to 06:59). */
+   Mirrors resolveTheme() in theme.ts: manual choice > OS dark > time of day (dark 19:00 to 06:59).
+   Also flags JS-on: data-reveal elements only hide (global.css) once this class is present, so a
+   visitor with JavaScript disabled or blocked always sees full content, never a stuck opacity:0. */
 (function () {
   var root = document.documentElement;
+  root.classList.add('has-js');
   function resolve() {
     var manual = null;
     try {

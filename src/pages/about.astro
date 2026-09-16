@@ -1,0 +1,64 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Intro from '../components/about/Intro.astro';
+import Principles from '../components/about/Principles.astro';
+import SkillsMatrix from '../components/about/SkillsMatrix.astro';
+import Container from '../components/ui/Container.astro';
+import Section from '../components/ui/Section.astro';
+import Button from '../components/ui/Button.astro';
+import Icon from '../components/ui/Icon.astro';
+import { getCollection } from 'astro:content';
+import { getImage } from 'astro:assets';
+import { site, skillGroups, experience, jsonLdIds } from '../data/site';
+import { headshot } from '../lib/media';
+
+const degrees = await getCollection('education');
+const headshotUrl = headshot
+  ? new URL((await getImage({ src: headshot, width: 800 })).src, site.url).toString()
+  : undefined;
+
+const description =
+  'Jimmy Lubega is a Technical Consultant and Platform Engineer specializing in Cloud Infrastructure, Linux, Automation and Kubernetes, designing and supporting secure, scalable platforms across AWS and Azure.';
+
+// Page-level Person node: fuller than the site-wide one, same @id so they merge.
+const person = {
+  '@type': 'Person',
+  '@id': jsonLdIds.person,
+  name: site.name,
+  givenName: 'Jimmy',
+  familyName: 'Lubega',
+  jobTitle: site.role,
+  description,
+  url: `${site.url}/about`,
+  worksFor: { '@id': jsonLdIds.organization },
+  homeLocation: { '@type': 'Place', name: 'Virginia, USA' },
+  ...(headshotUrl ? { image: headshotUrl } : {}),
+  knowsAbout: skillGroups.flatMap((group) => group.skills),
+  alumniOf: degrees.map((d) => ({ '@type': 'CollegeOrUniversity', name: d.data.institution })),
+  hasOccupation: experience.slice(0, 3).map((entry) => ({
+    '@type': 'Occupation',
+    name: entry.role,
+    description: entry.company,
+  })),
+  sameAs: [site.social.linkedin, site.social.github],
+};
+---
+
+<BaseLayout title="About" description={description} ogImage="/og/about.png" jsonLd={[person]}>
+  <Intro />
+  <Principles />
+  <SkillsMatrix />
+  <Section labelledby="about-cta-title">
+    <Container>
+      <div class="flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
+        <h2 id="about-cta-title" class="text-h2 text-fg max-w-xl">
+          Want this experience on your platform?
+        </h2>
+        <Button href="/#book" size="lg">
+          Book a free 30-minute call
+          <Icon name="lucide:arrow-right" size={18} />
+        </Button>
+      </div>
+    </Container>
+  </Section>
+</BaseLayout>

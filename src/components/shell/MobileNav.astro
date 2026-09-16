@@ -1,0 +1,124 @@
+---
+/**
+ * Mobile navigation as a native <dialog>: showModal() traps focus, Esc closes,
+ * and focus returns to the opener on close, all without JavaScript of our own
+ * beyond open/close wiring. No React.
+ */
+import { site } from '../../data/site';
+import Icon from '../ui/Icon.astro';
+import Wordmark from './Wordmark.astro';
+
+interface Props {
+  current: string;
+}
+const { current } = Astro.props;
+const isActive = (href: string) =>
+  href === '/' ? current === '/' : current === href || current.startsWith(`${href}/`);
+---
+
+<dialog
+  id="mobile-nav"
+  class="mobile-nav bg-canvas text-fg m-0 h-dvh max-h-none w-full max-w-none p-0 md:hidden"
+  aria-label="Site menu"
+>
+  <div class="flex h-full flex-col px-5 sm:px-8">
+    <div class="border-line flex h-16 items-center justify-between border-b">
+      <span class="text-fg font-mono text-[15px] font-medium tracking-tight">
+        <Wordmark />
+      </span>
+      <button
+        type="button"
+        class="text-fg-muted hover:text-accent hover:bg-accent-soft inline-flex size-10 items-center justify-center rounded-sm"
+        data-mobile-nav-close
+        aria-label="Close menu"
+      >
+        <Icon name="lucide:x" size={22} />
+      </button>
+    </div>
+    <nav class="py-6" aria-label="Primary, mobile">
+      <ul class="flex flex-col">
+        {site.nav.map((link, index) => {
+          const active = isActive(link.href);
+          return (
+            <li class="border-line border-b">
+              <a
+                href={link.href}
+                aria-current={active ? 'page' : undefined}
+                data-mobile-nav-link
+                class:list={[
+                  'text-h3 flex items-center gap-4 py-4',
+                  active ? 'text-fg' : 'text-fg-muted hover:text-fg',
+                ]}
+              >
+                <span class="text-mono-meta text-fg-faint w-6 font-mono" aria-hidden="true">
+                  0{index + 1}
+                </span>
+                {link.label}
+                {active && (
+                  <span class="text-accent ml-auto font-mono text-sm" aria-hidden="true">
+                    [current]
+                  </span>
+                )}
+              </a>
+            </li>
+          );
+        })}
+      </ul>
+    </nav>
+    <p class="text-mono-meta text-fg-faint mt-auto pb-8 font-mono">{site.role}</p>
+  </div>
+</dialog>
+
+<style>
+  .mobile-nav::backdrop {
+    background: var(--scrim);
+  }
+  .mobile-nav[open] {
+    animation: nav-in var(--dur-base) var(--ease-out);
+  }
+  @keyframes nav-in {
+    from {
+      opacity: 0;
+      transform: translateY(-8px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  /* Lock the page behind the sheet */
+  :global(html:has(dialog#mobile-nav[open])) {
+    overflow: hidden;
+  }
+</style>
+
+<script>
+  const dialog = () => document.getElementById('mobile-nav') as HTMLDialogElement | null;
+
+  const close = () => {
+    const el = dialog();
+    if (el?.open) el.close();
+  };
+
+  const init = () => {
+    const el = dialog();
+    if (!el || el.dataset.bound) return;
+    el.dataset.bound = 'true';
+
+    document
+      .querySelectorAll<HTMLButtonElement>('[data-mobile-nav-open]')
+      .forEach((button) => button.addEventListener('click', () => el.showModal()));
+    el.querySelectorAll<HTMLElement>('[data-mobile-nav-close], [data-mobile-nav-link]').forEach(
+      (node) => node.addEventListener('click', close)
+    );
+    // Tap on the backdrop (outside the panel) closes too.
+    el.addEventListener('click', (event) => {
+      if (event.target === el) close();
+    });
+  };
+
+  init();
+  document.addEventListener('astro:page-load', init);
+  // The header persists across navigations; never carry an open sheet into the next page.
+  document.addEventListener('astro:before-preparation', close);
+</script>

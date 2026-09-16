@@ -2,34 +2,31 @@
 // Usage: node scripts/baseline.mjs <baseUrl> <outDir>
 // Requires a local Chrome install; uses playwright-core so no browser download is needed.
 import { chromium } from 'playwright-core';
+import { findChrome } from './chrome-path.mjs';
 import { mkdirSync } from 'node:fs';
 import { join } from 'node:path';
 
 const [base = 'http://localhost:4322', outDir = 'docs/baseline/screenshots'] =
   process.argv.slice(2);
+// Current routes as of Phase 8. The original Phase 0 baseline (docs/baseline/2026-09-13) was
+// captured against /blog and /contact, which have since been redirected away; that historical
+// capture is not reproducible with this route list, by design, since those routes are gone.
 const routes = [
   '/',
-  '/blog',
+  '/about',
+  '/education',
   '/projects',
   '/projects/posit-ssl',
   '/projects/linux-hardening-selinux',
   '/projects/enterprise-infrastructure-builds',
   '/book',
-  '/contact',
+  '/connect',
 ];
 const viewports = [
   { name: 'mobile-390', width: 390, height: 844 },
   { name: 'desktop-1440', width: 1440, height: 900 },
 ];
-const chromePaths = [
-  'C:/Program Files/Google/Chrome/Application/chrome.exe',
-  'C:/Program Files (x86)/Google/Chrome/Application/chrome.exe',
-  '/usr/bin/google-chrome',
-  '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome',
-];
-const { existsSync } = await import('node:fs');
-const executablePath = process.env.CHROME_PATH ?? chromePaths.find((p) => existsSync(p));
-if (!executablePath) throw new Error('Chrome not found; set CHROME_PATH');
+const executablePath = findChrome();
 
 mkdirSync(outDir, { recursive: true });
 const browser = await chromium.launch({ executablePath, headless: true });

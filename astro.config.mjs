@@ -4,15 +4,31 @@ import tailwindcss from '@tailwindcss/vite';
 import sitemap from '@astrojs/sitemap';
 import react from '@astrojs/react';
 import icon from 'astro-icon';
+import { sourceFileFor, lastmodFor, sitemapMeta } from './scripts/sitemap-meta.mjs';
 
 // https://astro.build/config
 export default defineConfig({
   // Production domain per the client brief (Phase 13 registers it). Pending Open question 1.
   site: 'https://jlpro-po.com',
+  // 4321 falls inside a Windows-reserved TCP port range on this machine, causing EACCES on bind.
+  server: { port: 3000 },
+  // Retired routes. vercel.json carries the same rules as real 301s; these keep dev/preview honest.
+  redirects: {
+    '/contact': '/connect',
+    '/blog': '/',
+  },
   integrations: [
     sitemap({
-      // Internal review pages never belong in the sitemap.
+      // Internal review pages never belong in the sitemap. /404 is not a real route, so it is
+      // never in the page list @astrojs/sitemap builds from in the first place.
       filter: (page) => !page.includes('/design'),
+      serialize(item) {
+        const pathname = new URL(item.url).pathname;
+        const meta = sitemapMeta(pathname);
+        const source = sourceFileFor(pathname);
+        const lastmod = source ? lastmodFor(source) : undefined;
+        return { ...item, ...meta, ...(lastmod ? { lastmod } : {}) };
+      },
     }),
     react(),
     icon({
@@ -41,6 +57,11 @@ export default defineConfig({
           'activity',
           'mail',
           'copy',
+          'chevron-right',
+          'arrow-left',
+          'badge-check',
+          'briefcase',
+          'calendar-days',
         ],
         'simple-icons': [
           'amazonwebservices',
@@ -61,6 +82,11 @@ export default defineConfig({
           'python',
           'gnubash',
           'googlecloud',
+          'comptia',
+          'cncf',
+          'linuxfoundation',
+          'linuxprofessionalinstitute',
+          'credly',
         ],
       },
     }),
@@ -90,6 +116,11 @@ export default defineConfig({
       display: 'swap',
     },
   ],
+  markdown: {
+    // One dark theme: code blocks are dark in both site themes (Section 3.2 of the plan).
+    // The background is pinned to the code-bg token in typography.css.
+    shikiConfig: { theme: 'github-dark-default', wrap: false },
+  },
   vite: {
     plugins: [tailwindcss()],
   },

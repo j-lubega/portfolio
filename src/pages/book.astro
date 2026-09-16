@@ -1,88 +1,133 @@
 ---
+/**
+ * Deep-linkable Book a Call page: the same two option cards as Home, plus an inline
+ * Calendly widget that switches between the two events.
+ */
 import BaseLayout from '../layouts/BaseLayout.astro';
+import Container from '../components/ui/Container.astro';
+import Section from '../components/ui/Section.astro';
+import Eyebrow from '../components/ui/Eyebrow.astro';
+import BookACall from '../components/home/BookACall.astro';
+import { site } from '../data/site';
 
-const calendlyUrl = 'https://calendly.com/jimmylubegapro/30min';
-const calendlyEmbedUrl = `${calendlyUrl}?embed_type=Inline&hide_gdpr_banner=1`;
+const options = [site.calendly.discovery, site.calendly.working];
+const embed = (url: string) => `${url}?embed_type=Inline&hide_gdpr_banner=1`;
+const price = (n: number) => (n === 0 ? 'free' : `$${n}`);
 ---
 
 <BaseLayout
-  title="Request Technical Consulting | purenest360 llc"
-  description="Request technical consulting services from purenest360 llc: book a free 30-minute call or a $80 60-minute consultation for Posit Team, cloud platforms, Linux, automation, security, and enterprise application support."
-  keywords="purenest360 llc technical consulting, request consulting services, book technical consultation, Calendly technical call, free technical consultation, cloud consulting, Posit Team support, AWS consultant, Azure consultant, GCP consultant, Linux troubleshooting, enterprise application support"
+  title="Book a call"
+  description="Book a free 30-minute discovery consultation or a 60-minute working session ($100) with Jimmy Lubega: cloud infrastructure, Linux, automation and Kubernetes."
+  ogImage="/og/book.png"
 >
-  <section class="mx-auto max-w-5xl px-6 py-16 sm:py-24">
-    <div class="max-w-3xl">
-      <p class="font-mono text-xs uppercase tracking-[0.2em] text-accent">Consultation desk</p>
-      <h1 class="mt-5 text-4xl font-semibold tracking-tight text-fg sm:text-6xl">
-        Bring a hard problem.
-      </h1>
-      <p class="mt-6 text-xl leading-relaxed text-fg-muted">
-        Book a technical consulting service for focused guidance on platform architecture, cloud
-        infrastructure, Linux operations, automation, security, or a production issue that needs a
-        second set of eyes.
+  <Section class="pb-0 md:pb-0 lg:pb-0">
+    <Container>
+      <Eyebrow prefix="$">calendly --list</Eyebrow>
+      <h1 class="text-h1 text-fg mt-3">Book a call</h1>
+      <p class="text-lead text-fg-muted mt-4 max-w-2xl">
+        Bring a hard problem. Pick the free discovery call for a first conversation, or a working
+        session when you already know what needs solving.
       </p>
-    </div>
+    </Container>
+  </Section>
 
-    <div class="mt-14 grid gap-10 lg:grid-cols-[0.7fr_1.3fr]">
-      <div class="border-t border-line-strong pt-6">
-        <h2 class="text-2xl font-semibold text-fg">What we can cover</h2>
-        <ul class="mt-6 space-y-4 text-fg-muted">
-          <li class="border-b border-line pb-4">Platform and cloud architecture</li>
-          <li class="border-b border-line pb-4">Linux, Kubernetes, and reliability</li>
-          <li class="border-b border-line pb-4">Terraform, Ansible, and automation</li>
-          <li class="border-b border-line pb-4">Security, TLS, and operational readiness</li>
-        </ul>
-        <div class="mt-10 border-t border-line pt-6">
-          <p class="font-mono text-xs uppercase tracking-[0.2em] text-accent">
-            Consultation options
-          </p>
-          <p class="mt-4 text-sm leading-relaxed text-fg-muted">
-            <strong class="text-fg">30 minutes · Free</strong>
-            <br />A focused introduction, technical direction, or quick second opinion.
-          </p>
-          <p class="mt-4 text-sm leading-relaxed text-fg-muted">
-            <strong class="text-fg">60 minutes · $80</strong>
-            <br />A deeper working session for architecture, troubleshooting, or an implementation
-            plan.
-          </p>
+  <BookACall id="options" compact />
+
+  <Section labelledby="schedule-title">
+    <Container>
+      <div class="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
+        <div>
+          <Eyebrow index="03">schedule</Eyebrow>
+          <h2 id="schedule-title" class="text-h2 text-fg mt-3">
+            Pick a time
+          </h2>
+        </div>
+        <div class="flex gap-2" role="group" aria-label="Choose an event type">
+          {options.map((option, i) => (
+            <button
+              type="button"
+              class:list={[
+                'text-small border-line-strong inline-flex h-10 items-center gap-2 rounded-sm border px-4 font-medium transition-colors duration-(--dur-fast)',
+                i === 0 ? 'bg-accent text-accent-fg border-accent' : 'text-fg-muted hover:text-fg',
+              ]}
+              data-schedule-option={option.id}
+              data-url={embed(option.url)}
+              data-title={`Calendly scheduling for the ${option.minutes}-minute ${option.title.toLowerCase()} (${price(option.price)})`}
+              aria-pressed={i === 0 ? 'true' : 'false'}
+            >
+              {option.minutes} min · {price(option.price)}
+            </button>
+          ))}
         </div>
       </div>
 
       <div
-        class="overflow-hidden border border-line-strong bg-surface p-2 sm:p-3"
+        class="border-line bg-surface mt-8 overflow-hidden rounded-lg border p-2 sm:p-3"
         style="color-scheme: light"
       >
         <iframe
-          src={calendlyEmbedUrl}
-          title="Calendly booking schedule for a technical consultation"
-          class="h-[54rem] min-h-[42rem] w-full border-0"
+          id="schedule-frame"
+          src={embed(options[0].url)}
+          title={`Calendly scheduling for the ${options[0].minutes}-minute ${options[0].title.toLowerCase()} (${price(options[0].price)})`}
+          class="h-[54rem] min-h-[42rem] w-full rounded-md border-0 bg-white"
           loading="lazy"
         ></iframe>
-        <div class="border-t border-line px-3 py-3 text-center text-sm text-fg-muted">
-          Having trouble viewing the schedule?{' '}
+        <p class="text-small text-fg-muted border-line border-t px-3 py-3 text-center">
+          Having trouble with the schedule?
           <a
-            href={calendlyUrl}
+            href={options[0].url}
+            data-schedule-fallback
             target="_blank"
             rel="noopener noreferrer"
-            class="font-semibold text-accent hover:text-accent-hover"
+            class="text-accent font-medium link-underline"
           >
             Open Calendly in a new tab
           </a>
-          .
-        </div>
+        </p>
       </div>
-    </div>
 
-    <aside class="mt-10 border-t border-line pt-4 text-small leading-relaxed text-fg-faint">
-      <h2 class="text-mono-label font-mono uppercase text-fg-faint">Privacy &amp; usage</h2>
-      <p class="mt-2 max-w-4xl">
-        Calendly processes the details needed to schedule and confirm your appointment. By booking,
-        you agree to Calendly's terms and privacy practices. Do not include passwords, private keys,
-        credentials, or confidential customer data in booking notes. For the best session, choose
-        the right duration, use a work email, share a short problem summary, and join with relevant
-        non-sensitive logs or context ready. No copyright claimed on this page's original text;
-        attribution to purenest360 llc is appreciated.
-      </p>
-    </aside>
-  </section>
+      <aside class="border-line mt-10 border-t pt-5" aria-labelledby="privacy-title">
+        <h2 id="privacy-title" class="text-mono-label text-fg-faint font-mono uppercase">
+          Privacy and usage
+        </h2>
+        <p class="text-small text-fg-muted mt-3 max-w-3xl">
+          Calendly processes the details needed to schedule and confirm your appointment under its
+          own terms and privacy notice. Do not include passwords, private keys, credentials or
+          confidential customer data in booking notes. For the best session, choose the right
+          duration, use a work email, and have a short problem summary and any non-sensitive logs
+          ready.
+        </p>
+      </aside>
+    </Container>
+  </Section>
 </BaseLayout>
+
+<script>
+  const init = () => {
+    const frame = document.getElementById('schedule-frame') as HTMLIFrameElement | null;
+    const fallback = document.querySelector<HTMLAnchorElement>('[data-schedule-fallback]');
+    const buttons = document.querySelectorAll<HTMLButtonElement>('[data-schedule-option]');
+    if (!frame || buttons.length === 0) return;
+
+    buttons.forEach((button) => {
+      if (button.dataset.bound) return;
+      button.dataset.bound = 'true';
+      button.addEventListener('click', () => {
+        const url = button.dataset.url ?? '';
+        frame.src = url;
+        frame.title = button.dataset.title ?? frame.title;
+        if (fallback) fallback.href = url.split('?')[0];
+        buttons.forEach((other) => {
+          const active = other === button;
+          other.setAttribute('aria-pressed', String(active));
+          other.classList.toggle('bg-accent', active);
+          other.classList.toggle('text-accent-fg', active);
+          other.classList.toggle('border-accent', active);
+          other.classList.toggle('text-fg-muted', !active);
+        });
+      });
+    });
+  };
+  init();
+  document.addEventListener('astro:page-load', init);
+</script>

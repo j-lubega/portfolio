@@ -1,0 +1,39 @@
+---
+import { getCollection } from 'astro:content';
+import { projectTags } from '../../../content.config';
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import Container from '../../../components/ui/Container.astro';
+import Section from '../../../components/ui/Section.astro';
+import Eyebrow from '../../../components/ui/Eyebrow.astro';
+import ProjectGrid from '../../../components/projects/ProjectGrid.astro';
+
+export async function getStaticPaths() {
+  const all = (await getCollection('projects', ({ data }) => data.status !== 'draft')).sort(
+    (a, b) => a.data.order - b.data.order
+  );
+  return projectTags
+    .filter((tag) => all.some((p) => p.data.tags.includes(tag)))
+    .map((tag) => ({
+      params: { tag },
+      props: { tag, all, projects: all.filter((p) => p.data.tags.includes(tag)) },
+    }));
+}
+
+const { tag, all, projects } = Astro.props;
+---
+
+<BaseLayout
+  title={`Projects tagged ${tag}`}
+  description={`Case studies tagged ${tag}: ${projects.map((p) => p.data.title).join('; ')}.`}
+>
+  <Section>
+    <Container size="wide">
+      <Eyebrow prefix="$">ls ./projects --tag {tag}</Eyebrow>
+      <h1 class="text-h1 text-fg mt-3">Projects: {tag}</h1>
+      <p class="text-lead text-fg-muted mt-4 max-w-2xl">
+        {projects.length} of {all.length} case studies.
+      </p>
+      <ProjectGrid projects={projects} all={all} active={tag} />
+    </Container>
+  </Section>
+</BaseLayout>

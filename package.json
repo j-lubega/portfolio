@@ -15,7 +15,9 @@
     "format:check": "prettier --check .",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
-    "baseline": "node scripts/baseline.mjs"
+    "baseline": "node scripts/baseline.mjs",
+    "site:check": "node scripts/site-check.mjs",
+    "a11y:check": "node scripts/a11y.mjs"
   },
   "dependencies": {
     "@astrojs/react": "^6.0.5",
@@ -35,6 +37,7 @@
   },
   "devDependencies": {
     "@astrojs/check": "^0.9.10",
+    "@axe-core/playwright": "^4.13.0",
     "@eslint/js": "^9.39.5",
     "@tailwindcss/typography": "^0.5.20",
     "eslint": "^9.39.5",

@@ -1,0 +1,16 @@
+---
+/** "~/jimmy.lubega" in mono. Kept in one component so the prefix and name never get a space between them. */
+import { site } from '../../data/site';
+
+interface Props {
+  class?: string;
+}
+const { class: className } = Astro.props;
+---
+
+<span class:list={['font-mono text-[15px] font-medium tracking-tight', className]}>
+  <span class="text-accent" aria-hidden="true">
+    ~/
+  </span>
+  {site.wordmark}
+</span>

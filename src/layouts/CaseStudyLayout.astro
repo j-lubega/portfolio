@@ -1,0 +1,149 @@
+---
+/**
+ * Frame for one case study: header, two-column body (prose + sticky aside), prev/next, CTA.
+ * Emits TechArticle and BreadcrumbList JSON-LD and article Open Graph metadata.
+ */
+import type { CollectionEntry } from 'astro:content';
+import type { MarkdownHeading } from 'astro';
+import BaseLayout from './BaseLayout.astro';
+import Container from '../components/ui/Container.astro';
+import Button from '../components/ui/Button.astro';
+import Icon from '../components/ui/Icon.astro';
+import CaseStudyHeader from '../components/projects/CaseStudyHeader.astro';
+import AtAGlance from '../components/projects/AtAGlance.astro';
+import PrevNext from '../components/projects/PrevNext.astro';
+import { site, jsonLdIds } from '../data/site';
+
+interface Props {
+  project: CollectionEntry<'projects'>;
+  headings: MarkdownHeading[];
+  prev?: CollectionEntry<'projects'>;
+  next?: CollectionEntry<'projects'>;
+}
+const { project, headings, prev, next } = Astro.props;
+const { data } = project;
+const url = `${site.url}/projects/${project.id}`;
+const published = data.publishedAt?.toISOString();
+
+const jsonLd = [
+  {
+    '@type': 'TechArticle',
+    '@id': `${url}#article`,
+    headline: data.title,
+    description: data.summary,
+    url,
+    mainEntityOfPage: url,
+    author: { '@id': jsonLdIds.person },
+    publisher: { '@id': jsonLdIds.organization },
+    keywords: [...data.tags, ...data.stack].join(', '),
+    proficiencyLevel: 'Expert',
+    ...(published ? { datePublished: published } : {}),
+  },
+  {
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      { '@type': 'ListItem', position: 1, name: 'Projects', item: `${site.url}/projects` },
+      { '@type': 'ListItem', position: 2, name: data.title, item: url },
+    ],
+  },
+];
+---
+
+<BaseLayout
+  title={data.title}
+  description={data.summary}
+  type="article"
+  publishedTime={published}
+  ogImage={`/og/projects/${project.id}.png`}
+  ogImageAlt={data.coverAlt || data.title}
+  jsonLd={jsonLd}
+>
+  <article>
+    <CaseStudyHeader project={project} />
+
+    <Container class="py-12 md:py-16">
+      <div class="grid gap-12 lg:grid-cols-[minmax(0,1fr)_20rem] lg:gap-16">
+        <div class="prose min-w-0">
+          <slot />
+        </div>
+        <AtAGlance project={project} headings={headings} />
+      </div>
+    </Container>
+
+    <Container class="pb-16 md:pb-24">
+      <div class="border-line bg-surface mb-10 flex flex-col gap-6 rounded-lg border p-6 md:flex-row md:items-center md:justify-between md:p-8">
+        <div>
+          <p class="text-mono-label text-accent font-mono uppercase">
+            <span aria-hidden="true">// </span>next step
+          </p>
+          <h2 class="text-h3 text-fg mt-2">Discuss a similar project</h2>
+          <p class="text-small text-fg-muted mt-1">
+            Thirty minutes, free, on Google Meet. Bring the current state and the constraint.
+          </p>
+        </div>
+        <Button href="/#book" class="shrink-0">
+          Book a free 30-minute call
+          <Icon name="lucide:arrow-right" size={16} />
+        </Button>
+      </div>
+      <PrevNext prev={prev} next={next} />
+    </Container>
+  </article>
+</BaseLayout>
+
+<script>
+  // Copy button on every code block. Runs once per page load and again after view transitions.
+  const label = 'Copy code';
+  const init = () => {
+    document.querySelectorAll<HTMLPreElement>('.prose pre').forEach((pre) => {
+      if (pre.dataset.copyBound || !navigator.clipboard) return;
+      pre.dataset.copyBound = 'true';
+      const button = document.createElement('button');
+      button.type = 'button';
+      button.className = 'copy-code';
+      button.setAttribute('aria-label', label);
+      button.textContent = 'copy';
+      button.addEventListener('click', async () => {
+        try {
+          await navigator.clipboard.writeText(pre.innerText.replace(/copy$/, '').trimEnd());
+          button.textContent = 'copied';
+          button.setAttribute('aria-label', 'Copied');
+        } catch {
+          button.textContent = 'failed';
+        }
+        window.setTimeout(() => {
+          button.textContent = 'copy';
+          button.setAttribute('aria-label', label);
+        }, 1600);
+      });
+      pre.append(button);
+    });
+  };
+  init();
+  document.addEventListener('astro:page-load', init);
+</script>
+
+<style is:global>
+  .prose pre {
+    position: relative;
+  }
+  .copy-code {
+    position: absolute;
+    top: 0.5rem;
+    right: 0.5rem;
+    font-family: var(--font-mono);
+    font-size: 0.6875rem;
+    line-height: 1;
+    padding: 0.35rem 0.5rem;
+    border: 1px solid var(--color-line-strong);
+    border-radius: var(--radius-xs);
+    color: var(--color-code-fg);
+    background: color-mix(in srgb, var(--color-code-bg) 70%, transparent);
+    opacity: 0.7;
+    transition: opacity var(--dur-fast) var(--ease-out);
+  }
+  .copy-code:hover,
+  .copy-code:focus-visible {
+    opacity: 1;
+  }
+</style>

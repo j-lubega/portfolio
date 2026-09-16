@@ -1,0 +1,124 @@
+---
+/**
+ * Book a call: the two Calendly options as cards. Used on Home (#book) and on /book.
+ * Buttons are plain links to Calendly (new tab); a small script upgrades them to the
+ * popup widget on click. Nothing from Calendly loads until then.
+ */
+import { site } from '../../data/site';
+import Container from '../ui/Container.astro';
+import Section from '../ui/Section.astro';
+import SectionHeader from '../ui/SectionHeader.astro';
+import Card from '../ui/Card.astro';
+import Button from '../ui/Button.astro';
+import Icon from '../ui/Icon.astro';
+
+interface Props {
+  /** Section id for in-page anchors. */
+  id?: string;
+  /** Skip the section header (the /book page has its own h1). */
+  compact?: boolean;
+  index?: string;
+  title?: string;
+  lead?: string;
+  eyebrow?: string;
+  tone?: 'canvas' | 'surface';
+  /** 'secondary' when another element on the page must stay the only primary action. */
+  emphasis?: 'primary' | 'secondary';
+}
+const {
+  id = 'book',
+  compact = false,
+  index = '02',
+  title = 'Book a call',
+  lead = 'Two ways to start. Both run on Google Meet, times shown in your timezone.',
+  eyebrow = 'book a call',
+  tone = 'surface',
+  emphasis = 'primary',
+} = Astro.props;
+
+const options = [
+  {
+    ...site.calendly.discovery,
+    heading: 'Discovery consultation',
+    bullets: [
+      'Where your platform is today and what is getting in the way',
+      'A straight opinion on the next step, with no obligation',
+      'Whether a working session or a longer engagement makes sense',
+    ],
+    cta: 'Book the free call',
+    variant: 'primary' as const,
+  },
+  {
+    ...site.calendly.working,
+    heading: 'Working session',
+    bullets: [
+      'Architecture review of an AWS, Azure, Linux or Kubernetes platform',
+      'Live troubleshooting of a production issue, with the root cause explained',
+      'An implementation plan you can hand to your team',
+    ],
+    cta: 'Book a working session',
+    variant: 'secondary' as const,
+  },
+];
+const price = (n: number) => (n === 0 ? 'Free' : `$${n}`);
+---
+
+<Section id={id} tone={tone} labelledby={`${id}-title`}>
+  <Container>
+    {compact ? (
+      // /book uses compact: its own <h1> sits directly above this block, so a second visible
+      // heading would be redundant. A screen-reader-only h2 keeps the document outline correct
+      // (h1 > h2 > h3 cards, no skipped level) and gives the Section's aria-labelledby a real
+      // target, without showing a second title on screen.
+      <h2 id={`${id}-title`} class="sr-only">
+        {title}
+      </h2>
+    ) : (
+      <SectionHeader eyebrow={eyebrow} index={index} title={title} id={`${id}-title`}>
+        {lead}
+      </SectionHeader>
+    )}
+    <div class:list={['grid gap-6 md:grid-cols-2', !compact && 'mt-10']}>
+      {options.map((option) => (
+        <Card element="article" class="flex flex-col">
+          <div class="flex items-start justify-between gap-4">
+            <h3 class="text-h3 text-fg">{option.heading}</h3>
+            <p class="text-mono-meta text-fg-muted tabular shrink-0 font-mono">
+              {option.minutes} min · <span class="text-fg">{price(option.price)}</span>
+            </p>
+          </div>
+          <p class="text-fg-muted mt-3">{option.summary}</p>
+          <ul class="text-small text-fg-muted mt-5 flex flex-col gap-2">
+            {option.bullets.map((bullet) => (
+              <li class="flex gap-3">
+                <Icon name="lucide:check" size={16} class="text-ok mt-0.5" />
+                <span>{bullet}</span>
+              </li>
+            ))}
+          </ul>
+          <div class="mt-8 pt-2">
+            <Button
+              href={option.url}
+              variant={emphasis === 'secondary' ? 'secondary' : option.variant}
+              data-calendly
+              data-calendly-option={option.id}
+            >
+              {option.cta}
+              <Icon name="lucide:calendar" size={16} />
+            </Button>
+          </div>
+        </Card>
+      ))}
+    </div>
+    <p class="text-mono-meta text-fg-faint mt-6 font-mono">
+      Both calls run on Google Meet. Prices in USD. Booking opens Calendly; details are handled
+      there.
+    </p>
+  </Container>
+</Section>
+
+<script>
+  import { bindCalendlyButtons } from '../../scripts/calendly';
+  bindCalendlyButtons();
+  document.addEventListener('astro:page-load', () => bindCalendlyButtons());
+</script>

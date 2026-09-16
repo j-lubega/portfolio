@@ -1,0 +1,144 @@
+---
+/**
+ * Case-study header: the cover as a full-bleed background under the scrim, breadcrumb, title,
+ * summary, metadata row, stack and metrics. Theme-invariant dark like every image-backed surface.
+ */
+import { Picture } from 'astro:assets';
+import type { CollectionEntry } from 'astro:content';
+import Container from '../ui/Container.astro';
+import Tag from '../ui/Tag.astro';
+import StatusPill from '../ui/StatusPill.astro';
+import Stat from '../ui/Stat.astro';
+import Icon from '../ui/Icon.astro';
+import { resolveCover } from '../../lib/media';
+
+interface Props {
+  project: CollectionEntry<'projects'>;
+}
+const { project } = Astro.props;
+const { data } = project;
+const who = data.client ?? data.sector;
+const period = data.period ? `${data.period.start} to ${data.period.end}` : undefined;
+const cover = resolveCover(project.id, data.cover);
+---
+
+<header class="case-header border-line relative border-b" style="color-scheme: dark">
+  <div class="absolute inset-0 overflow-hidden" aria-hidden="true">
+    {cover ? (
+      <Picture
+        src={cover}
+        alt=""
+        formats={['avif', 'webp']}
+        widths={[1024, 1600, 2560]}
+        sizes="100vw"
+        loading="eager"
+        fetchpriority="high"
+        decoding="async"
+        pictureAttributes={{ class: 'block h-full w-full' }}
+        transition:name={`project-cover-${project.id}`}
+        class="case-header__cover h-full w-full object-cover"
+      />
+    ) : (
+      <div
+        transition:name={`project-cover-${project.id}`}
+        class="case-header__fallback h-full w-full"
+      />
+    )}
+    <div class="case-header__scrim absolute inset-0"></div>
+    <div class="grain"></div>
+  </div>
+
+  <Container class="relative py-14 md:py-20">
+    <nav aria-label="Breadcrumb" class="text-mono-meta text-fg-muted font-mono">
+      <ol class="flex items-center gap-2">
+        <li>
+          <a href="/projects" class="hover:text-accent rounded-xs link-underline">
+            Projects
+          </a>
+        </li>
+        <li aria-hidden="true">
+          <Icon name="lucide:chevron-right" size={14} />
+        </li>
+        <li aria-current="page" class="text-fg truncate">
+          {data.title}
+        </li>
+      </ol>
+    </nav>
+
+    <div class="mt-8 max-w-3xl">
+      <StatusPill status={data.status === 'completed' ? 'ok' : 'neutral'}>{data.status}</StatusPill>
+      <h1 class="text-h1 text-fg mt-4">{data.title}</h1>
+      <p class="text-lead text-fg-muted mt-4">{data.summary}</p>
+    </div>
+
+    <dl class="text-mono-meta text-fg-muted mt-8 grid gap-x-8 gap-y-3 font-mono sm:grid-cols-3">
+      {who && (
+        <div>
+          <dt class="text-fg-faint">{data.client ? 'client' : 'sector'}</dt>
+          <dd class="text-fg">{who}</dd>
+        </div>
+      )}
+      <div>
+        <dt class="text-fg-faint">role</dt>
+        <dd class="text-fg">{data.role}</dd>
+      </div>
+      {period && (
+        <div>
+          <dt class="text-fg-faint">period</dt>
+          <dd class="text-fg tabular">{period}</dd>
+        </div>
+      )}
+    </dl>
+
+    <ul class="mt-6 flex flex-wrap gap-2" aria-label="Stack">
+      {data.stack.map((item) => (
+        <Tag element="li">{item}</Tag>
+      ))}
+    </ul>
+
+    <ul
+      class="border-line mt-10 grid grid-cols-2 gap-6 border-t pt-8 md:grid-cols-4"
+      aria-label="Key numbers"
+    >
+      {data.metrics.map((metric) => (
+        <li>
+          <Stat value={metric.value} label={metric.label} />
+        </li>
+      ))}
+    </ul>
+  </Container>
+</header>
+
+<style>
+  .case-header {
+    /*
+     * The two numbers to change on this header.
+     *
+     * --cover-opacity: how visible the raw photo is, 0 (invisible, just the dark canvas
+     *   underneath) to 1 (full brightness, no fading). Default 1.
+     *
+     * --scrim-strength: how strong the black shadow on top of the photo is, 0 (no shadow,
+     *   raw photo) to 1 (the darkest the design allows) up to about 1.4 for a very bright or
+     *   busy photo. Default 1. The gradient runs left to right here (the title sits on the
+     *   left), so raising this darkens the left side most.
+     */
+    --cover-opacity: 1;
+    --scrim-strength: 1;
+  }
+  .case-header__cover {
+    opacity: var(--cover-opacity);
+  }
+  .case-header__scrim {
+    background: linear-gradient(
+      90deg,
+      color-mix(in srgb, var(--scrim) calc(100% * var(--scrim-strength)), transparent) 0%,
+      color-mix(in srgb, var(--scrim) calc(92% * var(--scrim-strength)), transparent) 55%,
+      color-mix(in srgb, var(--scrim) calc(78% * var(--scrim-strength)), transparent) 100%
+    );
+  }
+  .case-header__fallback {
+    background-color: var(--canvas);
+    background-image: radial-gradient(var(--line-strong) 1px, transparent 1px);
+    background-size: 20px 20px;
+  }
+</style>

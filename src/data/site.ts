@@ -21,7 +21,7 @@ export const site = {
   domain: 'jlpro-po.com',
   url: 'https://jlpro-po.com',
   /** Rendered in the header. Mono, lowercase, no cursor. */
-  wordmark: 'jimmy.lubega',
+  wordmark: 'jimmy',
   description:
     'Technical Consultant and Platform Engineer specializing in Cloud Infrastructure, Linux, Automation, and Kubernetes. Secure, scalable platforms across AWS and Azure.',
   /** Requested sections, in nav order. Routes are created in Phase 3. */
@@ -64,6 +64,14 @@ export const site = {
   themeStorageKey: 'jl-theme',
 } as const;
 
+/** Stable @id values for the JSON-LD graph, so pages can reference site-level nodes. */
+export const jsonLdIds = {
+  website: `${site.url}/#website`,
+  person: `${site.url}/#person`,
+  organization: `${site.url}/#organization`,
+  service: `${site.url}/#service`,
+} as const;
+
 export const profile = {
   name: 'Jimmy',
   title: 'Technical Consultant',
@@ -73,14 +81,6 @@ export const profile = {
     'Technical consultant and platform engineer with hands-on experience supporting mission-critical applications across cloud and on-premises environments. I bring practical expertise in enterprise Linux, cloud architecture, automation, security, incident response, and production support, translating operational complexity into clear plans and stable outcomes.',
   social: site.social,
 };
-
-export const certifications = [
-  'Certified Kubernetes Administrator (CKA)',
-  'CompTIA Security+ Certified',
-  'AWS Certified Solutions Architect – Professional',
-  'AWS Certified SysOps Administrator – Associate',
-  'Linux Essentials Professional Certificate (LPIC-1)',
-];
 
 export const skillGroups = [
   {
@@ -224,7 +224,101 @@ export const experience: ExperienceEntry[] = [
   },
 ];
 
-export const education = {
-  degree: 'Bachelor of Science in Computer Science',
-  institution: 'Makerere University',
+/** Proof strip on Home. Values from the enterprise builds case study; confirm with the client (Open question 9). */
+export const stats = [
+  { value: '10+', label: 'years in infrastructure' },
+  { value: '5', label: 'certifications' },
+  { value: '400+', label: 'physical servers built' },
+  { value: '2,000+', label: 'virtual machines' },
+] as const;
+
+export type Capability = {
+  index: string;
+  title: string;
+  summary: string;
+  bullets: string[];
+  /** Tag label plus optional astro-icon name. */
+  stack: { label: string; icon?: string }[];
+  icon: string;
 };
+
+/** "What I do" on Home. Seeded from skillGroups, framed the way the brief frames the role. */
+export const capabilities: Capability[] = [
+  {
+    index: '01',
+    title: 'Cloud infrastructure',
+    summary:
+      'Design, provision and support platforms on AWS and Azure with Infrastructure as Code, so environments are repeatable and auditable.',
+    bullets: [
+      'VPCs and VNets, DNS, IAM, storage and compute laid out from a written design',
+      'Terraform for provisioning, GitHub Actions for validation and deployment',
+      'Security models and documentation that survive the handover',
+    ],
+    stack: [
+      { label: 'AWS', icon: 'simple-icons:amazonwebservices' },
+      { label: 'Azure', icon: 'lucide:cloud' },
+      { label: 'Terraform', icon: 'simple-icons:terraform' },
+      { label: 'GCP', icon: 'simple-icons:googlecloud' },
+      { label: 'GitHub Actions', icon: 'simple-icons:githubactions' },
+    ],
+    icon: 'lucide:cloud',
+  },
+  {
+    index: '02',
+    title: 'Linux and automation',
+    summary:
+      'Enterprise Linux run as a managed fleet: standard builds, patch windows, hardening and configuration kept in code.',
+    bullets: [
+      'RHEL, Rocky and Ubuntu builds from standard images and hardened baselines',
+      'Ansible roles and shell automation for configuration, patching and drift remediation',
+      'SELinux kept enforcing, with denials diagnosed rather than switched off',
+    ],
+    stack: [
+      { label: 'RHEL', icon: 'simple-icons:redhat' },
+      { label: 'Rocky Linux', icon: 'simple-icons:rockylinux' },
+      { label: 'Ubuntu', icon: 'simple-icons:ubuntu' },
+      { label: 'Ansible', icon: 'simple-icons:ansible' },
+      { label: 'Bash', icon: 'simple-icons:gnubash' },
+      { label: 'Python', icon: 'simple-icons:python' },
+    ],
+    icon: 'lucide:terminal',
+  },
+  {
+    index: '03',
+    title: 'Kubernetes and platforms',
+    summary:
+      'Container platforms and data-science tooling deployed, secured and kept observable, on managed Kubernetes or on VMs.',
+    bullets: [
+      'EKS, AKS and GKE clusters with Docker-based workloads and clear ownership',
+      'Posit Team (Workbench, Connect, Package Manager) on cloud and on premises',
+      'Prometheus, Grafana and CloudWatch so problems are seen before users report them',
+    ],
+    stack: [
+      { label: 'Kubernetes', icon: 'simple-icons:kubernetes' },
+      { label: 'Docker', icon: 'simple-icons:docker' },
+      { label: 'Posit Team', icon: 'simple-icons:posit' },
+      { label: 'Prometheus', icon: 'simple-icons:prometheus' },
+      { label: 'Grafana', icon: 'simple-icons:grafana' },
+    ],
+    icon: 'lucide:server',
+  },
+];
+
+/** About page: how Jimmy works. Copy drafted in docs/copy/about.md for approval. */
+export const principles = [
+  {
+    title: 'Design before deploy',
+    body: 'Every environment starts as a written design: network zones, identity, naming, backup and patching, agreed before the first resource exists.',
+    icon: 'lucide:git-branch',
+  },
+  {
+    title: 'Automate the second time',
+    body: 'Anything done twice becomes code. Terraform and Ansible are how a platform stays the same on Friday as it was on Monday.',
+    icon: 'lucide:terminal',
+  },
+  {
+    title: 'Document the handover',
+    body: 'A platform is finished when the team running it has the runbook, the diagram and the person to call. That is part of the work, not an extra.',
+    icon: 'lucide:shield-check',
+  },
+] as const;

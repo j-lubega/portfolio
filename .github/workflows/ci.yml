@@ -19,3 +19,26 @@ jobs:
       - run: npm run lint
       - run: npm run check
       - run: npm run build
+
+  accessibility:
+    runs-on: ubuntu-latest
+    # Non-blocking for now (Phase 11): the scan is green locally on every route, but this is its
+    # first run against GitHub's hosted Chrome, so let it prove itself in CI before it can fail a PR.
+    # Flip to blocking (remove continue-on-error) once a run has gone green here.
+    continue-on-error: true
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - run: npm run build
+      - name: Start preview server and wait for it
+        run: |
+          npx astro preview --port 4322 &
+          for i in $(seq 1 30); do
+            curl -sf http://localhost:4322/ > /dev/null && break
+            sleep 1
+          done
+      - run: npm run a11y:check -- http://localhost:4322

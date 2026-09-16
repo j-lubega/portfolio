@@ -91,7 +91,8 @@ let synced = false;
 /**
  * Keeps the painted theme in step with the outside world:
  * OS preference changes, another tab changing the manual choice, view
- * transitions replacing <html> attributes, and the clock crossing 07:00 or 19:00.
+ * transitions replacing <html> attributes, and the clock crossing 07:00 or 19:00
+ * (one timeout per boundary, no polling).
  * Safe to call more than once.
  */
 export function initThemeSync(): void {
@@ -108,9 +109,28 @@ export function initThemeSync(): void {
 
   document.addEventListener('astro:after-swap', () => applyTheme(resolveTheme()));
 
-  window.setInterval(() => {
-    if (getManualTheme() || systemPrefersDark()) return;
-    const next = timeOfDayTheme();
-    if (next !== currentTheme()) applyTheme(next, { animate: true });
-  }, 60_000);
+  scheduleBoundaryCheck();
+}
+
+/** Milliseconds until the next 07:00 or 19:00 local time. */
+export function msUntilNextBoundary(now: Date = new Date()): number {
+  const next = new Date(now);
+  next.setSeconds(0, 0);
+  const hour = now.getHours();
+  const target =
+    hour < DARK_HOUR_END ? DARK_HOUR_END : hour < DARK_HOUR_START ? DARK_HOUR_START : DARK_HOUR_END;
+  if (hour >= DARK_HOUR_START) next.setDate(next.getDate() + 1);
+  next.setHours(target, 0, 0, 0);
+  return Math.max(1000, next.getTime() - now.getTime());
+}
+
+/** One timeout per boundary instead of polling: re-resolve when the clock crosses 07:00 or 19:00. */
+function scheduleBoundaryCheck(): void {
+  window.setTimeout(() => {
+    if (!getManualTheme() && !systemPrefersDark()) {
+      const next = timeOfDayTheme();
+      if (next !== currentTheme()) applyTheme(next, { animate: true });
+    }
+    scheduleBoundaryCheck();
+  }, msUntilNextBoundary());
 }

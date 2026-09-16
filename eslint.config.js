@@ -37,6 +37,16 @@ export default defineConfig(
     },
   },
   {
+    // CommonJS Node scripts (require/module.exports/__dirname), run directly with `node`.
+    files: ['scripts/**/*.cjs'],
+    languageOptions: {
+      globals: { ...globals.node, ...globals.commonjs },
+    },
+    rules: {
+      '@typescript-eslint/no-require-imports': 'off',
+    },
+  },
+  {
     rules: {
       '@typescript-eslint/no-unused-vars': [
         'error',

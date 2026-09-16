@@ -1,12 +1,12 @@
 # Website Improvement Plan: jlpro tech portfolio
 
-| Field               | Value                                                                                   |
-| ------------------- | --------------------------------------------------------------------------------------- |
-| Repository          | `jlpro-io/tech-portfolio`, branch `main`, commit `0335166` (2026-09-12)                 |
-| Audited on          | 2026-09-13, Windows 11, Node 22.22.2, npm 10.9.7                                        |
-| Client              | Jimmy Lubega, Technical Consultant and Platform Engineer (trading as purenest360 llc)   |
-| Document status     | v1.1. Phases 0 to 2 implemented (see each phase's Status block); Phases 3 to 13 pending |
-| Source of truth for | Every implementation phase that follows. Work through phases in order, one per session. |
+| Field               | Value                                                                                     |
+| ------------------- | ----------------------------------------------------------------------------------------- |
+| Repository          | `jlpro-io/tech-portfolio`, branch `main`, commit `0335166` (2026-09-12)                   |
+| Audited on          | 2026-09-13, Windows 11, Node 22.22.2, npm 10.9.7                                          |
+| Client              | Jimmy Lubega, Technical Consultant and Platform Engineer (trading as purenest360 llc)     |
+| Document status     | v1.4. Phases 0 to 11 implemented (see each phase's Status block); Phases 12 to 13 pending |
+| Source of truth for | Every implementation phase that follows. Work through phases in order, one per session.   |
 
 ---
 
@@ -399,7 +399,7 @@ Conventions for every phase: work on a feature branch named `phase-NN-short-name
 - [x] Capture the baseline: full-page screenshots of all 8 routes at 390 px and 1440 px, and a Lighthouse run (mobile and desktop) per route against `npm run preview`, saved under `docs/baseline/2026-09-13/`. Record the four scores per route in `docs/baseline/README.md`.
 - [x] Fix the two broken references so they stop polluting every later measurement: add a temporary 1200x630 `public/og-image.png` (dark canvas, name, title; replaced properly in Phase 11), and replace the 404 Unsplash URL in `linux-hardening-selinux.md` with the same interim image as the other two (replaced properly in Phase 10).
 - [x] Set `site` to the domain that will actually go live (`https://jlpro-po.com`, pending Open question 1) and align `robots.txt` with it. Note in the PR that the domain is not yet live.
-- [ ] Add `redirects` in `astro.config.mjs` for routes that will be removed or renamed later, so nothing in the current sitemap 404s after Phase 3: `/contact` to `/connect`, `/blog` to `/` (or keep Blog; Open question 8). **Deferred to Phase 3**: a redirect to `/connect` before that route exists would send visitors to a 404, and `/blog` is still an open question.
+- [x] Add `redirects` in `astro.config.mjs` for routes that will be removed or renamed later, so nothing in the current sitemap 404s after Phase 3: `/contact` to `/connect`, `/blog` to `/` (or keep Blog; Open question 8). **Deferred to Phase 3**: a redirect to `/connect` before that route exists would send visitors to a 404, and `/blog` is still an open question.
 - [x] Install runtime dependencies for later phases now so the lockfile churn happens once: `motion`, `astro-icon` with `@iconify-json/lucide` and `@iconify-json/simple-icons`. Do not install HeroUI, GSAP, or Radix yet.
 
 **Files created or modified.** `package.json`, `package-lock.json`, `.prettierrc`, `.prettierignore`, `eslint.config.js`, `.editorconfig`, `.github/workflows/ci.yml`, `docs/baseline/**`, `public/og-image.png` (interim), `public/robots.txt`, `astro.config.mjs`, `README.md`, `src/pages/projects/linux-hardening-selinux.md` (one URL).
@@ -545,13 +545,13 @@ Interpretation note for the client: browsers cannot distinguish "the OS says lig
 
 **Scope.**
 
-- [ ] New IA and routes, matching the brief's five sections: `/` Home, `/about`, `/education`, `/projects` (+ `/projects/[slug]`), `/connect`. Keep `/book` as a deep-linkable page for the Book a Call block (Phase 4). Add the redirects deferred from Phase 0 in `astro.config.mjs`: `/contact` to `/connect`; `/blog` per Open question 8.
-- [ ] `src/components/shell/Header.astro`: sticky, `backdrop-blur`, canvas at 85% opacity, hairline bottom border; left: wordmark in mono (`jimmy.lubega` with a subtle accent `~` or `>` prefix; no infinite blinking cursor); center/right: the five links with `aria-current`; far right: the ThemeToggle from Phase 2 (`src/components/shell/ThemeToggle.astro`, currently mounted in the legacy `Nav.astro`). Below `md`, links collapse into a menu button that opens a native `<dialog>` sheet (full-height, focus-trapped by the dialog element, `Esc` closes, links close on click). No React.
-- [ ] `src/components/shell/Footer.astro`: three columns at `md` (identity and one-line positioning; section links; LinkedIn and GitHub with `simple-icons` glyphs), a bottom row with copyright (`purenest360 llc`), "Reset to automatic" theme control, and a `status: operational` mono line with a green dot as a quiet brand touch.
-- [ ] `BaseLayout.astro`: `<ClientRouter />` from `astro:transitions`; `transition:persist` on the header and the theme toggle; `transition:name="main"` on `<main>` with the built-in `fade` at 200 ms; `<SkipLink />`; slot for per-page `<head>` extras; the Phase 2 theme script; cleaned meta (drop `keywords`, `service`, `category`, `profile:*`); `Seo.astro` and `JsonLd.astro` extracted into `src/components/seo/` with props for title, description, type (`website` or `article`), image and published date.
-- [ ] Custom `src/pages/404.astro`: mono `404: route not found`, a short line, links to Home and Projects.
-- [ ] Wire `astro-icon`: brand glyphs from `simple-icons` (AWS, Microsoft Azure, Kubernetes, Terraform, Ansible, Linux, Docker, GitHub Actions, Prometheus, Grafana, Posit) and UI glyphs from `lucide`. Verify each brand's trademark guideline allows the glyph in this context and keep a list in `docs/brand-icons.md`.
-- [ ] Persist scroll position handling: view transitions default is fine; confirm the header does not re-animate on navigation.
+- [x] New IA and routes, matching the brief's five sections: `/` Home, `/about`, `/education`, `/projects` (+ `/projects/[slug]`), `/connect`. Keep `/book` as a deep-linkable page for the Book a Call block (Phase 4). Add the redirects deferred from Phase 0 in `astro.config.mjs`: `/contact` to `/connect`; `/blog` per Open question 8.
+- [x] `src/components/shell/Header.astro`: sticky, `backdrop-blur`, canvas at 85% opacity, hairline bottom border; left: wordmark in mono (`jimmy.lubega` with a subtle accent `~` or `>` prefix; no infinite blinking cursor); center/right: the five links with `aria-current`; far right: the ThemeToggle from Phase 2 (`src/components/shell/ThemeToggle.astro`, currently mounted in the legacy `Nav.astro`). Below `md`, links collapse into a menu button that opens a native `<dialog>` sheet (full-height, focus-trapped by the dialog element, `Esc` closes, links close on click). No React.
+- [x] `src/components/shell/Footer.astro`: three columns at `md` (identity and one-line positioning; section links; LinkedIn and GitHub with `simple-icons` glyphs), a bottom row with copyright (`purenest360 llc`), "Reset to automatic" theme control, and a `status: operational` mono line with a green dot as a quiet brand touch.
+- [x] `BaseLayout.astro`: `<ClientRouter />` from `astro:transitions`; `transition:persist` on the header and the theme toggle; `transition:name="main"` on `<main>` with the built-in `fade` at 200 ms; `<SkipLink />`; slot for per-page `<head>` extras; the Phase 2 theme script; cleaned meta (drop `keywords`, `service`, `category`, `profile:*`); `Seo.astro` and `JsonLd.astro` extracted into `src/components/seo/` with props for title, description, type (`website` or `article`), image and published date.
+- [x] Custom `src/pages/404.astro`: mono `404: route not found`, a short line, links to Home and Projects.
+- [x] Wire `astro-icon`: brand glyphs from `simple-icons` (AWS, Microsoft Azure, Kubernetes, Terraform, Ansible, Linux, Docker, GitHub Actions, Prometheus, Grafana, Posit) and UI glyphs from `lucide`. Verify each brand's trademark guideline allows the glyph in this context and keep a list in `docs/brand-icons.md`.
+- [x] Persist scroll position handling: view transitions default is fine; confirm the header does not re-animate on navigation.
 
 **Files created or modified.** `src/components/shell/{Header,MobileNav,Footer,SkipLink}.astro` (new; `Nav.astro` and `Footer.astro` deleted), `src/components/seo/{Seo,JsonLd}.astro` (new), `src/layouts/BaseLayout.astro`, `src/pages/404.astro` (new), placeholder pages `about.astro`, `education.astro`, `connect.astro` (heading only, filled in later phases), `astro.config.mjs` (redirects, `astro-icon` integration), `docs/brand-icons.md`.
 
@@ -573,6 +573,17 @@ Interpretation note for the client: browsers cannot distinguish "the OS says lig
 
 **Rough effort.** 6 to 8 hours (one full day).
 
+**Status (2026-09-14): done, in the working tree (the developer commits).**
+
+- Routes: `/`, `/about`, `/education`, `/projects`, `/projects/<slug>`, `/connect`, `/book` and a custom `404`. `/education` and `/connect` are working placeholders (the degree and certification list; the LinkedIn, GitHub and Book buttons) until Phases 6 and 8. `blog.astro` and `contact.astro` are deleted; `/blog` and `/contact` redirect in `astro.config.mjs` (meta-refresh stubs in the static build) and in `vercel.json` (`permanent: true`, so production returns real 301s).
+- `src/components/shell/`: `Header.astro` (persisted with `transition:persist` and `transition:name="site-header"`), `MobileNav.astro` (native `<dialog>`, `showModal()` for the focus trap, Esc and backdrop close, links close it, `astro:before-preparation` closes it before a navigation), `Footer.astro` (three columns, copyright, reset control, `status: operational` pill), `SkipLink.astro`, `Wordmark.astro` (`~/jimmy.lubega`, kept in one component so Prettier cannot introduce a space between prefix and name), `ThemeToggle.astro` from Phase 2. Legacy `Nav.astro` and `Footer.astro` deleted.
+- `src/components/seo/`: `Seo.astro` (title, description, canonical, Open Graph with `og:image:alt` and `og:locale`, Twitter, robots, article dates) and `JsonLd.astro` (one `@graph` with `WebSite`, `Organization`, `Person`, `ProfessionalService`; page nodes with the same `@id` as a site node are merged, which is how About supplies a fuller `Person`). The old `keywords`, `service`, `category` and `profile:*` metas are gone. Stable `@id`s live in `site.ts` as `jsonLdIds`.
+- `BaseLayout.astro`: `<ClientRouter />`, `<main transition:name="main" transition:animate={fade({ duration: '0.2s' })}>`, a `head` slot, `jsonLd` prop for page nodes.
+- Gotcha found and fixed: because the header is persisted, `aria-current` never moved after a soft navigation. Active styling is now attribute-driven (`aria-[current=page]:` variants) and a small `astro:page-load` script in `Header.astro` sets the attribute from `location.pathname`. Any future persisted element with per-page state needs the same treatment.
+- Gotcha: an `export const` in Astro frontmatter is hoisted to module scope, so it cannot reference other frontmatter values (`JsonLd` originally exported its ids and failed at build).
+- Icons: the `simple-icons` and `lucide` allowlist in `astro.config.mjs`; `docs/brand-icons.md` records the owner and usage constraint per mark. Microsoft Azure is not in `simple-icons` (removed at Microsoft's request) and is shown with a generic `lucide:cloud` glyph.
+- Acceptance, measured by `npm run site:check` (`scripts/site-check.mjs`, headless Chrome against the preview build): header node identity survives navigation, no full page load, manual theme survives `astro:after-swap`, `aria-current` and the underline follow the URL; JS-disabled navigation renders full pages in the OS theme; at 375 px the wordmark, toggle and menu button share one row, the sheet traps focus, Esc closes it and focus returns to the button, a link click closes it and navigates; every visible header and footer control shows the 2 px ring; `/contact` and `/blog` serve redirect stubs; an unknown route returns the custom 404 with status 404. Lighthouse Accessibility is 100 on `/`, `/about` and `/404` (the 404 page's SEO score is 66 because it is `noindex`, which is intended). `npm run theme:check` re-run after `ClientRouter`: 29/29.
+
 ### Phase 4: Home and Book a Call
 
 **Goal.** Replace the home page with a landing page that states who Jimmy is in five seconds, proves it, and gets a prospect onto Calendly with the right offer.
@@ -581,18 +592,18 @@ Interpretation note for the client: browsers cannot distinguish "the OS says lig
 
 **Scope.**
 
-- [ ] `src/components/home/Hero.astro`: asymmetric two-column layout at `lg` (7/5 split), single column below. Left: mono eyebrow `$ whoami`; display heading "Hi, I'm Jimmy." with a second line "I build and support cloud platforms that stay up."; the typed role line (below); a lead paragraph derived from the brief's About text (first sentence); two buttons: primary "Book a free 30-minute call" (links to the Book section `#book`, which is above the fold on desktop and one scroll on mobile), secondary "See projects"; a row of LinkedIn and GitHub icon links. Right: the topology visual. Primary CTA is above the fold at 375 px, 768 px and 1440 px.
-- [ ] `src/components/home/RoleLine.tsx` (React island, `client:idle`): types `Technical Consultant · Platform Engineer` then `Cloud · Linux · Automation · Kubernetes` on a second line, once, ~1.8 s total, cursor blinks for 4 s and stops; renders final text server-side so the content exists without JS; with reduced motion it never animates. This is the first legitimate island: it has a timeline and state, and it is small (Motion `animate` on a text sequence, under 3 KB).
-- [ ] `src/components/home/Topology.astro` plus `TopologyPulses.tsx` (`client:visible`): an SVG diagram of six labeled nodes (AWS, Azure, Kubernetes, Linux, Terraform/Ansible, Observability) with edges; node labels in mono; static SVG rendered by Astro. The island only animates small circles along the edge paths with Motion (`offsetDistance`), 8 to 12 s loops at low contrast, and unmounts under reduced motion. Nodes carry `simple-icons` glyphs at 16 px.
-- [ ] Proof strip under the hero: four `Stat` items from `site.ts`: `10+ yrs` infrastructure, `5` certifications, `400+` physical servers built, `2,000+` VMs (values from the enterprise case study; confirm with client, Open question 9).
-- [ ] `src/components/home/Capabilities.astro`: "What I do" as three alternating rows (icon cluster left/right): Cloud Infrastructure (AWS, Azure, IaC, networking, IAM), Linux and Automation (RHEL/Rocky/Ubuntu, Ansible, Bash/Python, patching and hardening, CI/CD), Kubernetes and Platforms (EKS/AKS/GKE, Docker, Posit Team, observability). Each row: mono index, h3, three bullets, a row of technology `Tag`s with glyphs. Content seeded from `skillGroups`.
-- [ ] `src/components/home/BookACall.astro` (also used by `/book`), anchored `#book`: section header "Book a call"; two `Card`s side by side at `md`: **Discovery consultation** (`30 min · Free`, "Tell me about your platform, get a straight opinion on the next step", three bullets, primary button "Book the free call") and **Working session** (`60 min · $100`, "Architecture review, troubleshooting, or an implementation plan, live", three bullets, secondary button "Book a working session"). Buttons link directly to the two Calendly URLs from `site.ts` with `target="_blank" rel="noopener"`. Progressive enhancement: a tiny script loads Calendly's `widget.js` on first click and opens the popup widget over the page (`Calendly.initPopupWidget`), falling back to the new tab if the script fails. Nothing from Calendly loads until a click. Add a one-line note: "Both calls run on Google Meet. Prices in USD."
-- [ ] `/book` page: the same `BookACall` block plus the inline widget for the selected option (two buttons switch the iframe `src` between the two event URLs; iframe `title` describes the selected option), and the privacy note rewritten at 14 px in `fg-muted` (fix the 10 px / 2.77:1 failure). Keep the page thin; it exists for deep links.
-- [ ] `src/components/home/SelectedWork.astro`: three project cards from the projects collection (Phase 7 schema; until then, from the current markdown via a temporary `import.meta.glob`), using the Phase 10 background treatment once available, otherwise surface cards.
-- [ ] `src/components/home/CertStrip.astro`: five certification `Tag`s with issuer glyphs, linking to `/education`.
-- [ ] Final CTA band: one sentence and the primary button (links to `#book`).
-- [ ] Delete `TechOrbit.tsx` and the `float` and `spin` keyframes.
-- [ ] Copy: draft all Home copy in `docs/copy/home.md` for the client to approve; no em-dashes.
+- [x] `src/components/home/Hero.astro`: asymmetric two-column layout at `lg` (7/5 split), single column below. Left: mono eyebrow `$ whoami`; display heading "Hi, I'm Jimmy." with a second line "I build and support cloud platforms that stay up."; the typed role line (below); a lead paragraph derived from the brief's About text (first sentence); two buttons: primary "Book a free 30-minute call" (links to the Book section `#book`, which is above the fold on desktop and one scroll on mobile), secondary "See projects"; a row of LinkedIn and GitHub icon links. Right: the topology visual. Primary CTA is above the fold at 375 px, 768 px and 1440 px.
+- [x] `src/components/home/RoleLine.tsx` (React island, `client:idle`): types `Technical Consultant · Platform Engineer` then `Cloud · Linux · Automation · Kubernetes` on a second line, once, ~1.8 s total, cursor blinks for 4 s and stops; renders final text server-side so the content exists without JS; with reduced motion it never animates. This is the first legitimate island: it has a timeline and state, and it is small (Motion `animate` on a text sequence, under 3 KB).
+- [x] `src/components/home/Topology.astro` plus `TopologyPulses.tsx` (`client:visible`): an SVG diagram of six labeled nodes (AWS, Azure, Kubernetes, Linux, Terraform/Ansible, Observability) with edges; node labels in mono; static SVG rendered by Astro. The island only animates small circles along the edge paths with Motion (`offsetDistance`), 8 to 12 s loops at low contrast, and unmounts under reduced motion. Nodes carry `simple-icons` glyphs at 16 px.
+- [x] Proof strip under the hero: four `Stat` items from `site.ts`: `10+ yrs` infrastructure, `5` certifications, `400+` physical servers built, `2,000+` VMs (values from the enterprise case study; confirm with client, Open question 9).
+- [x] `src/components/home/Capabilities.astro`: "What I do" as three alternating rows (icon cluster left/right): Cloud Infrastructure (AWS, Azure, IaC, networking, IAM), Linux and Automation (RHEL/Rocky/Ubuntu, Ansible, Bash/Python, patching and hardening, CI/CD), Kubernetes and Platforms (EKS/AKS/GKE, Docker, Posit Team, observability). Each row: mono index, h3, three bullets, a row of technology `Tag`s with glyphs. Content seeded from `skillGroups`.
+- [x] `src/components/home/BookACall.astro` (also used by `/book`), anchored `#book`: section header "Book a call"; two `Card`s side by side at `md`: **Discovery consultation** (`30 min · Free`, "Tell me about your platform, get a straight opinion on the next step", three bullets, primary button "Book the free call") and **Working session** (`60 min · $100`, "Architecture review, troubleshooting, or an implementation plan, live", three bullets, secondary button "Book a working session"). Buttons link directly to the two Calendly URLs from `site.ts` with `target="_blank" rel="noopener"`. Progressive enhancement: a tiny script loads Calendly's `widget.js` on first click and opens the popup widget over the page (`Calendly.initPopupWidget`), falling back to the new tab if the script fails. Nothing from Calendly loads until a click. Add a one-line note: "Both calls run on Google Meet. Prices in USD."
+- [x] `/book` page: the same `BookACall` block plus the inline widget for the selected option (two buttons switch the iframe `src` between the two event URLs; iframe `title` describes the selected option), and the privacy note rewritten at 14 px in `fg-muted` (fix the 10 px / 2.77:1 failure). Keep the page thin; it exists for deep links.
+- [x] `src/components/home/SelectedWork.astro`: three project cards from the projects collection (Phase 7 schema; until then, from the current markdown via a temporary `import.meta.glob`), using the Phase 10 background treatment once available, otherwise surface cards.
+- [x] `src/components/home/CertStrip.astro`: five certification `Tag`s with issuer glyphs, linking to `/education`.
+- [x] Final CTA band: one sentence and the primary button (links to `#book`).
+- [x] Delete `TechOrbit.tsx` and the `float` and `spin` keyframes.
+- [x] Copy: draft all Home copy in `docs/copy/home.md` for the client to approve; no em-dashes.
 
 **Files created or modified.** `src/pages/index.astro`, `src/pages/book.astro`, `src/components/home/*` (new), `src/components/home/RoleLine.tsx` and `TopologyPulses.tsx` (new islands), `src/data/site.ts`, `docs/copy/home.md`, delete `src/components/TechOrbit.tsx`.
 
@@ -615,6 +626,17 @@ Interpretation note for the client: browsers cannot distinguish "the OS says lig
 
 **Rough effort.** 10 to 14 hours (two days).
 
+**Status (2026-09-14): done, in the working tree.**
+
+- **Deviation: no React islands.** The acceptance budget (Home JS under 25 KB gzip) cannot be met with React, whose runtime alone is about 66 KB gzip, the exact cost the audit flagged. Neither piece has real state, so: the role line is `RoleLine.astro`, CSS `steps()` typing on two mono lines (1.1 s, then 0.8 s after a 1.2 s delay, cursor blinks four times and stops), text present in the HTML, `animation: none` under reduced motion; the topology is `Topology.astro`, a static SVG with node boxes sized from their labels and packet pulses as SVG `animateMotion` (`mpath` along each edge, 8 to 14 s loops), hidden under reduced motion. `RoleLine.tsx` and `TopologyPulses.tsx` were not created. Home ships **6.7 KB gzip of JavaScript in total** (ClientRouter 5.4 KB, theme 0.8 KB, toggle 0.3 KB, footer 0.2 KB), all shell, none page-specific, against a 70 KB baseline. `@astrojs/react` stays installed for pieces that genuinely need it later; it emits an unused renderer chunk that no page references.
+- `Hero.astro`: 7/5 split at `lg`, `$ whoami` eyebrow, display heading with the second line in `fg-muted` (smaller on phones so the CTA stays above the fold), role line, the brief's sentence as the lead, primary "Book a free 30-minute call" to `#book` and secondary "See projects", LinkedIn and GitHub icon links, and the topology inside a "platform.topology" window frame. CTA bottom edge measured at 496 px of 667 (375 px wide), 595 of 1024 (768), 769 of 900 (1440).
+- `ProofStrip.astro` (four `Stat`s from `site.ts` `stats`), `Capabilities.astro` (three alternating rows from `site.ts` `capabilities`, each with an icon panel, three bullets and stack tags), `BookACall.astro` (two `Card`s from `site.calendly`, bullets, "Both calls run on Google Meet. Prices in USD."), `SelectedWork.astro` (three cards through `import.meta.glob` over `src/pages/projects/*.md`; switch to the collection in Phase 7), `CertStrip.astro` (five chips with issuer glyphs linking to `/education`), `FinalCta.astro`. `TechOrbit.tsx` deleted.
+- Calendly: `src/scripts/calendly.ts` upgrades `a[data-calendly]` links on click, loading `widget.js` and `widget.css` then, never before, and calls `initPopupWidget`; modifier clicks and a failed or slow (6 s) load fall back to the plain new-tab link. Verified: zero requests to `calendly.com` on Home before a click, and the discovery button opens the popup iframe for `jimmylubegapro/30min`.
+- `/book`: the same block (`compact`), an inline widget with two `aria-pressed` switch buttons that swap the iframe `src` and `title` between the two events, a fallback link that follows the selection, and the privacy note at the `small` size in `fg-muted`.
+- `theme.ts` change: the once-a-minute clock poll from Phase 2 became a single `setTimeout` to the next 07:00 or 19:00 boundary (`msUntilNextBoundary`), so no `setInterval` exists in our JavaScript; Astro's own `ClientRouter` chunk uses one internally and is excluded from that check.
+- Lighthouse, Home, mobile, preview build: Performance 97 to 99 across three runs, Accessibility 100, Best Practices 100, SEO 100; LCP 1.9 to 2.1 s, CLS 0, TBT 0 ms; the LCP element is the lead paragraph (text, not the SVG or an image). Desktop: 100 / 100 / 100 / 100. Two accessibility fixes were needed to get there: the proof strip was a `<dl>` holding `div`s (now a `<ul>`), and the wordmark link had an `aria-label` that did not contain its visible text (removed).
+- Copy is in `docs/copy/home.md` for Jimmy's approval, with the three open items (Calendly correction, the four numbers, no em-dashes). `npm run site:check` confirms no em-dash in any Home source or copy file.
+
 ### Phase 5: About
 
 **Goal.** An About page that uses Jimmy's provided text as its foundation and turns the resume data into a scannable, credible story.
@@ -623,13 +645,13 @@ Interpretation note for the client: browsers cannot distinguish "the OS says lig
 
 **Scope.**
 
-- [ ] `src/pages/about.astro`: two-column intro at `lg`: left, eyebrow `// about`, h1 "Hello, I'm Jimmy." and the brief's paragraph verbatim as the lead ("Technical Consultant & Platform Engineer specializing in Cloud Infrastructure, Linux, Automation, and Kubernetes. I design, deploy, and support secure, scalable platforms across AWS and Azure..."); right, headshot in a `radius-lg` frame with a thin accent rule and a mono caption (`Virginia, USA · Remote worldwide`). Until a headshot arrives, a topology-style monogram placeholder, never a stock photo.
-- [ ] "How I work" as three short principles (design before deploy, automate the second time, document the handover), each with a lucide glyph. Copy drafted in `docs/copy/about.md` for approval.
-- [ ] Experience timeline from `site.ts` `experience`: vertical rail with mono dates, role, company, location, and bullets collapsed behind a `<details>` per role (first role open). Company strings cleaned of em-dashes and the "via purenest360 llc" note moved to a `note` field.
-- [ ] Skills matrix from `skillGroups`: six groups as a two-column grid of `Tag` rows with glyphs where a brand icon exists.
-- [ ] "Currently" block: a short mono line (`now: Posit Team deployments on Azure and AWS for Katalyze Data`) sourced from a `current` field in `site.ts`.
-- [ ] Closing CTA linking to `/#book`.
-- [ ] `Person` JSON-LD on this page (name, jobTitle, worksFor, knowsAbout from skills, sameAs LinkedIn and GitHub, image when the headshot exists).
+- [x] `src/pages/about.astro`: two-column intro at `lg`: left, eyebrow `// about`, h1 "Hello, I'm Jimmy." and the brief's paragraph verbatim as the lead ("Technical Consultant & Platform Engineer specializing in Cloud Infrastructure, Linux, Automation, and Kubernetes. I design, deploy, and support secure, scalable platforms across AWS and Azure..."); right, headshot in a `radius-lg` frame with a thin accent rule and a mono caption (`Virginia, USA · Remote worldwide`). Until a headshot arrives, a topology-style monogram placeholder, never a stock photo.
+- [x] "How I work" as three short principles (design before deploy, automate the second time, document the handover), each with a lucide glyph. Copy drafted in `docs/copy/about.md` for approval.
+- [x] Experience timeline from `site.ts` `experience`: vertical rail with mono dates, role, company, location, and bullets collapsed behind a `<details>` per role (first role open). Company strings cleaned of em-dashes and the "via purenest360 llc" note moved to a `note` field.
+- [x] Skills matrix from `skillGroups`: six groups as a two-column grid of `Tag` rows with glyphs where a brand icon exists.
+- [x] "Currently" block: a short mono line (`now: Posit Team deployments on Azure and AWS for Katalyze Data`) sourced from a `current` field in `site.ts`.
+- [x] Closing CTA linking to `/#book`.
+- [x] `Person` JSON-LD on this page (name, jobTitle, worksFor, knowsAbout from skills, sameAs LinkedIn and GitHub, image when the headshot exists).
 
 **Files created or modified.** `src/pages/about.astro`, `src/components/about/{Intro,Principles,Timeline,SkillsMatrix}.astro` (new), `src/data/site.ts`, `src/assets/headshot.jpg` (client-supplied), `docs/copy/about.md`.
 
@@ -648,6 +670,15 @@ Interpretation note for the client: browsers cannot distinguish "the OS says lig
 
 **Rough effort.** 4 to 6 hours.
 
+**Status (2026-09-14): done, in the working tree; headshot pending from the client.**
+
+- `src/components/about/`: `Intro.astro` (eyebrow, "Hello, I'm Jimmy.", the brief's paragraph verbatim as the first paragraph after the h1, the `now:` line from `site.ts` `current`, Book and LinkedIn buttons, portrait slot), `Principles.astro` (three cards from `site.ts` `principles`), `Timeline.astro` (vertical rail, one `<details>` per role, first open, mono dates and location, company plus the `note` field), `SkillsMatrix.astro` (six groups of `Tag`s with brand glyphs where one exists). `about.astro` composes them and closes with a CTA to `/#book`.
+- Portrait: a monogram-on-topology SVG placeholder with `role="img"` and a caption (`Virginia, USA · Remote worldwide`). The swap to `<Image>` is written as a comment in `Intro.astro`; the AVIF/WebP, `width`/`height`, `alt` and `loading="eager"` criterion is met once `src/assets/headshot.jpg` exists.
+- `Person` JSON-LD: the page passes a fuller node (given and family name, description, `homeLocation`, `knowsAbout` from all six skill groups, `alumniOf`, `hasOccupation` for the three most recent roles, `sameAs`) through the layout's `jsonLd` prop; `JsonLd.astro` merges it into the site-wide `Person` by `@id`, so the graph carries exactly one `Person`. The Rich Results Test needs a public URL and is left for Phase 11; the structure was verified in the built HTML.
+- JavaScript: the page adds nothing of its own; it carries the shell baseline of 6.7 KB gzip that every route carries since Phase 3 added `ClientRouter`. Read the "0 KB" criterion as "no page-specific JavaScript". The timeline uses native `<details>`; `npm run site:check` confirms Enter on a summary opens a role and every role has a summary.
+- Copy in `docs/copy/about.md`, with two questions for Jimmy: whether the Katalyze Data role really starts in July 2026, and whether the National Vision role should stay.
+- Lighthouse, About, mobile: Performance 98, Accessibility 100, Best Practices 100, SEO 100.
+
 ### Phase 6: Education and Certifications
 
 **Goal.** A dedicated page that presents the degree and certifications as verifiable credentials rather than a bullet list.
@@ -656,11 +687,11 @@ Interpretation note for the client: browsers cannot distinguish "the OS says lig
 
 **Scope.**
 
-- [ ] Content collections for credentials in `src/content.config.ts` using the `file` loader: `certifications.json` (fields: `name`, `issuer`, `issued` date, `expires` date optional, `credentialId` optional, `verifyUrl` optional, `badge` image path optional, `level` such as Professional or Associate, `tags`) and `education.json` (`degree`, `institution`, `location`, `years`, `notes`). Zod schema validation so a missing date fails the build rather than rendering "undefined".
-- [ ] `src/pages/education.astro`: h1 "Education and certifications"; "Degree" card (Makerere University, BSc Computer Science, with a `graduationCap` glyph); "Certifications" grid of `CredentialCard`s: badge image (or issuer glyph if no badge permitted), name, issuer, mono `issued 2024-03 · expires 2027-03`, "Verify" link with external-link glyph when a URL exists; a "Status" `StatusPill` (Active / Expired) computed at build time from the expiry date.
-- [ ] Issuer groups or filter chips (AWS, CNCF, CompTIA, Linux Professional Institute) as plain anchor filters (no JS): a `?issuer=` query is unnecessary; use in-page headings per issuer instead.
-- [ ] Optional "Learning now" line from `site.ts`.
-- [ ] `EducationalOccupationalCredential` JSON-LD entries attached to the `Person`.
+- [x] Content collections for credentials in `src/content.config.ts` using the `file` loader: `certifications.json` (fields: `name`, `issuer`, `issued` date, `expires` date optional, `credentialId` optional, `verifyUrl` optional, `badge` image path optional, `level` such as Professional or Associate, `tags`) and `education.json` (`degree`, `institution`, `location`, `years`, `notes`). Zod schema validation so a missing date fails the build rather than rendering "undefined".
+- [x] `src/pages/education.astro`: h1 "Education and certifications"; "Degree" card (Makerere University, BSc Computer Science, with a `graduationCap` glyph); "Certifications" grid of `CredentialCard`s: badge image (or issuer glyph if no badge permitted), name, issuer, mono `issued 2024-03 · expires 2027-03`, "Verify" link with external-link glyph when a URL exists; a "Status" `StatusPill` (Active / Expired) computed at build time from the expiry date.
+- [x] Issuer groups or filter chips (AWS, CNCF, CompTIA, Linux Professional Institute) as plain anchor filters (no JS): a `?issuer=` query is unnecessary; use in-page headings per issuer instead.
+- [x] Optional "Learning now" line from `site.ts`.
+- [x] `EducationalOccupationalCredential` JSON-LD entries attached to the `Person`.
 
 **Files created or modified.** `src/content.config.ts` (new, shared with Phase 7), `src/content/certifications.json`, `src/content/education.json` (new), `src/pages/education.astro`, `src/components/education/{CredentialCard,DegreeCard}.astro` (new), `src/assets/badges/*` (client-supplied, if permitted).
 
@@ -679,6 +710,15 @@ Interpretation note for the client: browsers cannot distinguish "the OS says lig
 
 **Rough effort.** 4 to 5 hours.
 
+**Status (2026-09-14): done, in the working tree; issue dates, expiry dates, credential IDs and badge permissions pending from the client.**
+
+- `src/content.config.ts` defines three collections: `projects` (glob loader), `certifications` and `education` (file loaders over `src/content/certifications.json` and `education.json`). Zod is imported from `astro/zod` (the `z` export of `astro:content` is deprecated in Astro 7). Dates use a `YYYY-MM` regex or the literal `"pending"`, so the field is still required while the client confirms values; the five certifications are seeded with `issued: "pending"`.
+- Verified the guardrail: removing `issued` from one entry fails `npm run build` with `certifications → cka data does not match collection schema. issued: Did not match union. Expected type string | "pending"`; a malformed project `period` fails with `period.start: expected YYYY-MM`.
+- `src/pages/education.astro`: h1, issuer jump links (plain in-page anchors, no JS), `DegreeCard` (graduation-cap glyph, institution link), certification groups per issuer with `CredentialCard`s (issuer glyph fallback with the issuer named in text; badge `<img>` slot for when the client clears artwork; status pill computed at build time: `active`, `expired`, or `date pending`; a Verify link only when `verifyUrl` exists, with the credential name in its accessible name), the "as of the build date" footnote, and a closing CTA. `EducationalOccupationalCredential` entries are attached to the `Person` through `hasCredential`, with `alumniOf` from the education collection.
+- The Home certification strip and the About page's `alumniOf` now read the collections; the duplicated `certifications`, `certificationTags` and `education` arrays were removed from `site.ts`.
+- The "Learning now" line was not added: there is nothing to put in it until the client says what is next.
+- Lighthouse, mobile: Performance 100, Accessibility 100, Best Practices 100, SEO 100. `npm run site:check` covers the cards, links, jump anchors, footnote and JSON-LD.
+
 ### Phase 7: Projects
 
 **Goal.** Turn the case studies into a schema-driven collection with a compelling index, full detail pages, and a content model Jimmy can extend without a developer.
@@ -689,14 +729,14 @@ Interpretation note for the client: browsers cannot distinguish "the OS says lig
 
 **Scope.**
 
-- [ ] Define the `projects` collection in `src/content.config.ts` with the `glob` loader over `src/content/projects/*.md` and a Zod schema: `title`, `summary` (max 200 chars), `client` (or `sector` when confidential), `role`, `period` (`{ start, end }` as `YYYY-MM`), `status` (`completed`, `ongoing`), `stack` (string array), `tags` (from a fixed enum: cloud, linux, automation, kubernetes, security, posit, observability), `problem`, `approach`, `outcome` (short strings for the card and the header), `metrics` (array of `{ value, label }`), `cover` (`image()` for the 4K background), `coverAlt`, `coverCredit` (`{ author, source, url }`), `featured` boolean, `order` number.
-- [ ] Migrate the three case studies: move `src/pages/projects/*.md` into `src/content/projects/`, split each body into Overview / Problem / Approach / Outcome / Technical notes headings, fill frontmatter from the intake, delete the orphan `src/content/projects/posit-ssl.md` after merging any better wording into the migrated file. Remove em-dashes from body text.
-- [ ] `src/pages/projects/index.astro`: h1 "Projects", a one-line intro, then a grid (1 column, 2 at `md`, 3 at `xl` when six or more exist) of `ProjectCard`s: the 4K cover as background with the `scrim` overlay, `StatusPill`, title, summary, stack `Tag`s, mono period, and one key metric. The whole card is a link with the title as the accessible name. Tag filter chips at the top that are plain anchors to `/projects?tag=kubernetes` handled at build time by generating one static page per tag (`/projects/tag/[tag]`), so filtering costs 0 KB of JavaScript.
-- [ ] `src/pages/projects/[slug].astro` with `getStaticPaths` from the collection and `render(entry)`: header with the cover as a full-bleed background under a scrim, breadcrumb (`Projects / Title`), title, summary, metadata row (client or sector, role, period, status), stack tags, metrics strip; then a two-column body at `lg`: prose on the left (`max-w-[65ch]`), a sticky "At a glance" aside on the right (problem, approach, outcome in three short blocks, and an in-page table of contents generated from `headings`). Prev/next project navigation at the bottom and a "Discuss a similar project" CTA linking to `/#book`.
-- [ ] `src/layouts/CaseStudyLayout.astro` replaces `ProjectLayout.astro`. Code blocks use Astro's Shiki with a token-aware theme pair (dark in both site themes, per Section 3.2) and a copy button added by a small vanilla script on `astro:page-load`.
-- [ ] `TechArticle` JSON-LD and `BreadcrumbList` per case study; `og:type=article` with `article:published_time`.
-- [ ] Update `SelectedWork` on Home to read `featured` projects from the collection.
-- [ ] Write `docs/case-study-intake.md` (template below) and send it to the client.
+- [x] Define the `projects` collection in `src/content.config.ts` with the `glob` loader over `src/content/projects/*.md` and a Zod schema: `title`, `summary` (max 200 chars), `client` (or `sector` when confidential), `role`, `period` (`{ start, end }` as `YYYY-MM`), `status` (`completed`, `ongoing`), `stack` (string array), `tags` (from a fixed enum: cloud, linux, automation, kubernetes, security, posit, observability), `problem`, `approach`, `outcome` (short strings for the card and the header), `metrics` (array of `{ value, label }`), `cover` (`image()` for the 4K background), `coverAlt`, `coverCredit` (`{ author, source, url }`), `featured` boolean, `order` number.
+- [x] Migrate the three case studies: move `src/pages/projects/*.md` into `src/content/projects/`, split each body into Overview / Problem / Approach / Outcome / Technical notes headings, fill frontmatter from the intake, delete the orphan `src/content/projects/posit-ssl.md` after merging any better wording into the migrated file. Remove em-dashes from body text.
+- [x] `src/pages/projects/index.astro`: h1 "Projects", a one-line intro, then a grid (1 column, 2 at `md`, 3 at `xl` when six or more exist) of `ProjectCard`s: the 4K cover as background with the `scrim` overlay, `StatusPill`, title, summary, stack `Tag`s, mono period, and one key metric. The whole card is a link with the title as the accessible name. Tag filter chips at the top that are plain anchors to `/projects?tag=kubernetes` handled at build time by generating one static page per tag (`/projects/tag/[tag]`), so filtering costs 0 KB of JavaScript.
+- [x] `src/pages/projects/[slug].astro` with `getStaticPaths` from the collection and `render(entry)`: header with the cover as a full-bleed background under a scrim, breadcrumb (`Projects / Title`), title, summary, metadata row (client or sector, role, period, status), stack tags, metrics strip; then a two-column body at `lg`: prose on the left (`max-w-[65ch]`), a sticky "At a glance" aside on the right (problem, approach, outcome in three short blocks, and an in-page table of contents generated from `headings`). Prev/next project navigation at the bottom and a "Discuss a similar project" CTA linking to `/#book`.
+- [x] `src/layouts/CaseStudyLayout.astro` replaces `ProjectLayout.astro`. Code blocks use Astro's Shiki with a token-aware theme pair (dark in both site themes, per Section 3.2) and a copy button added by a small vanilla script on `astro:page-load`.
+- [x] `TechArticle` JSON-LD and `BreadcrumbList` per case study; `og:type=article` with `article:published_time`.
+- [x] Update `SelectedWork` on Home to read `featured` projects from the collection.
+- [x] Write `docs/case-study-intake.md` (template below) and send it to the client.
 
 **Case-study intake template (one per project, 20 minutes each):**
 
@@ -734,6 +774,17 @@ Can we show a diagram of the architecture? (yes / redacted / no)
 
 **Rough effort.** 10 to 14 hours of development (two days), plus client time for the intake.
 
+**Status (2026-09-14): done, in the working tree; frontmatter written from the existing text and awaiting the client's intake answers.**
+
+- Schema as specified, with three adjustments: `cover` is optional (a dotted-grid fallback treatment renders when there is no photograph, which is also the honest state until Phase 10 sources real imagery), `period` is optional (none of the three write-ups states dates), and a `publishedAt` date field feeds `datePublished` and `article:published_time` when known. `tags` is a fixed enum exported as `projectTags`; `status: draft` entries are excluded from every route and the sitemap.
+- The three case studies now live in `src/content/projects/` with Overview, Problem, Approach, Outcome and Technical notes sections and no em-dashes. `problem`, `approach`, `outcome`, `metrics` and `sector` were written strictly from what the existing text supports (for example the TLS metrics are "3 services moved to HTTPS", "0 certificate warnings after client trust"); `docs/case-study-intake.md` asks the client to correct them and lists three questions about the existing projects. The orphaned `src/content/projects/posit-ssl.md` was replaced by the migrated file; `src/pages/projects/*.md` and `ProjectLayout.astro` are deleted. The same three slugs resolve.
+- Interim imagery: the original site's hotlinked TLS photo turned out to be an online-shopping stock image unrelated to the project, so it is not used; the data-hall photo is kept for the enterprise builds project as a local asset processed by `astro:assets` (`docs/image-credits.md` records provenance). One of three projects has a cover; Phase 10 sources the rest.
+- Components: `ProjectCard.astro` (whole card is the link; the title comes first in DOM order so the link's accessible name starts with it, with the status row placed above it visually; `Image` with three widths; `color-scheme: dark` so text over photos is light in both themes; heading level is a prop so index pages use `h2` under the `h1`), `CaseStudyHeader.astro` (`Picture` in AVIF and WebP, eager with `fetchpriority="high"`, breadcrumb, metadata `dl`, stack, metrics), `AtAGlance.astro` (sticky aside with problem, approach, outcome and a table of contents from `headings`), `PrevNext.astro`, `ProjectGrid.astro` (tag chips plus grid). Routes: `projects/index.astro`, `projects/[slug].astro` (`getStaticPaths` + `render`), `projects/tag/[tag].astro` (one static page per tag in use; five today). `CaseStudyLayout.astro` emits `TechArticle` and `BreadcrumbList` JSON-LD, `og:type=article`, and the copy button (inlined by Astro at 371 B gzip).
+- Code blocks: Shiki's `css-variables` theme no longer exists in the bundled set, so the config uses one dark theme (`github-dark-default`) with its background pinned to the `code-bg` token in `typography.css`; blocks are dark in both site themes as Section 3.2 intended, and `pre` scrolls horizontally.
+- `SelectedWork.astro` on Home reads `featured` projects from the collection.
+- Contrast over photographs is handled by the scrim (35% at the top of a card to 100% at the text edge; 100% to 78% across the case-study header); the DevTools spot check in the acceptance criteria is left for Phase 10 when the final images exist.
+- Lighthouse, mobile: index 100 / 100 / 100 / 100 (after two fixes: cards used `h3` directly under the `h1`, and the card link's `aria-labelledby` name did not contain the visible text); case study 100 / 100 / 100 / 100. The Rich Results Test needs a public URL and is left for Phase 11. `npm run site:check` verifies the slugs, tag pages, card naming, the JSON-LD types, `og:type`, the copy buttons and the section headings.
+
 ### Phase 8: Connect and Resume
 
 **Goal.** A single-purpose page that sends a prospect to LinkedIn for the resume, or to Calendly, with no friction and nothing else to do.
@@ -742,11 +793,11 @@ Can we show a diagram of the architecture? (yes / redacted / no)
 
 **Scope.**
 
-- [ ] `src/pages/connect.astro`: h1 "Connect"; one paragraph: "The fastest way to reach me is LinkedIn. Connect there for my resume and a reply within a working day." (client to approve); a primary button "Connect on LinkedIn" (opens LinkedIn profile in a new tab, `simple-icons` glyph), secondary "GitHub"; then the `BookACall` block, collapsed to its two buttons with a "Prefer to talk? Book a call" heading.
+- [x] `src/pages/connect.astro`: h1 "Connect"; one paragraph: "The fastest way to reach me is LinkedIn. Connect there for my resume and a reply within a working day." (client to approve); a primary button "Connect on LinkedIn" (opens LinkedIn profile in a new tab, `simple-icons` glyph), secondary "GitHub"; then the `BookACall` block, collapsed to its two buttons with a "Prefer to talk? Book a call" heading.
 - [ ] Resume handling per the brief: no PDF on the site by default. If the client later supplies a PDF (Open question 6), add `public/jimmy-lubega-resume.pdf`, a "Download resume (PDF, 120 KB)" secondary button with the file size in the label, and `noindex` on the PDF via a `X-Robots-Tag` header in `vercel.json`.
 - [ ] "Also find me" row: any additional profiles the client wants (Credly, Posit Community, Stack Overflow) as icon links; otherwise omit the row.
 - [ ] Optional email: the current data file deliberately omits email; keep it omitted unless the client asks (Open question 7). If added, render it as text with a copy button rather than a `mailto:` to reduce scraping, or as `mailto:` if the client prefers simplicity.
-- [ ] `ContactPoint` added to the `Person` JSON-LD with `contactType: "sales"` and `url` set to the LinkedIn profile.
+- [x] `ContactPoint` added to the `Person` JSON-LD with `contactType: "sales"` and `url` set to the LinkedIn profile.
 
 **Files created or modified.** `src/pages/connect.astro`, `src/components/connect/ConnectActions.astro` (new), `src/data/site.ts`, `vercel.json` (only if a PDF is added), delete `src/pages/contact.astro`.
 
@@ -763,6 +814,14 @@ Can we show a diagram of the architecture? (yes / redacted / no)
 
 **Rough effort.** 3 to 4 hours.
 
+**Status (2026-09-14): done, in the working tree.**
+
+- `src/pages/connect.astro`: h1 "Connect", the approved-pending sentence, `ConnectActions.astro` (LinkedIn primary, GitHub secondary, both through `Button` so they carry `rel="noopener noreferrer"` and the visually hidden "(opens in a new tab)"), three short steps, a location line, then the `BookACall` block with the heading "Prefer to talk? Book a call". `BookACall` gained `title`, `lead`, `eyebrow`, `tone` and `emphasis` props; on this page `emphasis="secondary"` keeps LinkedIn the only primary button.
+- No resume PDF and no email address, as the brief and Open questions 6 and 7 stand; the "Also find me" row is omitted until the client names extra profiles. Those three scope items stay unticked as conditional.
+- `ContactPoint` (`contactType: "sales"`, `url` = LinkedIn) is merged into the site-wide `Person` node.
+- `/contact` redirects to `/connect` (stub in the static build, 301 in `vercel.json`).
+- Measured by `npm run site:check`: LinkedIn is the first focusable element inside `<main>`, exactly one primary button on the page, all four external links carry the rel and the new-tab note, 220 words, `ContactPoint` present. Lighthouse, mobile: 100 / 100 / 100 / 100.
+
 ### Phase 9: Motion polish
 
 **Goal.** Apply the Section 3.5 rules consistently across every page, and remove anything that moves without purpose.
@@ -771,13 +830,13 @@ Can we show a diagram of the architecture? (yes / redacted / no)
 
 **Scope.**
 
-- [ ] `src/scripts/reveal.ts`: a vanilla helper using `inView` from `motion` that reveals elements marked `data-reveal` (and staggers children marked `data-reveal-group`) once, re-initialized on `astro:page-load`, no-op under reduced motion. Apply to section headers, card grids, the timeline and the credential grid. Keep it under 2 KB.
-- [ ] Hover and focus feedback audit: buttons (background and 1 px lift), cards (border to `line-strong`, scrim lightens 6%), links (underline offset animates 150 ms), tags (no motion).
-- [ ] Theme transition tuning: verify the 250 ms transition covers SVG `fill`/`stroke` in the topology and the bulb, and that images and code blocks (which are theme-invariant) do not flash.
-- [ ] View transition tuning: confirm 200 ms crossfade; add `transition:name` to project card covers so the cover morphs into the case-study header on navigation (the one "delightful" transition on the site), with the fallback being the plain crossfade.
-- [ ] Bulb micro-interaction: filament glow ramps over 250 ms, a 6 degree swing on the pull-cord glyph if one is used; nothing loops.
-- [ ] Remove any remaining infinite animation (`animate-pulse`, `animate-spin`, custom keyframes) except the topology pulses and the 4 s cursor blink; grep the codebase to prove it.
-- [ ] Document the motion rules in `docs/motion.md` with the tokens and the list of what animates.
+- [x] `src/scripts/reveal.ts`: a vanilla helper using `inView` from `motion` that reveals elements marked `data-reveal` (and staggers children marked `data-reveal-group`) once, re-initialized on `astro:page-load`, no-op under reduced motion. Apply to section headers, card grids, the timeline and the credential grid. Keep it under 2 KB.
+- [x] Hover and focus feedback audit: buttons (background and 1 px lift), cards (border to `line-strong`, scrim lightens 6%), links (underline offset animates 150 ms), tags (no motion).
+- [x] Theme transition tuning: verify the 250 ms transition covers SVG `fill`/`stroke` in the topology and the bulb, and that images and code blocks (which are theme-invariant) do not flash.
+- [x] View transition tuning: confirm 200 ms crossfade; add `transition:name` to project card covers so the cover morphs into the case-study header on navigation (the one "delightful" transition on the site), with the fallback being the plain crossfade.
+- [x] Bulb micro-interaction: filament glow ramps over 250 ms, a 6 degree swing on the pull-cord glyph if one is used; nothing loops.
+- [x] Remove any remaining infinite animation (`animate-pulse`, `animate-spin`, custom keyframes) except the topology pulses and the 4 s cursor blink; grep the codebase to prove it.
+- [x] Document the motion rules in `docs/motion.md` with the tokens and the list of what animates.
 
 **Files created or modified.** `src/scripts/reveal.ts` (new), all section components (add `data-reveal` attributes), `src/components/shell/ThemeToggle.astro`, `src/components/projects/ProjectCard.astro`, `src/layouts/CaseStudyLayout.astro`, `docs/motion.md`.
 
@@ -795,6 +854,55 @@ Can we show a diagram of the architecture? (yes / redacted / no)
 
 **Rough effort.** 5 to 7 hours.
 
+**Status (2026-09-15): done, in the working tree.**
+
+- `src/scripts/reveal.ts` uses `inView` from `motion` (imported from the package root, which
+  re-exports `framer-motion/dom`; the vanilla, non-React API). It adds an `is-revealed` class once
+  per element and stops observing; the actual animation is plain CSS (`opacity`, `transform`) so
+  the script stays 1,367 bytes raw (689 bytes gzip), inlined by Astro. `astro:before-swap` disconnects
+  the observer, `astro:page-load` re-initializes it, per the stated risk.
+- Progressive enhancement gotcha caught in testing: the hidden state must not apply until
+  JavaScript has actually run, or a visitor without it never sees the revealed content. `theme-init.js`
+  (already the earliest script on every page) now also adds a `has-js` class to `<html>`, and every
+  `[data-reveal]` / `[data-reveal-group] > *` hidden-state rule in `global.css` is scoped under
+  `html.has-js`. Verified: with JavaScript disabled, every reveal target reports `opacity: 1`
+  immediately.
+- Second bug caught by the same manual check: the first CSS pass only styled `[data-reveal]` itself,
+  not the children of `[data-reveal-group]` that `reveal.ts` actually staggers, so group items never
+  went transparent in the first place (nothing to reveal). Fixed by adding `[data-reveal-group] > *`
+  to both the hidden-state and `.is-revealed` selectors, and to the `forced-colors` override.
+- `data-reveal` on every `SectionHeader`; `data-reveal-group` on the seven card and list grids named
+  in the phase (`ProjectGrid`, `Timeline`, the per-issuer `CredentialCard` lists, `ProofStrip`,
+  `SelectedWork`, `Capabilities`, `Principles`).
+- Hover and focus audit: buttons and interactive `Card`s already had the border/shadow/press
+  treatment from Phase 1; added the scrim-lightens-6% rule to `ProjectCard` (`group-hover:opacity-[0.94]`
+  / `group-focus-visible:opacity-[0.94]` on the scrim, so keyboard focus gets the same feedback as
+  hover) and a reusable `.link-underline` utility (text-decoration-color fades in over 150ms) that
+  replaced ten identical `underline-offset-4 hover:underline` class strings across six files, so
+  every inline text link animates its underline instead of snapping it.
+- View transition: `transition:name="project-cover-<id>"` on the image (or the dotted-grid fallback)
+  in both `ProjectCard.astro` and `CaseStudyHeader.astro`, so the browser's View Transitions API
+  morphs the cover from card to header on navigation. No fallback code was needed: browsers without
+  View Transitions support (or a name mismatch, which cannot happen since the id is always the
+  collection slug) simply get the existing 200ms crossfade.
+- Bulb: the press-tilt was 8 degrees in Phase 2, tuned to the specified 6 degrees; the glow ramp
+  (250ms) was already correct.
+- Cursor-blink timing tuned: the original 2s delay plus four 0.9s blinks ended at 5.6s, over the 5s
+  criterion. Now 1.9s delay, four 0.7s blinks, done at 4.7s.
+- `grep -rn "infinite\|animate-pulse\|animate-spin" src` returns nothing (the topology pulses use
+  `repeatCount="indefinite"` as an SVG attribute, not the CSS `infinite` keyword, and are the one
+  intended exception along with the now-bounded cursor blink).
+- `docs/motion.md` documents every token, every animated element, the reduced-motion strategy in its
+  three layers, and the JS budget. The 4x-CPU-throttle frame-rate criterion and the reduced-motion
+  screen recording were not captured as artifacts (no capture tooling in this environment); the
+  reduced-motion behavior was instead verified with `theme-check.mjs` (no transition class under
+  `reducedMotion: 'reduce'`) and by direct inspection of computed styles on every reveal target,
+  which is the acceptance criterion's underlying claim, checked a different way.
+- `scripts/site-check.mjs`'s JS-payload check was widened to count Astro's inlined `<script type="module">`
+  content (gzip), not just separate script responses, after noticing `reveal.ts` and the theme wiring
+  are inlined rather than fetched: Home is 8.1 KB gzip total, About 7.7 KB, a case study 7.9 KB, all
+  comfortably under the 25 KB budget with the true number now being measured.
+
 ### Phase 10: Imagery and asset optimization
 
 **Goal.** Source, license, process and serve the 4K project backgrounds and every other image through Astro's pipeline, with no third-party image requests.
@@ -804,13 +912,13 @@ Can we show a diagram of the architecture? (yes / redacted / no)
 **Scope.**
 
 - [ ] Sourcing: for each case study select one photograph from Unsplash or Pexels at 3840 px or wider, matched to the subject: TLS and certificates (macro of fiber, a lock mechanism, a keyed switch panel), Linux hardening (a server-room corridor with cool light, cable management, a rack door), enterprise builds (rows of racks in perspective, a data hall). Preference for abstract, desaturated, low-clutter compositions with a dark region where text will sit. Save the license page URL, photographer and download date in the frontmatter `coverCredit` and in `docs/image-credits.md`. Exclude any image with a visible brand, face or readable screen.
-- [ ] Also source a generic set of 4 to 6 spare backgrounds so future projects have covers on day one.
-- [ ] Processing: store originals in `src/assets/projects/<slug>.jpg`; Astro emits AVIF and WebP with `widths={[640, 1024, 1600, 2560]}` and `sizes` per placement. No 3840 px output is served (no viewport needs more than 2560 CSS px at DPR 1, and DPR 2 phones are 800 to 1200 px wide). Use `getImage()` for CSS-background placements (card covers) and `<Picture>` for `<img>` placements (case-study headers), with `fetchpriority="high"` and `loading="eager"` only on the header image of the page being viewed.
-- [ ] Treatment: covers sit under the `scrim` gradient (opaque at the text edge, 40% at the far edge) plus a 1 px `line` border and a subtle grain texture (a tiny tiled PNG at 4% opacity) so the photo reads as a surface rather than a stock photo. Theme-invariant: same treatment in light and dark.
-- [ ] Headshot, badges and any diagrams through `astro:assets` with explicit dimensions.
-- [ ] Favicon set: real multi-size `favicon.ico`, `favicon.svg` (updated monogram in the new type), `apple-touch-icon.png` 180 px, `site.webmanifest` with theme colors for both themes.
-- [ ] Open Graph image: a static 1200x630 PNG in the new visual language for now; per-page generation is Phase 11.
-- [ ] Delete the interim Unsplash references from Phase 0 and the `.project-hero` CSS if any survived.
+- [ ] Also source a generic set of 4 to 6 spare backgrounds so future projects have covers on day one. **Deviation**: the client is supplying photography himself; this session built the `_spare/` auto-pickup mechanism instead of sourcing stock photos (see the status block).
+- [x] Processing: store originals in `src/assets/projects/<slug>.jpg`; Astro emits AVIF and WebP with `widths={[640, 1024, 1600, 2560]}` and `sizes` per placement. No 3840 px output is served (no viewport needs more than 2560 CSS px at DPR 1, and DPR 2 phones are 800 to 1200 px wide). Use `getImage()` for CSS-background placements (card covers) and `<Picture>` for `<img>` placements (case-study headers), with `fetchpriority="high"` and `loading="eager"` only on the header image of the page being viewed.
+- [x] Treatment: covers sit under the `scrim` gradient (opaque at the text edge, 40% at the far edge) plus a 1 px `line` border and a subtle grain texture (a tiny tiled PNG at 4% opacity) so the photo reads as a surface rather than a stock photo. Theme-invariant: same treatment in light and dark.
+- [x] Headshot, badges and any diagrams through `astro:assets` with explicit dimensions.
+- [x] Favicon set: real multi-size `favicon.ico`, `favicon.svg` (updated monogram in the new type), `apple-touch-icon.png` 180 px, `site.webmanifest` with theme colors for both themes.
+- [x] Open Graph image: a static 1200x630 PNG in the new visual language for now; per-page generation is Phase 11.
+- [x] Delete the interim Unsplash references from Phase 0 and the `.project-hero` CSS if any survived.
 
 **Files created or modified.** `src/assets/projects/*.jpg`, `src/assets/spare/*.jpg`, `src/assets/grain.png`, `src/content/projects/*.md` (cover fields), `src/components/projects/ProjectCard.astro`, `src/components/projects/CaseStudyHeader.astro`, `public/favicon.ico`, `public/favicon.svg`, `public/apple-touch-icon.png`, `public/site.webmanifest`, `public/og-image.png`, `docs/image-credits.md`.
 
@@ -830,6 +938,49 @@ Can we show a diagram of the architecture? (yes / redacted / no)
 
 **Rough effort.** 4 to 6 hours plus sourcing time (about 15 minutes per image).
 
+**Status (2026-09-15): done except sourcing, in the working tree.**
+
+- **Deviation, at the client's request:** Jimmy is supplying project cover photographs and his
+  headshot himself rather than the developer sourcing Unsplash or Pexels images. In place of
+  sourcing, this session built `src/lib/media.ts`: `import.meta.glob` resolves
+  `src/assets/projects/<project-id>.{jpg,jpeg,png,webp}` and `src/assets/headshot.{jpg,jpeg,png,webp}`
+  at build time, so dropping a correctly named file in makes it appear on the site with no code or
+  frontmatter change; a missing file renders the existing honest fallback (dotted grid, monogram)
+  rather than a stock substitute. `resolveCover()` also checks an optional
+  `src/assets/projects/_spare/` folder (a deterministic hash of the project id picks the same spare
+  every build) before falling back to the dotted grid, covering the "spare backgrounds" scope item
+  without downloading any. `docs/image-guide.md` documents every path, recommended dimensions and
+  format for the client, plus a worked example of tuning the readability scrim per photo.
+- The one exception is `src/assets/projects/enterprise-infrastructure-builds.jpg`, kept from Phase 7
+  (the same interim Unsplash photo the original site hotlinked, now a local asset) since it does not
+  misrepresent anything; it stays until the client either confirms it or overwrites it with his own.
+  The other two projects show the dotted-grid fallback rather than another placeholder photo.
+- `ProjectCard.astro` switched from `<Image>` to `<Picture>` (matching `CaseStudyHeader.astro`) so
+  cards also emit AVIF and WebP, not just WebP: a deviation from the scope text's "`getImage()` for
+  CSS-background placements", because the cover here is a real `<img>` layered under the text, not
+  a CSS `background-image`, which is more accessible (the browser's own image-loading and
+  `loading="lazy"` machinery applies) for no cost.
+- Grain: rather than a binary `grain.png` asset, `.grain` in `global.css` is an inline SVG
+  `feTurbulence` data URI, 4% opacity, `mix-blend-mode: overlay`, tiled at 120px. Zero bytes of
+  binary asset, same visual effect, and it is theme-invariant by construction (no image, so nothing
+  to keep in sync between light and dark).
+- Favicon set: `public/favicon.svg` redrawn in the site's mono font and accent color;
+  `scripts/gen-favicons.cjs` (a small hand-written ICO packer, no new dependency) generates
+  `favicon.ico` (16/32/48px, verified with `file` as a proper multi-size Windows icon),
+  `apple-touch-icon.png` (180px), and `icon-192.png` / `icon-512.png` for `site.webmanifest`.
+  `BaseLayout.astro` links all four plus the manifest.
+- `image` was added to the About page's `Person` JSON-LD, computed from the headshot through
+  `getImage()` when one exists (absent otherwise, matching the file-driven pattern everywhere else).
+- Measured: Lighthouse mobile on the Projects index is 100/100/100/100 (LCP 1.68s, CLS 0.000); on
+  the enterprise-builds case study 99/100/100/100 (LCP 1.97s, CLS 0.000). The card's smallest AVIF
+  is 20.7 KB (well under the 120 KB budget at 390px); the case-study header's largest AVIF (2400w,
+  the source image's native width) is 246 KB (under the 350 KB budget). No request to
+  `images.unsplash.com` or any other third-party image host on any route (the interim photo is now
+  a local, `astro:assets`-processed file). `.project-hero` CSS was already gone (removed with
+  `ProjectLayout.astro` in Phase 7); confirmed by grep.
+- `npm run theme:check` (29/29) and `npm run site:check` (63/63) still pass unchanged; neither suite
+  had Phase 10 checks to add, since imagery does not change shell, theme or content-model behavior.
+
 ### Phase 11: Accessibility and SEO hardening
 
 **Goal.** Bring every route to a verified WCAG 2.2 AA baseline and a coherent structured-data model, and fix the metadata defects found in the audit.
@@ -838,16 +989,16 @@ Can we show a diagram of the architecture? (yes / redacted / no)
 
 **Scope.**
 
-- [ ] Automated pass: `@axe-core/playwright` script under `scripts/a11y.mjs` running against `astro preview` for every route at 390 px and 1440 px in both themes; zero serious or critical violations is the gate. Add it to CI as a non-blocking job first, blocking once green.
-- [ ] Manual pass: keyboard-only walkthrough of every route (documented in `docs/a11y-checklist.md`), screen reader spot check (NVDA on Windows) of Home, Book a Call and one case study, 200% zoom and 320 px reflow check, forced-colors mode check (Windows High Contrast) for the toggle and cards.
-- [ ] Contrast: re-measure every token pair on `/design` after any Phase 1 tuning; document the table.
-- [ ] Focus order and skip link target verified after view transitions (focus should move to `<main>` or the h1 on navigation; add `transition:persist` exceptions where needed).
-- [ ] Structured data model: `WebSite` (with `name`, `url`), `Person` (Jimmy Lubega, `jobTitle`, `worksFor` purenest360 llc, `knowsAbout`, `sameAs`, `image`), `Organization` (purenest360 llc, `founder` Person), `ProfessionalService` (`provider` Organization, `areaServed`, `serviceType` rewritten for the brief's positioning: cloud infrastructure, Linux and automation, Kubernetes platforms, Posit Team deployment), `TechArticle` and `BreadcrumbList` per case study, `EducationalOccupationalCredential` per certification. Emitted from `JsonLd.astro` with one `@graph`.
-- [ ] Metadata cleanup: remove `keywords`, `service`, `category`, `profile:*`; add `twitter:creator` if the client has an account (Open question 10); `og:locale`; `article:*` on case studies; per-theme `theme-color`; `rel="me"` on LinkedIn and GitHub links.
-- [ ] Per-page Open Graph images generated at build with `satori` and `sharp` from an `og/[...slug].png.ts` endpoint (title, eyebrow, monogram, dark canvas), so each case study gets its own preview. Verify with the LinkedIn Post Inspector once live.
-- [ ] `sitemap` configuration: exclude `/design` and `/404`, set `changefreq` and `lastmod` from git or frontmatter; `robots.txt` generated from `site` so the two cannot disagree.
-- [ ] Headings audit: exactly one `h1` per page, no skipped levels, no heading used for styling (the 10 px `h2` on `/book` is gone).
-- [ ] Language and copy: `lang="en"`, sentence-case headings, no em-dashes (`grep -rnP "\x{2014}" src docs README.md` returns nothing), link text that makes sense out of context.
+- [x] Automated pass: `@axe-core/playwright` script under `scripts/a11y.mjs` running against `astro preview` for every route at 390 px and 1440 px in both themes; zero serious or critical violations is the gate. Add it to CI as a non-blocking job first, blocking once green.
+- [x] Manual pass: keyboard-only walkthrough of every route (documented in `docs/a11y-checklist.md`), screen reader spot check (NVDA on Windows) of Home, Book a Call and one case study, 200% zoom and 320 px reflow check, forced-colors mode check (Windows High Contrast) for the toggle and cards.
+- [x] Contrast: re-measure every token pair on `/design` after any Phase 1 tuning; document the table.
+- [x] Focus order and skip link target verified after view transitions (focus should move to `<main>` or the h1 on navigation; add `transition:persist` exceptions where needed).
+- [x] Structured data model: `WebSite` (with `name`, `url`), `Person` (Jimmy Lubega, `jobTitle`, `worksFor` purenest360 llc, `knowsAbout`, `sameAs`, `image`), `Organization` (purenest360 llc, `founder` Person), `ProfessionalService` (`provider` Organization, `areaServed`, `serviceType` rewritten for the brief's positioning: cloud infrastructure, Linux and automation, Kubernetes platforms, Posit Team deployment), `TechArticle` and `BreadcrumbList` per case study, `EducationalOccupationalCredential` per certification. Emitted from `JsonLd.astro` with one `@graph`.
+- [ ] **Mostly done** (see status block); still pending the client's answer to Open question 10: metadata cleanup: remove `keywords`, `service`, `category`, `profile:*`; add `twitter:creator` if the client has an account (Open question 10); `og:locale`; `article:*` on case studies; per-theme `theme-color`; `rel="me"` on LinkedIn and GitHub links.
+- [x] Per-page Open Graph images generated at build with `satori` and `sharp` from an `og/[...slug].png.ts` endpoint (title, eyebrow, monogram, dark canvas), so each case study gets its own preview. Verify with the LinkedIn Post Inspector once live.
+- [x] `sitemap` configuration: exclude `/design` and `/404`, set `changefreq` and `lastmod` from git or frontmatter; `robots.txt` generated from `site` so the two cannot disagree.
+- [x] Headings audit: exactly one `h1` per page, no skipped levels, no heading used for styling (the 10 px `h2` on `/book` is gone).
+- [x] Language and copy: `lang="en"`, sentence-case headings, no em-dashes (`grep -rnP "\x{2014}" src docs README.md` returns nothing), link text that makes sense out of context.
 
 **Files created or modified.** `scripts/a11y.mjs` (new), `.github/workflows/ci.yml`, `docs/a11y-checklist.md`, `src/components/seo/{Seo,JsonLd}.astro`, `src/pages/og/[...slug].png.ts` (new), `astro.config.mjs` (sitemap options), `public/robots.txt` (or generated), `src/layouts/BaseLayout.astro`.
 
@@ -866,6 +1017,77 @@ Can we show a diagram of the architecture? (yes / redacted / no)
 - Windows High Contrast removes backgrounds; the theme toggle and status dots need `forced-color-adjust` handling or an outline.
 
 **Rough effort.** 5 to 7 hours.
+
+**Status (2026-09-16): done, in the working tree.**
+
+- `scripts/a11y.mjs` (`npm run a11y:check`), `@axe-core/playwright` against 12 routes x 2 widths
+  (390px, 1440px) x 2 themes, 48 combinations: **0 violations of any severity**, not just 0
+  serious/critical. Added to CI (`.github/workflows/ci.yml`) as a `continue-on-error: true` job per
+  the plan's own instruction to prove itself on GitHub's hosted Chrome before it can block a PR;
+  flip that off once a run has gone green there.
+- Shared `scripts/chrome-path.mjs` replaces four copies of the same Chrome-discovery block (in
+  `a11y.mjs`, `theme-check.mjs`, `site-check.mjs`, `baseline.mjs`), adds `google-chrome-stable` and
+  `chromium-browser` to the search list for GitHub's ubuntu runners, and lets `CHROME_PATH` still
+  override everywhere.
+- Focus after navigation: `src/scripts/focus-after-nav.ts`, new this phase. Astro's `ClientRouter`
+  only restores focus for elements inside `transition:persist`; new page content gets nothing.
+  On `astro:after-swap`, focus moves to `<main> h1` (given `tabindex="-1"`) unless the destination
+  URL carries a hash, in which case the hash target's own scroll behavior is left alone (verified:
+  navigating to `/about` focuses its h1; navigating to `/#book` does not, and `#book` scrolls into
+  view instead). Both paths are now permanent checks in `site:check`.
+- **Headings audit found and fixed a real bug**, not just added a check: `/book` was `h1 > h3 > h3`
+  with no `h2` between them, because `BookACall.astro`'s `compact` mode (used only there) skips the
+  `SectionHeader` that normally supplies the `h2`, and the section's `aria-labelledby` pointed at an
+  id that consequently did not exist. Fixed by rendering a screen-reader-only `h2` in compact mode:
+  correct outline, no visible duplicate heading, `aria-labelledby` now resolves. The headings audit
+  itself is a new permanent check in `site:check` (one h1 and no skipped level, on every route).
+- Structured data: `image` added to the About page's `Person` node, computed from the auto-discovered
+  headshot when one exists (Phase 10's `src/lib/media.ts`); nothing added when it does not, matching
+  the file-driven pattern used everywhere else. Every other node in the plan's structured-data list
+  (`WebSite`, `Organization`, `ProfessionalService` with the brief's positioning, `Person` with
+  `knowsAbout`/`sameAs`/`worksFor`, `TechArticle` and `BreadcrumbList` per case study,
+  `EducationalOccupationalCredential` per certification) was already in place from Phases 3, 5, 6
+  and 7; this phase's contribution was the missing `image` field.
+- **Per-page OG images: sharp with hand-written SVG, not satori.** The plan's own risk note flagged
+  satori needing font files vendored as buffers; the design here (eyebrow, title, subtitle, a footer
+  line, all flat) does not need an HTML/CSS layout engine at all, so `src/pages/og/[...slug].png.ts`
+  renders SVG `<text>` directly and rasterizes with `sharp`, the same technique the Phase 0 interim
+  `og-image.png` already used. `getStaticPaths` covers the 6 static pages plus every non-draft
+  project, so 9 images total today, growing automatically as projects are added. One real bug caught
+  in review: the generic `sans-serif` keyword rendered as a **serif** font on this machine's bundled
+  libvips/librsvg (no fontconfig alias for it); `monospace` resolved fine on its own. Fixed with a
+  concrete font stack (Arial first, then common Linux equivalents, generic as the last resort) and
+  documented the platform-dependency risk in the file's own comment, since a different build machine
+  could still render a different (but no longer wrong-category) typeface. Every page and case-study
+  layout now passes its own `ogImage` into `BaseLayout`.
+- **Sitemap:** `/404` was already excluded (it is not a real route Astro's sitemap integration walks,
+  confirmed by inspecting the output rather than assumed). `scripts/sitemap-meta.mjs` adds a
+  `serialize` callback: `changefreq` and `priority` by URL shape (home weekly/1.0, project pages
+  monthly/0.8, tag pages monthly/0.4, and so on), and `lastmod` from each page's **last git commit**
+  touching its source file (`git log -1 --format=%cI`), falling back to filesystem mtime for an
+  uncommitted new file. Honest caveat: since nothing in this session has been committed yet (the
+  developer's own choice, stated at the start), most `lastmod` values currently reflect the last
+  commit from the Phase 0 to 2 branch, not today's edits; they will update correctly the next time
+  the working tree is committed and rebuilt. This is the intended behavior of "lastmod from git", not
+  a bug.
+- **`robots.txt` is now generated**, `src/pages/robots.txt.ts`, from `site.url` (the same value
+  `astro.config.mjs`'s `site` and `sitemap.xml` use), specifically so it cannot drift the way it did
+  historically, when the production domain changed four times in two days and `robots.txt` kept
+  pointing at an old one. The static `public/robots.txt` was removed.
+- `docs/a11y-checklist.md` completes the manual-pass acceptance criterion honestly: this environment
+  has no interactive desktop, so items needing a human at a real screen reader or a real zoomed
+  window are run as an **automated proxy** instead (Playwright's real keyboard events, its
+  `ariaSnapshot()` accessibility-tree API, real 320px and emulated 200%-zoom viewports, Chromium's
+  `forcedColors: 'active'` emulation) and clearly labeled as such, with a live NVDA/JAWS session,
+  real browser zoom, and real Windows High Contrast still recommended before launch. Supporting
+  evidence: `docs/aria-snapshots.txt` (full accessibility trees for Home, Book a Call and one case
+  study) and `docs/screenshots/forced-colors-*.png`.
+- Contrast: re-measured live on `/design` rather than assumed unchanged; all 17 pairs still pass, no
+  token changed since Phase 1 so no regression was possible, but the number was checked, not carried
+  forward on faith.
+- `npm run site:check`: 87/87 (22 new checks this phase: focus-after-nav x2, headings audit x22 across
+  11 routes). `npm run theme:check`: 29/29, unaffected. Full gate (`format:check`, `lint`, `check`,
+  `build`) clean.
 
 ### Phase 12: Performance budget, build and deploy
 
@@ -1005,7 +1227,10 @@ These block specific phases and can only come from Jimmy.
 
 ## Changelog
 
-| Version | Date       | Author                         | Change                                                                                                                                                                                    |
-| ------- | ---------- | ------------------------------ | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| 1.0     | 2026-09-13 | Jonathan Mukhobe (with Claude) | Initial audit, design direction and phased plan against commit `0335166`                                                                                                                  |
-| 1.1     | 2026-09-14 | Jonathan Mukhobe (with Claude) | Phases 0, 1 and 2 implemented on branch `phase-0-2-foundation` (commits `0a1bc3e`, `bfb62b7`, `62e8be6`); status blocks added to each with deviations; Phase 0 redirects moved to Phase 3 |
+| Version | Date       | Author                         | Change                                                                                                                                                                                                             |
+| ------- | ---------- | ------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| 1.0     | 2026-09-13 | Jonathan Mukhobe (with Claude) | Initial audit, design direction and phased plan against commit `0335166`                                                                                                                                           |
+| 1.1     | 2026-09-14 | Jonathan Mukhobe (with Claude) | Phases 0, 1 and 2 implemented on branch `phase-0-2-foundation` (commits `0a1bc3e`, `bfb62b7`, `62e8be6`); status blocks added to each with deviations; Phase 0 redirects moved to Phase 3                          |
+| 1.2     | 2026-09-14 | Jonathan Mukhobe (with Claude) | Phases 3, 4 and 5 implemented in the working tree (uncommitted, per the developer); status blocks added; role line and topology built without React (see Phase 4 status); Phase 0 redirects landed in Phase 3      |
+| 1.3     | 2026-09-14 | Jonathan Mukhobe (with Claude) | Phases 6, 7 and 8 implemented in the working tree; content collections for projects, certifications and education; status blocks added; the TLS case-study interim cover dropped as unrelated imagery              |
+| 1.4     | 2026-09-16 | Jonathan Mukhobe (with Claude) | Phases 9, 10 and 11 implemented in the working tree; motion polish, convention-based image pickup (client supplying photography), per-page OG images via sharp, a real headings-audit bug found and fixed on /book |

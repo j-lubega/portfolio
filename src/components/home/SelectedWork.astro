@@ -1,0 +1,37 @@
+---
+/** Three featured projects from the collection, by order. */
+import { getCollection } from 'astro:content';
+import Container from '../ui/Container.astro';
+import Section from '../ui/Section.astro';
+import SectionHeader from '../ui/SectionHeader.astro';
+import Button from '../ui/Button.astro';
+import Icon from '../ui/Icon.astro';
+import ProjectCard from '../projects/ProjectCard.astro';
+
+const projects = (
+  await getCollection('projects', ({ data }) => data.featured && data.status !== 'draft')
+)
+  .sort((a, b) => a.data.order - b.data.order)
+  .slice(0, 3);
+---
+
+<Section tone="surface" labelledby="work-title">
+  <Container>
+    <div class="flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
+      <SectionHeader eyebrow="selected work" index="03" title="Case studies" id="work-title">
+        Real environments, with the problem, the approach and what changed.
+      </SectionHeader>
+      <Button href="/projects" variant="secondary" class="shrink-0">
+        All projects
+        <Icon name="lucide:arrow-right" size={16} />
+      </Button>
+    </div>
+    <ul data-reveal-group class="mt-10 grid gap-6 md:grid-cols-3">
+      {projects.map((project) => (
+        <li class="flex">
+          <ProjectCard project={project} sizes="(min-width: 768px) 33vw, 100vw" />
+        </li>
+      ))}
+    </ul>
+  </Container>
+</Section>

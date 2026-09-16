@@ -1,0 +1,32 @@
+---
+/** "How I work": three principles with a glyph each. Copy in docs/copy/about.md. */
+import { principles } from '../../data/site';
+import Container from '../ui/Container.astro';
+import Section from '../ui/Section.astro';
+import SectionHeader from '../ui/SectionHeader.astro';
+import Card from '../ui/Card.astro';
+import Icon from '../ui/Icon.astro';
+---
+
+<Section tone="surface" labelledby="principles-title">
+  <Container>
+    <SectionHeader
+      eyebrow="how I work"
+      index="01"
+      title="Three rules I keep"
+      id="principles-title"
+    />
+    <ul data-reveal-group class="mt-10 grid gap-6 md:grid-cols-3">
+      {principles.map((item, index) => (
+        <Card element="li" class="bg-canvas">
+          <div class="flex items-center justify-between">
+            <span class="text-mono-meta text-fg-faint font-mono">0{index + 1}</span>
+            <Icon name={item.icon} size={20} class="text-accent" />
+          </div>
+          <h3 class="text-h3 text-fg mt-5">{item.title}</h3>
+          <p class="text-small text-fg-muted mt-3">{item.body}</p>
+        </Card>
+      ))}
+    </ul>
+  </Container>
+</Section>

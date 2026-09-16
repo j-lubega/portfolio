@@ -1,0 +1,33 @@
+---
+/** Certification chips linking to the Education page. */
+import { getCollection } from 'astro:content';
+import Container from '../ui/Container.astro';
+import Icon from '../ui/Icon.astro';
+
+const certs = (await getCollection('certifications')).sort((a, b) => a.data.order - b.data.order);
+---
+
+<section class="border-line bg-surface border-y" aria-labelledby="certs-title">
+  <Container size="wide">
+    <div class="flex flex-col gap-5 py-8 md:flex-row md:items-center md:justify-between">
+      <h2 id="certs-title" class="text-mono-label text-fg-faint font-mono uppercase">
+        Certified
+      </h2>
+      <ul class="flex flex-wrap gap-2">
+        {certs.map(({ data: cert }) => (
+          <li>
+            <a
+              href="/education"
+              class="text-mono-meta border-line text-fg hover:border-accent hover:text-accent inline-flex items-center gap-2 rounded-xs border px-2.5 py-1 font-mono transition-colors duration-(--dur-fast)"
+              title={cert.name}
+            >
+              <Icon name={cert.issuerIcon ?? 'lucide:award'} size={14} class="text-fg-muted" />
+              {cert.short}
+              <span class="sr-only">, {cert.name}</span>
+            </a>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </Container>
+</section>

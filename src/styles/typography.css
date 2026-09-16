@@ -69,6 +69,11 @@
   border-radius: var(--radius-md);
 }
 
+/* Shiki writes its theme background inline; the token wins so code matches the site */
+.prose :where(pre.astro-code) {
+  background-color: var(--color-code-bg) !important;
+}
+
 .prose :where(code):not(:where(pre code)) {
   font-weight: 500;
 }

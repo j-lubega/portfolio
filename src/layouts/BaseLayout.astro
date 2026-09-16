@@ -1,63 +1,44 @@
 ---
 import '../styles/global.css';
 import { Font } from 'astro:assets';
-import Nav from '../components/Nav.astro';
-import Footer from '../components/Footer.astro';
-import { site } from '../data/site';
+import { ClientRouter, fade } from 'astro:transitions';
 import { transformSync } from 'esbuild';
 import themeInitSource from '../scripts/theme-init.js?raw';
-
-// Minified at build time so the inline bootstrap stays tiny; runs before first paint.
-const themeInit = transformSync(themeInitSource, { minify: true }).code;
+import Seo from '../components/seo/Seo.astro';
+import JsonLd from '../components/seo/JsonLd.astro';
+import SkipLink from '../components/shell/SkipLink.astro';
+import Header from '../components/shell/Header.astro';
+import Footer from '../components/shell/Footer.astro';
 
 interface Props {
   title: string;
   description: string;
+  /** Path or absolute URL for the social preview image. */
   ogImage?: string;
-  keywords?: string;
+  ogImageAlt?: string;
+  type?: 'website' | 'article';
+  publishedTime?: string;
+  modifiedTime?: string;
   /** Internal pages (the design review page) are kept out of search. */
   noindex?: boolean;
+  /** Extra JSON-LD nodes for this page, merged into the site @graph. */
+  jsonLd?: Record<string, unknown>[];
 }
 
 const {
   title,
   description,
-  ogImage = '/og-image.png',
-  keywords = 'technical consultant, platform engineer, cloud infrastructure, Linux, AWS, Azure, Terraform, Kubernetes, DevOps, Posit',
+  ogImage,
+  ogImageAlt,
+  type,
+  publishedTime,
+  modifiedTime,
   noindex = false,
+  jsonLd = [],
 } = Astro.props;
-const siteName = `${site.name}, ${site.role}`;
-const canonicalURL = new URL(Astro.url.pathname, Astro.site);
-const ogImageURL = new URL(ogImage, Astro.site);
-const structuredData = {
-  '@context': 'https://schema.org',
-  '@type': 'ProfessionalService',
-  name: siteName,
-  url: canonicalURL.toString(),
-  description,
-  areaServed: 'Worldwide',
-  serviceType: [
-    'Posit Team cloud deployment and support',
-    'Enterprise application troubleshooting',
-    'Cloud and on-premises platform engineering',
-  ],
-  knowsAbout: [
-    'Posit Team',
-    'AWS',
-    'Microsoft Azure',
-    'Google Cloud Platform',
-    'Linux',
-    'Kubernetes',
-    'Terraform',
-    'Ansible',
-    'TLS',
-    'Enterprise application support',
-  ],
-  provider: {
-    '@type': 'Organization',
-    name: 'purenest360 llc',
-  },
-};
+
+// Minified at build time so the inline bootstrap stays tiny; runs before first paint.
+const themeInit = transformSync(themeInitSource, { minify: true }).code;
 ---
 
 <!doctype html>
@@ -76,55 +57,47 @@ const structuredData = {
       </style>
     </noscript>
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <link rel="canonical" href={canonicalURL} />
+    <link rel="icon" type="image/x-icon" href="/favicon.ico" sizes="16x16 32x32 48x48" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <link rel="manifest" href="/site.webmanifest" />
     <meta name="generator" content={Astro.generator} />
 
-    <!-- Primary Meta Tags -->
-    <title>{title} | {siteName}</title>
-    <meta name="title" content={`${title} | ${siteName}`} />
-    <meta name="description" content={description} />
-    <meta name="author" content="Jimmy" />
-    <meta name="robots" content={noindex ? 'noindex, nofollow' : 'index, follow'} />
-    <meta name="keywords" content={keywords} />
-    <meta name="category" content="Technical consulting and platform engineering" />
-    <meta
-      name="service"
-      content="Posit Team deployment, cloud infrastructure, on-premises operations, and enterprise application support"
+    <Seo
+      title={title}
+      description={description}
+      image={ogImage}
+      imageAlt={ogImageAlt}
+      type={type}
+      publishedTime={publishedTime}
+      modifiedTime={modifiedTime}
+      noindex={noindex}
     />
-    <script is:inline type="application/ld+json" set:html={JSON.stringify(structuredData)}></script>
-    <!-- Open Graph / Facebook / LinkedIn -->
-    <meta property="og:type" content="website" />
-    <meta property="og:url" content={canonicalURL} />
-    <meta property="og:title" content={`${title} | ${siteName}`} />
-    <meta property="og:description" content={description} />
-    <meta property="og:image" content={ogImageURL} />
-    <meta property="og:site_name" content={siteName} />
-
-    <meta property="profile:first_name" content="Jimmy" />
-    <meta property="profile:last_name" content="Lubega" />
-
-    <!-- Twitter -->
-    <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:url" content={canonicalURL} />
-    <meta name="twitter:title" content={`${title} | ${siteName}`} />
-    <meta name="twitter:description" content={description} />
-    <meta name="twitter:image" content={ogImageURL} />
+    <JsonLd nodes={jsonLd} />
 
     <!-- Fonts: self-hosted through Astro's Fonts API (astro.config.mjs) -->
     <Font cssVariable="--font-plex-sans" preload />
     <Font cssVariable="--font-plex-mono" />
+
+    <ClientRouter />
+    <slot name="head" />
   </head>
-  <body class="bg-canvas text-fg antialiased">
-    <a
-      href="#main-content"
-      class="sr-only focus:not-sr-only focus:absolute focus:top-2 focus:left-2 focus:z-50 focus:bg-accent focus:text-accent-fg focus:px-4 focus:py-2 focus:rounded-sm focus:font-medium"
+  <body class="bg-canvas text-fg flex min-h-dvh flex-col antialiased">
+    <SkipLink />
+    <Header />
+    <main
+      id="main-content"
+      class="flex-1"
+      transition:name="main"
+      transition:animate={fade({ duration: '0.2s' })}
     >
-      Skip to main content
-    </a>
-    <Nav />
-    <main id="main-content">
       <slot />
     </main>
     <Footer />
+    <!-- reveal.ts self-inits on load and on every astro:page-load; see src/scripts/reveal.ts -->
+    <script>
+      import '../scripts/reveal';
+      import '../scripts/focus-after-nav';
+      import '../scripts/count-up';
+    </script>
   </body>
 </html>

@@ -1,0 +1,114 @@
+---
+/**
+ * About intro: the client's paragraph verbatim as the lead, and a portrait slot.
+ * Drop a file at src/assets/headshot.{jpg,jpeg,png,webp} (docs/image-guide.md) and it appears here
+ * automatically, through astro:assets, with no edit to this file. Until then, a monogram placeholder
+ * is rendered (never a stock photo).
+ */
+import { Image } from 'astro:assets';
+import { site } from '../../data/site';
+import { headshot } from '../../lib/media';
+import Container from '../ui/Container.astro';
+import Eyebrow from '../ui/Eyebrow.astro';
+import Button from '../ui/Button.astro';
+import Icon from '../ui/Icon.astro';
+
+const lead =
+  "Technical Consultant & Platform Engineer specializing in Cloud Infrastructure, Linux, Automation, and Kubernetes. I design, deploy, and support secure, scalable platforms across AWS and Azure, using Infrastructure as Code, automation, and modern DevOps practices. I'm passionate about solving complex technical problems, building reliable infrastructure, and helping teams turn technology into practical business solutions.";
+---
+
+<section class="border-line border-b" aria-labelledby="about-title">
+  <Container size="wide" class="py-14 md:py-20 lg:py-24">
+    <div class="grid items-start gap-12 lg:grid-cols-12 lg:gap-10">
+      <div class="lg:col-span-7">
+        <Eyebrow>about</Eyebrow>
+        <h1 id="about-title" class="text-h1 text-fg mt-3">
+          Hello, I'm Jimmy.
+        </h1>
+        <p class="text-lead text-fg-muted mt-5 max-w-2xl">{lead}</p>
+        <div class="text-mono-meta text-fg-faint mt-6 flex flex-wrap items-center gap-x-3 gap-y-1 font-mono"></div>
+        <div class="mt-8 flex flex-wrap gap-3">
+          <Button href="/#book">
+            Book a free 30-minute call
+            <Icon name="lucide:arrow-right" size={16} />
+          </Button>
+          <Button href={site.social.linkedin} variant="secondary">
+            <Icon name="simple-icons:linkedin" size={16} />
+            LinkedIn
+          </Button>
+        </div>
+      </div>
+
+      <div class="lg:col-span-5">
+        <figure class="mx-auto max-w-sm lg:ml-auto">
+          {headshot ? (
+            <Image
+              src={headshot}
+              alt="Jimmy Lubega"
+              widths={[400, 640, 800]}
+              sizes="(min-width: 1024px) 24rem, 80vw"
+              loading="eager"
+              decoding="async"
+              class="border-line aspect-[4/5] w-full rounded-lg border object-cover"
+            />
+          ) : (
+            <div
+              class="portrait border-line bg-surface relative aspect-[4/5] overflow-hidden rounded-lg border"
+              role="img"
+              aria-label="Placeholder for Jimmy Lubega's portrait"
+            >
+              <svg
+                class="absolute inset-0 h-full w-full"
+                viewBox="0 0 320 400"
+                fill="none"
+                aria-hidden="true"
+              >
+                <defs>
+                  <pattern id="portrait-grid" width="20" height="20" patternUnits="userSpaceOnUse">
+                    <circle cx="1" cy="1" r="1" class="fill-line-strong"></circle>
+                  </pattern>
+                </defs>
+                <rect width="320" height="400" fill="url(#portrait-grid)" opacity="0.7"></rect>
+                <g class="stroke-line-strong" stroke-width="1.25" stroke-linecap="round">
+                  <path d="M160 200 L80 120"></path>
+                  <path d="M160 200 L240 120"></path>
+                  <path d="M160 200 L96 296"></path>
+                  <path d="M160 200 L224 296"></path>
+                  <path d="M80 120 L240 120"></path>
+                </g>
+                <g class="fill-accent">
+                  <circle cx="80" cy="120" r="4"></circle>
+                  <circle cx="240" cy="120" r="4"></circle>
+                  <circle cx="96" cy="296" r="4"></circle>
+                  <circle cx="224" cy="296" r="4"></circle>
+                </g>
+                <circle
+                  cx="160"
+                  cy="200"
+                  r="54"
+                  class="fill-accent-soft stroke-accent"
+                  stroke-width="1.5"
+                ></circle>
+                <text
+                  x="160"
+                  y="212"
+                  text-anchor="middle"
+                  class="fill-fg"
+                  font-size="34"
+                  font-weight="500"
+                  font-family="var(--font-mono)"
+                >
+                  JL
+                </text>
+              </svg>
+              <span class="bg-accent absolute top-0 left-0 h-full w-0.5" aria-hidden="true"></span>
+            </div>
+          )}
+          <figcaption class="text-mono-meta text-fg-faint mt-3 font-mono">
+            Virginia, USA · Remote worldwide
+          </figcaption>
+        </figure>
+      </div>
+    </div>
+  </Container>
+</section>

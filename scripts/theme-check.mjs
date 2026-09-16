@@ -2,17 +2,10 @@
 // Usage: node scripts/theme-check.mjs [baseUrl]   (default http://localhost:4322, i.e. `astro preview`)
 // Requires a local Chrome install; uses playwright-core.
 import { chromium } from 'playwright-core';
-import { existsSync } from 'node:fs';
+import { findChrome } from './chrome-path.mjs';
 
 const base = process.argv[2] ?? 'http://localhost:4322';
-const chromePaths = [
-  'C:/Program Files/Google/Chrome/Application/chrome.exe',
-  'C:/Program Files (x86)/Google/Chrome/Application/chrome.exe',
-  '/usr/bin/google-chrome',
-  '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome',
-];
-const executablePath = process.env.CHROME_PATH ?? chromePaths.find((p) => existsSync(p));
-if (!executablePath) throw new Error('Chrome not found; set CHROME_PATH');
+const executablePath = findChrome();
 
 const DARK = 'rgb(11, 18, 32)';
 const LIGHT = 'rgb(247, 248, 250)';
@@ -119,11 +112,19 @@ for (const [label, opts, expect] of cases) {
     'toggle present, aria-pressed=false in light',
     (await btn.getAttribute('aria-pressed')) === 'false'
   );
-  const t0 = Date.now();
+  // Measure inside the page: time from the click event to the attribute change.
+  await page.evaluate(() => {
+    window.__flip = {};
+    document.addEventListener('click', () => (window.__flip.click = performance.now()), true);
+    new MutationObserver(() => {
+      if (document.documentElement.getAttribute('data-theme') === 'dark')
+        window.__flip.done ??= performance.now();
+    }).observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme'] });
+  });
   await btn.click();
   await page.waitForFunction(() => document.documentElement.getAttribute('data-theme') === 'dark');
-  const dt = Date.now() - t0;
-  check('click flips to dark within 300ms', dt < 300, `${dt}ms`);
+  const dt = await page.evaluate(() => Math.round(window.__flip.done - window.__flip.click));
+  check('click flips to dark within 300ms', dt < 300, `${dt}ms click to attribute change`);
   check(
     'aria-pressed=true after toggling to dark',
     (await btn.getAttribute('aria-pressed')) === 'true'
