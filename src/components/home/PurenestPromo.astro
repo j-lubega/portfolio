@@ -1,0 +1,250 @@
+---
+import Container from '../ui/Container.astro';
+import Eyebrow from '../ui/Eyebrow.astro';
+import Icon from '../ui/Icon.astro';
+---
+
+<section class="border-line border-b" aria-labelledby="purenest-title">
+  <Container size="wide" class="grid items-center gap-8 py-10 md:grid-cols-12 md:gap-10 md:py-14">
+    <div class="md:col-span-5">
+      <Eyebrow prefix="$">business / 01</Eyebrow>
+      <h2 id="purenest-title" class="text-h2 text-fg mt-3">
+        Purenest360 LLC
+      </h2>
+      <p class="text-small text-fg-muted mt-3 max-w-md">
+        Visit my business website for more about Purenest360 LLC.
+      </p>
+      <a
+        href="https://purenest360llc.com/"
+        target="_blank"
+        rel="noopener noreferrer"
+        class="text-small text-accent hover:text-fg mt-5 inline-flex items-center gap-2 rounded-xs link-underline"
+      >
+        purenest360llc.com
+        <Icon name="lucide:arrow-up-right" size={16} />
+        <span class="sr-only">(opens in a new tab)</span>
+      </a>
+    </div>
+
+    <a
+      href="https://purenest360llc.com/"
+      target="_blank"
+      rel="noopener noreferrer"
+      class="border-line bg-surface group rounded-md border p-3 sm:p-4 md:col-span-7"
+      aria-label="View the Purenest360 LLC business website at purenest360llc.com (opens in a new tab)"
+    >
+      <svg
+        class="purenest-diagram h-auto w-full"
+        viewBox="0 0 640 248"
+        role="img"
+        aria-labelledby="purenest-art-title purenest-art-description"
+        fill="none"
+      >
+        <title id="purenest-art-title">Purenest360 LLC business website</title>
+        <desc id="purenest-art-description">
+          Animated technical network graphic with Purenest360 LLC and purenest360llc.com.
+        </desc>
+        <defs>
+          <pattern id="purenest-grid" width="20" height="20" patternUnits="userSpaceOnUse">
+            <circle cx="1" cy="1" r="1" class="fill-line-strong"></circle>
+          </pattern>
+          <linearGradient id="purenest-core" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0" class="purenest-core-start"></stop>
+            <stop offset="1" class="purenest-core-end"></stop>
+          </linearGradient>
+        </defs>
+
+        <rect width="640" height="248" rx="6" fill="url(#purenest-grid)" opacity="0.52"></rect>
+
+        <g class="purenest-links" stroke-width="1.5" stroke-linecap="round">
+          <path d="M112 66 249 104M112 182 249 144M528 66 391 104M528 182 391 144"></path>
+          <path d="M112 66 112 182M528 66 528 182" class="purenest-links-secondary"></path>
+        </g>
+
+        <g class="purenest-signals">
+          <circle r="3" class="fill-accent">
+            <animateMotion
+              dur="5.8s"
+              repeatCount="indefinite"
+              path="M112 66 249 104"
+            ></animateMotion>
+          </circle>
+          <circle r="3" class="fill-ok">
+            <animateMotion
+              dur="6.6s"
+              begin="-2.4s"
+              repeatCount="indefinite"
+              path="M112 182 249 144"
+            ></animateMotion>
+          </circle>
+          <circle r="3" class="fill-warn">
+            <animateMotion
+              dur="6.2s"
+              begin="-1.3s"
+              repeatCount="indefinite"
+              path="M528 66 391 104"
+            ></animateMotion>
+          </circle>
+          <circle r="3" class="fill-accent">
+            <animateMotion
+              dur="7s"
+              begin="-3.1s"
+              repeatCount="indefinite"
+              path="M528 182 391 144"
+            ></animateMotion>
+          </circle>
+        </g>
+
+        <g class="purenest-nodes">
+          <rect
+            x="30"
+            y="48"
+            width="164"
+            height="36"
+            rx="5"
+            class="fill-surface stroke-line-strong"
+          ></rect>
+          <rect
+            x="30"
+            y="164"
+            width="164"
+            height="36"
+            rx="5"
+            class="fill-surface stroke-line-strong"
+          ></rect>
+          <rect
+            x="446"
+            y="48"
+            width="164"
+            height="36"
+            rx="5"
+            class="fill-surface stroke-line-strong"
+          ></rect>
+          <rect
+            x="446"
+            y="164"
+            width="164"
+            height="36"
+            rx="5"
+            class="fill-surface stroke-line-strong"
+          ></rect>
+          <circle cx="47" cy="66" r="4" class="fill-accent purenest-node-dot"></circle>
+          <circle cx="47" cy="182" r="4" class="fill-ok purenest-node-dot"></circle>
+          <circle cx="463" cy="66" r="4" class="fill-warn purenest-node-dot"></circle>
+          <circle cx="463" cy="182" r="4" class="fill-accent purenest-node-dot"></circle>
+        </g>
+
+        <rect
+          x="246"
+          y="84"
+          width="148"
+          height="80"
+          rx="7"
+          fill="url(#purenest-core)"
+          class="stroke-accent"
+          stroke-width="1.5"
+        ></rect>
+        <path
+          d="M268 108h32M268 118h20M340 108h32M352 118h20M268 140h26M346 140h26"
+          class="stroke-line-strong"
+          stroke-width="1.5"
+          stroke-linecap="round"
+        ></path>
+        <circle cx="320" cy="124" r="19" class="fill-surface stroke-accent"></circle>
+        <path
+          d="M313 124h14M320 117v14"
+          class="stroke-accent"
+          stroke-width="2"
+          stroke-linecap="round"
+        ></path>
+
+        <text x="60" y="70" class="fill-fg font-mono" font-size="11">
+          business
+        </text>
+        <text x="60" y="186" class="fill-fg font-mono" font-size="11">
+          systems
+        </text>
+        <text x="476" y="70" class="fill-fg font-mono" font-size="11">
+          digital
+        </text>
+        <text x="476" y="186" class="fill-fg font-mono" font-size="11">
+          Purenest360
+        </text>
+        <text x="320" y="225" text-anchor="middle" class="fill-fg-muted font-mono" font-size="11">
+          purenest360llc.com
+        </text>
+      </svg>
+    </a>
+  </Container>
+</section>
+
+<style>
+  .purenest-diagram text {
+    font-family: var(--font-mono);
+  }
+
+  .purenest-core-start {
+    stop-color: var(--color-accent-soft);
+  }
+
+  .purenest-core-end {
+    stop-color: var(--color-surface);
+  }
+
+  .purenest-links path {
+    stroke: var(--color-line-strong);
+    stroke-dasharray: 7 9;
+    animation: purenest-flow 8s linear infinite;
+  }
+
+  .purenest-links .purenest-links-secondary {
+    opacity: 0.45;
+    animation-direction: reverse;
+  }
+
+  .purenest-node-dot {
+    transform-box: fill-box;
+    transform-origin: center;
+    animation: purenest-beacon 2.8s ease-in-out infinite alternate;
+  }
+
+  .purenest-node-dot:nth-of-type(2) {
+    animation-delay: -0.7s;
+  }
+
+  .purenest-node-dot:nth-of-type(3) {
+    animation-delay: -1.4s;
+  }
+
+  .purenest-node-dot:nth-of-type(4) {
+    animation-delay: -2.1s;
+  }
+
+  @keyframes purenest-flow {
+    to {
+      stroke-dashoffset: -64;
+    }
+  }
+
+  @keyframes purenest-beacon {
+    to {
+      opacity: 0.42;
+      transform: scale(0.72);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .purenest-links path,
+    .purenest-node-dot {
+      animation: none;
+    }
+
+    .purenest-signals {
+      display: none;
+    }
+
+    .purenest-links path {
+      stroke-dashoffset: 0;
+    }
+  }
+</style>
